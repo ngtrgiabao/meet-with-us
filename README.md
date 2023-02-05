@@ -1,7 +1,8 @@
 # MEET WITH US
+
 <img src="https://img.shields.io/github/stars/ngtrgiabaoB2012063/meet-with-us"/> <img src="https://img.shields.io/github/issues/ngtrgiabaoB2012063/meet-with-us"/> ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ngtrgiabaoB2012063/meet-with-us) <img src="https://img.shields.io/github/license/ngtrgiabaoB2012063/meet-with-us"/>
 
-## About 
+## About
 
 -   A software help everyone connecting to everyone in company or classes and more...
 
@@ -15,7 +16,7 @@
 
 ## 👾 Screenshots
 
-#### *NOT UPDATE YET :<
+#### \*NOT UPDATE YET :<
 
 ## 🌳 TREE DIRECTORY FRONTEND
 
@@ -53,6 +54,7 @@
 ```
 
 ## 🌳 TREE DIRECTORY BACKEND
+
 ```
 ├───api
 │   └───v1
@@ -65,18 +67,23 @@
 ```
 
 ## 🤖 Features
-* Connect with anyone 🌐
-* Chat with friends 💬
-* Video call 📱
-* Sharing screen 💻
+
+-   Connect with anyone 🌐
+-   Chat with friends 💬
+-   Video call 📱
+-   Sharing screen 💻
 
 ## 🤖 Tech stacks
+
 ### Back-end
-* Node.js (Express)
-* Firebase
-* Socket.io
-  
+
+-   Node.js (Express)
+-   Firebase
+-   Socket.io
+
 ### Front-end
-* React
-* CSS
-* Socket.io
+
+-   React
+-   CSS
+-   Socket.io
+
