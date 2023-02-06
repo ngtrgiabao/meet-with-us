@@ -14,7 +14,7 @@ const Home = () => {
         >
             <BackgroundVideo bgImg={homeBackground} />
 
-            <div className="mt-[32rem] flex w-1/2 justify-between">
+            <div className="mt-[35rem] flex w-1/2 justify-between">
                 <button className="text-lg uppercase font-bold text-white p-2 rounded hover:bg-indigo-700 hover:scale-95 hover:ease-out hover:duration-100 outline outline-indigo-600 hover:outline-white">
                     Tạo room
                 </button>
