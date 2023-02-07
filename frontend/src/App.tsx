@@ -1,8 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import "./styles/index.css";
+import Home from "./views/Home";
+import { ThemeProvider } from "./context/ThemeContext";
 
 function App() {
-    return <>hello 2</>;
+    return (
+        <div className="App">
+            <ThemeProvider>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                    </Routes>
+                </BrowserRouter>
+            </ThemeProvider>
+        </div>
+    );
 }
 
 export default App;
