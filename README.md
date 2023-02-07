@@ -16,7 +16,7 @@
 
 ## 👾 Screenshots
 
-![image](https://user-images.githubusercontent.com/95952006/217004560-0f173706-4ec4-4905-bba5-fbf7c2a15b66.png)
+![image](https://user-images.githubusercontent.com/95952006/217192310-a5afc4c0-2749-484b-ab78-934b59687d5d.png)
 
 ## 🌳 TREE DIRECTORY FRONTEND
 
