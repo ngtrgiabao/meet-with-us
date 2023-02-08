@@ -14,7 +14,7 @@ const ThemeProvider = ({ children }: { children: ReactNode }): ReactElement => {
     const [theme, setTheme] = React.useState<string>("bg-white");
 
     const toggleTheme = () => {
-        setTheme(theme === "bg-white" ? "bg-indigo-500" : "bg-white");
+        setTheme(theme === "bg-white" ? "bg-slate-900" : "bg-white");
     };
 
     const value = {
