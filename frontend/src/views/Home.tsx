@@ -7,6 +7,7 @@ import BackgroundVideo from "../layouts/Background";
 import { ThemeContext } from "../context/ThemeContext";
 
 import b from "../assets/b.gif";
+import Form from "../components/Form";
 
 const bgImg = require("../assets/background/home.mp4");
 
