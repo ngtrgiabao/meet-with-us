@@ -40,10 +40,7 @@ const Home = () => {
             <BackgroundVideo bgImg={bgImg} />
 
             <div className="mt-[30rem] flex w-1/2 justify-between">
-                <button
-                    className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95"
-                    style={{ cursor: "none" }}
-                >
+                <button className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95">
                     {inputValue ? "Tham gia phòng" : "Tạo phòng"}
                 </button>
 
