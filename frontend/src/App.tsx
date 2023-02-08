@@ -1,9 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import "./styles/index.css";
-import Home from "./views/Home";
-import { ThemeProvider } from "./context/ThemeContext";
 
 function App() {
     return (
