@@ -36,7 +36,7 @@ const Home = () => {
             <BackgroundVideo bgImg={bgImg} />
 
             <div
-                className="mt-[30rem] flex w-1/2 justify-between"
+                className="mt-[32rem] flex w-1/2 justify-between"
                 onMouseMove={(e) => {
                     gsap.to(mouse.current, {
                         top: e.clientY - 15,
@@ -60,7 +60,7 @@ const Home = () => {
                     });
                 }}
             >
-                <button className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95">
+                <button className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__fadeIn">
                     {inputValue ? "Tham gia phòng" : "Tạo phòng"}
                 </button>
 
@@ -68,7 +68,7 @@ const Home = () => {
                     type="text"
                     maxLength={20}
                     placeholder="enter your link room here"
-                    className="text-lg uppercase font-bold outline outline-1 focus:outline-2 p-2 rounded flex-1 ml-3"
+                    className="text-lg uppercase font-bold outline outline-1 focus:outline-2 p-2 rounded flex-1 ml-3 animate__animated animate__fadeIn"
                     onChange={handleInput}
                 />
             </div>
@@ -77,6 +77,28 @@ const Home = () => {
                 <Link
                     to="/about"
                     className="font-bold text-white hover:underline"
+                    onMouseMove={(e) => {
+                        gsap.to(mouse.current, {
+                            top: e.clientY - 15,
+                            left: e.clientX + 5,
+
+                            width: "6rem",
+                            height: "6rem",
+
+                            mixBlendMode: "difference",
+                        });
+                    }}
+                    onMouseLeave={(e) => {
+                        gsap.to(mouse.current, {
+                            top: e.clientY - 15,
+                            left: e.clientX + 15,
+
+                            width: "2rem",
+                            height: "2rem",
+
+                            mixBlendMode: "",
+                        });
+                    }}
                 >
                     Tìm hiểu thêm
                 </Link>
