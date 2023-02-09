@@ -22,6 +22,27 @@ const Home = () => {
         mixBlendMode: "",
     });
 
+    // const videoRef = React.useRef<any>();
+
+    // const getVideo = () => {
+    //     navigator.mediaDevices
+    //         .getUserMedia({
+    //             video: true,
+    //         })
+    //         .then((stream) => {
+    //             let video = videoRef.current;
+    //             video.srcObject = stream;
+    //             video.play();
+    //         })
+    //         .catch((stream: any) => {
+    //             console.log((videoRef.current.srcObject = stream));
+    //         });
+    // };
+
+    // React.useEffect(() => {
+    //     getVideo();
+    // }, [videoRef]);
+
     return (
         <div
             id="Home"
@@ -34,6 +55,8 @@ const Home = () => {
             }}
         >
             <BackgroundVideo bgImg={bgImg} />
+
+            {/* <video ref={videoRef} width={190} height={190}></video> */}
 
             <div
                 className="mt-[32rem] flex w-1/2 justify-between"
