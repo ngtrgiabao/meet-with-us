@@ -9,7 +9,7 @@ type BackgroundVideoType = {
 const BackgroundVideo = (props: BackgroundVideoType) => {
     return (
         <>
-            <div className="top-20 object-cover absolute flex flex-col items-center justify-between ">
+            <div className="top-20 object-cover absolute flex flex-col items-center justify-between animate__animated animate__fadeIn">
                 <video
                     autoPlay
                     loop
@@ -20,7 +20,8 @@ const BackgroundVideo = (props: BackgroundVideoType) => {
                 >
                     <source src={props.bgImg} />
                 </video>
-                <div className="flex w-full justify-center items-center mt-3">
+
+                <div className="flex w-full justify-center items-center mt-3 animate__animated  animate__bounceIn">
                     <img src={Logo} alt="" width={60} height={60} />
                     <div className="flex flex-col ml-3">
                         <span className="text-2xl font-bold text-white">
