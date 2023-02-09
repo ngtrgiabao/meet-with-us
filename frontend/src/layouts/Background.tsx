@@ -1,7 +1,5 @@
 import React from "react";
 
-import { ThemeContext } from "../context/ThemeContext";
-
 import Logo from "../assets/logo.svg";
 
 type BackgroundVideoType = {
@@ -9,8 +7,7 @@ type BackgroundVideoType = {
 };
 
 const BackgroundVideo = (props: BackgroundVideoType) => {
-    const context = React.useContext(ThemeContext);
-    const theme = context.theme;
+    const theme = localStorage.getItem("theme");
 
     return (
         <>
