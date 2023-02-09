@@ -1,9 +1,12 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import "./styles/index.css";
 import Home from "./views/Home";
+import About from "./views/About";
+
 import { ThemeProvider } from "./context/ThemeContext";
+
+import "./styles/index.css";
 
 function App() {
     return (
@@ -11,7 +14,10 @@ function App() {
             <ThemeProvider>
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/" element={<Home />} />
+                        <>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/about" element={<About />} />
+                        </>
                     </Routes>
                 </BrowserRouter>
             </ThemeProvider>
