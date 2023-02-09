@@ -83,7 +83,7 @@ const Home = () => {
 
             <div className="absolute bottom-4 left-4">
                 <Link
-                    to="/"
+                    to="/about"
                     className={
                         theme === "bg-white"
                             ? "font-bold text-blue-400 hover:underline"
