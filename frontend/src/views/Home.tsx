@@ -5,14 +5,10 @@ import gsap from "gsap";
 import "../styles/index.css";
 
 import BackgroundVideo from "../layouts/Background";
-import { ThemeContext } from "../context/ThemeContext";
 
 const bgImg = require("../assets/background/home.mp4");
 
 const Home = () => {
-    const context = React.useContext(ThemeContext);
-    const theme = localStorage.getItem("theme");
-
     const [inputValue, setInputValue] = React.useState<string>("");
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
@@ -29,11 +25,7 @@ const Home = () => {
     return (
         <div
             id="Home"
-            className={
-                theme +
-                " " +
-                "h-screen w-screen overflow-hidden relative flex justify-center items-center p-4"
-            }
+            className="h-screen w-screen overflow-hidden relative flex justify-center items-center p-4"
             onMouseMove={(e) => {
                 gsap.to(mouse.current, {
                     top: e.clientY - 15,
@@ -84,28 +76,12 @@ const Home = () => {
             <div className="absolute bottom-4 left-4">
                 <Link
                     to="/about"
-                    className={
-                        theme === "bg-white"
-                            ? "font-bold text-blue-400 hover:underline"
-                            : "font-bold text-white hover:underline"
-                    }
+                    className="font-bold text-white hover:underline"
                 >
                     Tìm hiểu thêm
                 </Link>
-                <span
-                    className={
-                        theme === "bg-white" ? "ml-1" : "ml-1 text-white"
-                    }
-                >
-                    về chúng tôi
-                </span>
+                <span className="ml-1 text-white">về chúng tôi</span>
             </div>
-            <button
-                onClick={context.toggleTheme}
-                className="text-3xl absolute bottom-4 right-4"
-            >
-                {theme === "bg-white" ? "🌙" : "☀️"}
-            </button>
 
             {/* CURSOR */}
             <div
@@ -118,7 +94,7 @@ const Home = () => {
                     position: "absolute",
                 }}
                 ref={mouse}
-                className="rounded-full transition duration-150 overflow-hidden flex justify-center items-center bg-blue-900"
+                className="rounded-full transition duration-150 overflow-hidden flex justify-center items-center bg-white"
             ></div>
         </div>
     );
