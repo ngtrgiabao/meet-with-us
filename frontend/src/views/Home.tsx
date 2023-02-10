@@ -22,27 +22,6 @@ const Home = () => {
         mixBlendMode: "",
     });
 
-    // const videoRef = React.useRef<any>();
-
-    // const getVideo = () => {
-    //     navigator.mediaDevices
-    //         .getUserMedia({
-    //             video: true,
-    //         })
-    //         .then((stream) => {
-    //             let video = videoRef.current;
-    //             video.srcObject = stream;
-    //             video.play();
-    //         })
-    //         .catch((stream: any) => {
-    //             console.log((videoRef.current.srcObject = stream));
-    //         });
-    // };
-
-    // React.useEffect(() => {
-    //     getVideo();
-    // }, [videoRef]);
-
     return (
         <div
             id="Home"
@@ -55,8 +34,6 @@ const Home = () => {
             }}
         >
             <BackgroundVideo bgImg={bgImg} />
-
-            {/* <video ref={videoRef} width={190} height={190}></video> */}
 
             <div
                 className="mt-[32rem] flex w-1/2 justify-between"
@@ -83,9 +60,18 @@ const Home = () => {
                     });
                 }}
             >
-                <button className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__fadeIn">
-                    {inputValue ? "Tham gia phòng" : "Tạo phòng"}
-                </button>
+                {inputValue ? (
+                    <Link
+                        to="/overview-camera"
+                        className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn"
+                    >
+                        Tham gia phòng
+                    </Link>
+                ) : (
+                    <button className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn">
+                        Tạo phòng
+                    </button>
+                )}
 
                 <input
                     type="text"
