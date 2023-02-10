@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "./views/Home";
 import About from "./views/About";
+import UserOverview from "./views/UserOverview";
 
 import "./styles/index.css";
 
@@ -14,6 +15,10 @@ function App() {
                     <>
                         <Route path="/" element={<Home />} />
                         <Route path="/about" element={<About />} />
+                        <Route
+                            path="/overview-camera"
+                            element={<UserOverview />}
+                        />
                     </>
                 </Routes>
             </BrowserRouter>
