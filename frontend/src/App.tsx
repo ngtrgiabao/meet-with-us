@@ -9,7 +9,7 @@ import "./styles/index.css";
 
 function App() {
     return (
-        <div className="App bg-blue-700">
+        <div className="App bg-slate-900">
             <BrowserRouter>
                 <Routes>
                     <>
