@@ -1,11 +1,12 @@
 const express = require("express");
+const { v4: uuidV4 } = require("uuid");
 
-const app = express();
+const app = require("./app");
 
 app.use("/", (req, res) => {
-    res.send("hello");
+    res.send({ id: uuidV4() });
 });
 
-app.listen(3000, () => {
-    console.log("hello");
+app.listen(5000, () => {
+    console.log("connected server success");
 });
