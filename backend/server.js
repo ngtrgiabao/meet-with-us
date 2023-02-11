@@ -1,11 +1,7 @@
 const express = require("express");
 
-const app = express();
-
-app.use("/", (req, res) => {
-    res.send("hello");
-});
+const app = require("./app");
 
 app.listen(3000, () => {
-    console.log("hello");
+  console.log("Conected to server!");
 });
