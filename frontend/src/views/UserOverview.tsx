@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import MiniAvatar from "../components/MiniAvatar";
 
@@ -25,9 +26,12 @@ const UserOverview = () => {
                     <MiniAvatar avatar={bg4} />
                 </div>
 
-                <button className="p-2 flex justify-center rounded-3xl hover:bg-blue-800 border border-dashed hover:border-solid">
+                <Link
+                    to="/room"
+                    className="p-2 flex justify-center rounded-3xl hover:bg-blue-800 border border-dashed hover:border-solid"
+                >
                     Tham gia
-                </button>
+                </Link>
             </div>
         </div>
     );

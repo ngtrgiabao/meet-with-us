@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 const { CopyToClipboard } = require("react-copy-to-clipboard");
 
 type PopupRoomIdType = {
@@ -30,12 +31,14 @@ const PopupRoomId = (props: PopupRoomIdType) => {
                                 value={props.id}
                                 className="mr-3 text-black p-2"
                             />
-                            <span
-                                onClick={props.togglePopup}
-                                className="p-2 py-[0.15rem] absolute -top-12 -right-8 hover:text-red-500 cursor-pointer"
-                            >
-                                <i className="fa-solid fa-xmark"></i>
-                            </span>
+                            <Link to="/room">
+                                <span
+                                    onClick={props.togglePopup}
+                                    className="p-2 py-[0.15rem] absolute -top-12 -right-8 hover:text-red-500 cursor-pointer"
+                                >
+                                    <i className="fa-solid fa-xmark"></i>
+                                </span>
+                            </Link>
 
                             {/* Copy clipboard */}
                             {isCopied ? (
