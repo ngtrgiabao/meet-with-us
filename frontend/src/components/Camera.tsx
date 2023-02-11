@@ -1,100 +1,91 @@
 import React from "react";
-import Webcam from "react-webcam";
-
-type videoConstraintsType = {
-    width: number;
-    height: number;
-    facingMode: "user";
-};
+import Peer from "peerjs";
 
 const Camera = () => {
-    const videoConstraints: videoConstraintsType = {
-        width: 640,
-        height: 450,
-        facingMode: "user",
+    const [peerId, setPeerId] = React.useState("");
+    const [remotePeerIdValue, setRemotePeerIdValue] = React.useState("");
+    const remoteVideoRef = React.useRef<any>(null);
+    const currentUserVideoRef = React.useRef<any>(null);
+    const peerInstance = React.useRef<any>(null);
+
+    React.useEffect(() => {
+        const peer = new Peer();
+
+        /* This is a callback function that is called when the peer object is successfully created. The
+        `id` parameter is the id of the peer object. */
+        peer.on("open", (id) => {
+            setPeerId(id);
+        });
+
+        peer.on("call", (call) => {
+            const getUserMedia = navigator.mediaDevices.getUserMedia;
+
+            getUserMedia({ video: true })
+                .then((mediaStream: any) => {
+                    /* Setting the srcObject of the video element to the mediaStream. */
+                    currentUserVideoRef.current.srcObject = mediaStream;
+                    /* Playing the video. */
+                    currentUserVideoRef.current.play();
+                    /* Answering the call. */
+                    call.answer(mediaStream);
+                    /* This is the callback function that is called when the remote peer sends a stream. */
+                    call.on("stream", function (remoteStream) {
+                        remoteVideoRef.current.srcObject = remoteStream;
+                        remoteVideoRef.current.play();
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        });
+
+        /* Setting the value of the `peerInstance` ref to the `peer` object. */
+        peerInstance.current = peer;
+    }, []);
+
+    const call = (remotePeerId: string) => {
+        const getUserMedia = navigator.mediaDevices.getUserMedia;
+
+        getUserMedia({ video: true })
+            .then((mediaStream: any) => {
+                /* Setting the srcObject of the video element to the mediaStream. */
+                currentUserVideoRef.current.srcObject = mediaStream;
+                currentUserVideoRef.current.play();
+
+                /* Calling the remote peer. */
+                const call = peerInstance.current.call(
+                    remotePeerId,
+                    mediaStream
+                );
+
+                /* This is the callback function that is called when the remote peer sends a stream. */
+                call.on("stream", (remoteStream: string) => {
+                    remoteVideoRef.current.srcObject = remoteStream;
+                    remoteVideoRef.current.play();
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
-    const webcamRef = React.useRef<any>(null);
-    const mediaRecorderRef = React.useRef<any>(null);
-    const [capturing, setCapturing] = React.useState(false);
-    const [recordedChunks, setRecordedChunks] = React.useState([]);
-
-    const handleStartCaptureClick = React.useCallback(() => {
-        setCapturing(true);
-        mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
-            mimeType: "video/webm",
-        });
-        /* Adding an event listener to the media recorder. */
-        mediaRecorderRef.current.addEventListener(
-            "dataavailable",
-            handleDataAvailable
-        );
-        mediaRecorderRef.current.start();
-    }, [webcamRef, setCapturing, mediaRecorderRef]);
-
-    const handleDataAvailable = React.useCallback(
-        ({ data }: any) => {
-            if (data.size > 0) {
-                /* Adding the data to the array. */
-                setRecordedChunks((prev) => prev.concat(data));
-            }
-        },
-        [setRecordedChunks]
-    );
-
-    const handleStopCaptureClick = React.useCallback(() => {
-        /* Stopping the recording. */
-        mediaRecorderRef.current.stop();
-        setCapturing(false);
-    }, [mediaRecorderRef, webcamRef, setCapturing]);
-
-    /* `useCallback` is a React hook that returns a memoized callback. */
-    const handleDownload = React.useCallback(() => {
-        if (recordedChunks.length) {
-            /* Creating a new Blob object. */
-            const blob = new Blob(
-                /* `recordedChunks` is an array of chunks of video data. */ recordedChunks,
-                {
-                    type: "video/webm",
-                }
-            );
-            /* Creating a URL for the blob. */
-            const url = URL.createObjectURL(blob);
-            /* Creating a new HTML element. */
-            const a = document.createElement("a");
-            /* Creating a new HTML element. */
-            document.body.appendChild(a);
-            /* Creating a link to the video file. */
-            a.href = url;
-            /* Creating a link to the video file. */
-            a.download = "react-webcam-stream-capture.webm";
-            /* Clicking the link. */
-            a.click();
-            /* Revoking the URL. */
-            window.URL.revokeObjectURL(url);
-            /* Resetting the recordedChunks array. */
-            setRecordedChunks([]);
-        }
-    }, [recordedChunks]);
-
     return (
-        <>
-            <Webcam
-                audio={false}
-                ref={webcamRef}
-                videoConstraints={videoConstraints}
-                mirrored={true}
-                className="rounded-2xl"
+        <div className="text-white">
+            <h1>Current user id is {peerId}</h1>
+            <input
+                type="text"
+                value={remotePeerIdValue}
+                onChange={(e) => setRemotePeerIdValue(e.target.value)}
+                className="text-black"
             />
-            {/* {capturing ? (
-                <button onClick={handleStopCaptureClick}>Stop Capture</button>
-            ) : (
-                <button onClick={handleStartCaptureClick}>Start Capture</button>
-            )}
-            {recordedChunks.length > 0 && (
-                <button onClick={handleDownload}>Download</button>
-            )} */}
-        </>
+            <button onClick={() => call(remotePeerIdValue)}>Call</button>
+            <div>
+                <video ref={currentUserVideoRef} className="-scaleX-[1]" />
+            </div>
+            <div>
+                <video ref={remoteVideoRef} width={340} height={440} />
+            </div>
+        </div>
     );
 };
 

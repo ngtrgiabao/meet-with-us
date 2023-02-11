@@ -16,8 +16,9 @@
 
 ## 👾 Screenshots
 
-![image](https://user-images.githubusercontent.com/95952006/217715370-3396994d-42ac-4210-b5ee-2a8cd0840a23.png)
-![image](https://user-images.githubusercontent.com/95952006/217715377-7bb995ca-6024-4e2d-a0af-55b6d29b1b4e.png)
+![image](https://user-images.githubusercontent.com/95952006/218129476-e741f8fa-7f29-4683-87d2-15468f19e9ae.png)
+![image](https://user-images.githubusercontent.com/95952006/218128848-a7a28a53-0dc9-4cee-a13f-e4827327cf58.png)
+![image](https://user-images.githubusercontent.com/95952006/218129101-711f2820-1a1c-492b-a1b4-d49d995034d4.png)
 
 ## 🌳 TREE DIRECTORY FRONTEND
 

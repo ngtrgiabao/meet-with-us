@@ -1,17 +1,44 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
+import Peer from "peerjs";
 
 import "../styles/index.css";
 
 import BackgroundVideo from "../layouts/Background";
+import PopupRoomId from "../components/PopupRoomId";
 
 const bgImg = require("../assets/background/home.mp4");
 
+const { CopyToClipboard } = require("react-copy-to-clipboard");
+
 const Home = () => {
     const [inputValue, setInputValue] = React.useState<string>("");
-    const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const [isCopied, setIsCopied] = React.useState<boolean>(false);
+    const [isActive, setIsActive] = React.useState<boolean>(false);
+
+    const [peerId, setPeerId] = React.useState<string>("");
+    const peer = new Peer();
+
+    const handleCreateIdRoom = () => {
+        peer.on("open", (id) => {
+            setPeerId(id);
+        });
+        console.log(peerId);
+    };
+
+    const handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void = (
+        e
+    ) => {
         setInputValue(e.target.value);
+    };
+
+    const handleCopyClipboard: () => void = () => {
+        setIsCopied((isCopied) => !isCopied);
+    };
+
+    const handleActive: () => void = () => {
+        setIsActive((isActive) => !isActive);
     };
 
     const mouse = React.useRef<ReturnType<typeof Object>>({
@@ -36,7 +63,7 @@ const Home = () => {
             <BackgroundVideo bgImg={bgImg} />
 
             <div
-                className="mt-[32rem] flex w-1/2 justify-between"
+                className="mt-[32rem] flex w-1/2 justify-center items-center"
                 onMouseMove={(e) => {
                     gsap.to(mouse.current, {
                         top: e.clientY - 15,
@@ -68,18 +95,40 @@ const Home = () => {
                         Tham gia phòng
                     </Link>
                 ) : (
-                    <button className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn">
+                    <button
+                        className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white animate__animated animate__bounceIn"
+                        onClick={() => {
+                            handleCreateIdRoom();
+                            handleActive();
+                        }}
+                    >
                         Tạo phòng
                     </button>
                 )}
 
+                {/* Room input */}
                 <input
                     type="text"
-                    maxLength={20}
                     placeholder="enter your link room here"
-                    className="text-lg uppercase font-bold outline outline-1 focus:outline-2 p-2 rounded flex-1 ml-3 animate__animated animate__fadeIn"
+                    className="text-lg uppercase font-bold outline outline-1 focus:outline-2 p-2 rounded animate__animated animate__fadeIn mx-4 flex-1"
                     onChange={handleInput}
                 />
+
+                {/* Copy clipboard */}
+                {isCopied ? (
+                    <span className="text-white p-2 px-4 rounded-lg animate__animated animate__bounceIn">
+                        <i className="fa-solid fa-check text-xl text-green-500"></i>
+                    </span>
+                ) : (
+                    <CopyToClipboard
+                        text={inputValue}
+                        onCopy={handleCopyClipboard}
+                    >
+                        <span className="text-white cursor-pointer hover:text-white hover:bg-blue-400 p-2 px-4 rounded-lg animate__animated animate__bounceIn">
+                            <i className="fa-regular fa-clipboard text-xl"></i>
+                        </span>
+                    </CopyToClipboard>
+                )}
             </div>
 
             <div className="absolute bottom-4 left-4">
@@ -125,8 +174,15 @@ const Home = () => {
                     position: "absolute",
                 }}
                 ref={mouse}
-                className="rounded-full transition duration-150 overflow-hidden flex justify-center items-center bg-white"
+                className="rounded-full transition duration-150 overflow-hidden flex justify-center items-center bg-white z-[99]"
             ></div>
+
+            {/* Popup */}
+            <PopupRoomId
+                id={peerId}
+                isActive={isActive}
+                togglePopup={handleActive}
+            />
         </div>
     );
 };
