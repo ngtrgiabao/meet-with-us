@@ -27,7 +27,7 @@ middleWare.get(
     next();
   },
   (req, res, next) => {
-    res.send("User Info");
+    res.send("User Information");
   }
 );
 
