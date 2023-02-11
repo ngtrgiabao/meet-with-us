@@ -6,7 +6,7 @@ import Peer from "peerjs";
 import "../styles/index.css";
 
 import BackgroundVideo from "../layouts/Background";
-import PopupRoomId from "./PopupRoomId";
+import PopupRoomId from "../components/PopupRoomId";
 
 const bgImg = require("../assets/background/home.mp4");
 
@@ -37,7 +37,7 @@ const Home = () => {
         setIsCopied((isCopied) => !isCopied);
     };
 
-    const handleActive = () => {
+    const handleActive: () => void = () => {
         setIsActive((isActive) => !isActive);
     };
 
@@ -96,7 +96,7 @@ const Home = () => {
                     </Link>
                 ) : (
                     <button
-                        className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn"
+                        className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white animate__animated animate__bounceIn"
                         onClick={() => {
                             handleCreateIdRoom();
                             handleActive();
@@ -178,7 +178,11 @@ const Home = () => {
             ></div>
 
             {/* Popup */}
-            <PopupRoomId id={peerId} isActive={isActive} />
+            <PopupRoomId
+                id={peerId}
+                isActive={isActive}
+                togglePopup={handleActive}
+            />
         </div>
     );
 };

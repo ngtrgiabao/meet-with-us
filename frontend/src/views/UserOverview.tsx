@@ -1,6 +1,5 @@
 import React from "react";
 
-import Camera from "../components/Camera";
 import MiniAvatar from "../components/MiniAvatar";
 
 import bg1 from "../assets/background/1.jpg";
@@ -11,10 +10,10 @@ import WebcamOverview from "../components/WebcamOverview";
 
 const UserOverview = () => {
     return (
-        <div className="h-screen w-full flex justify-between items-center  pl-[16rem] pr-[19rem]">
+        <div className="h-screen w-full flex justify-between items-center pl-[16rem] pr-[19rem]">
             <WebcamOverview />
 
-            <div className=" text-white flex justify-center flex-col relative">
+            <div className="ml-5 text-white flex justify-center flex-col relative">
                 <h3 className="text-2xl font-bold mb-[5rem]">
                     Sẵn sàng tham gia?
                 </h3>

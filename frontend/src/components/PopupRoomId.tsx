@@ -4,34 +4,23 @@ const { CopyToClipboard } = require("react-copy-to-clipboard");
 type PopupRoomIdType = {
     id: string;
     isActive: boolean;
+    togglePopup: () => void;
 };
 
 const PopupRoomId = (props: PopupRoomIdType) => {
     const [isCopied, setIsCopied] = React.useState<boolean>(false);
-    const [isActive, setIsActive] = React.useState<boolean>(false);
 
     const handleCopyClipboard: () => void = () => {
         setIsCopied((isCopied) => !isCopied);
-    };
-
-    const handleActive = () => {
-        setIsActive((isActive) => !isActive);
     };
 
     return (
         <>
             {props.isActive ? (
                 // BACKGROUND
-                <div
-                    className={
-                        isActive
-                            ? "hidden"
-                            : "" +
-                              "w-full h-full absolute flex flex-col justify-center items-center bg-black/80"
-                    }
-                >
+                <div className="w-full h-full absolute flex flex-col justify-center items-center bg-black/80">
                     {/* POPUP */}
-                    <div className="border border-white w-fit h-fit px-12 py-4 flex flex-col justify-center items-center rounded-xl text-white">
+                    <div className="border border-white w-fit h-fit px-12 py-4 flex flex-col justify-center items-center rounded-xl text-white animate__animated animate__bounceIn">
                         {/* TITLE */}
                         <span className=" font-bold mb-6">ID room</span>
 
@@ -42,7 +31,7 @@ const PopupRoomId = (props: PopupRoomIdType) => {
                                 className="mr-3 text-black p-2"
                             />
                             <span
-                                onClick={handleActive}
+                                onClick={props.togglePopup}
                                 className="p-2 py-[0.15rem] absolute -top-12 -right-8 hover:text-red-500 cursor-pointer"
                             >
                                 <i className="fa-solid fa-xmark"></i>

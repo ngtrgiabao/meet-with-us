@@ -80,10 +80,10 @@ const Camera = () => {
             />
             <button onClick={() => call(remotePeerIdValue)}>Call</button>
             <div>
-                <video ref={currentUserVideoRef} />
+                <video ref={currentUserVideoRef} className="-scaleX-[1]" />
             </div>
             <div>
-                <video ref={remoteVideoRef} />
+                <video ref={remoteVideoRef} width={340} height={440} />
             </div>
         </div>
     );
