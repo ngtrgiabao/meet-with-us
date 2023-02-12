@@ -1,12 +1,17 @@
 const express = require("express");
-const { v4: uuidV4 } = require("uuid");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
 
 const app = require("./app");
+const { route } = require("./src/api/v1/user/user.route");
+const httpServer = createServer(app);
 
-app.use("/", (req, res) => {
-    res.send({ id: uuidV4() });
+const io = new Server(httpServer, {
+    /* options */
 });
 
-app.listen(5000, () => {
-    console.log("connected server success");
+io.on("connection", (socket) => {
+    console.log("hello");
 });
+
+httpServer.listen(3000);
