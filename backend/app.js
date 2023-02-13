@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const middleWare = require("./src/api/v1/user/user.middleware");
+const router = require("./src/api/v1/user/user.route.js");
 
 const corsOptions = {
     origin: "http://localhost:3000",
@@ -8,3 +10,8 @@ const corsOptions = {
     optionSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
+app.use(middleWare);
+
+app.use("/api/v1", router);
+
+module.exports = app;

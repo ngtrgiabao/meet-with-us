@@ -3,7 +3,8 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { store } from "./hooks/store";
+import { BrowserRouter } from "react-router-dom";
+
 const { library } = require("@fortawesome/fontawesome-svg-core");
 const { fab } = require("@fortawesome/free-brands-svg-icons");
 const { fas } = require("@fortawesome/free-solid-svg-icons");
@@ -14,10 +15,10 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <React.StrictMode>
-        <Provider store={store}> {/* HERE */}
-      <App /> {/* Now, App is wrapped in Provider and hence can read from store */}
-    </Provider>
-    </React.StrictMode> 
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
