@@ -1,8 +1,7 @@
-import firebase from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 
-import 'firebase/analytics';
-import 'firebase/auth';
-import 'firebase/firestore';
+import { getAuth } from "firebase/auth"
+import { collection, getFirestore } from "firebase/firestore";
 
 
 
@@ -18,10 +17,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-// export const firebaseAtuh = getAuth(app);
-// export const firebaseDB = getAuth
 
-export { db, auth };
-
-export default firebase;
+export const firebaseAuth = getAuth(app);
+export const firebaseDB = getFirestore(app);
+export const usersRef = collection(firebaseDB, "users");
+export const meetingsRef = collection(firebaseDB, "meetings");

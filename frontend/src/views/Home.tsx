@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 import "../styles/index.css";
-
 import BackgroundVideo from "../layouts/Background";
 import { ThemeContext } from "../context/ThemeContext";
-
+import { userInfo } from "os";
+import { Login } from "../components/Login";
+// import {Login} from "../components/Login";
 const bgImg = require("../assets/background/home.mp4");
 
 const Home = () => {
@@ -15,7 +15,7 @@ const Home = () => {
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
     };
-
+    
     return (
         <div
             id="Home"
@@ -28,7 +28,7 @@ const Home = () => {
             <BackgroundVideo bgImg={bgImg} />
 
             <div className="mt-[30rem] flex w-1/2 justify-between">
-                <button className="text-md uppercase font-bold p-2 rounded bg-[#464AA9] text-white hover:opacity-95">
+                <button  className="text-md uppercase font-bold p-2 rounded bg-[#464AA9] text-white hover:opacity-95">
                     {inputValue ? "Tham gia phòng" : "Tạo phòng"}
                 </button>
 
@@ -40,7 +40,7 @@ const Home = () => {
                     onChange={handleInput}
                 />
             </div>
-
+    
             <div className="absolute bottom-4 left-4">
                 <Link
                     to="/"
@@ -58,6 +58,8 @@ const Home = () => {
             <button onClick={context.toggleTheme} className="text-3xl absolute bottom-4 right-4">
                 {context.theme === "bg-white" ? "🌙" : "☀️"}
             </button>
+
+            
         </div>
     );
 };
