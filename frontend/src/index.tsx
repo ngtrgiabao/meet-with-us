@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter } from "react-router-dom";
 
 const { library } = require("@fortawesome/fontawesome-svg-core");
 const { fab } = require("@fortawesome/free-brands-svg-icons");
@@ -14,7 +15,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <React.StrictMode>
-        <App />
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
     </React.StrictMode>
 );
 
