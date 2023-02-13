@@ -6,6 +6,10 @@ const app = require("./app");
 const { route } = require("./src/api/v1/user/user.route");
 const httpServer = createServer(app);
 
+app.listen(3000, () => {
+    console.log("Conected to server!");
+});
+
 const io = new Server(httpServer, {
     /* options */
 });
