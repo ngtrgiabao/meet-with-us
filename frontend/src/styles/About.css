@@ -13,19 +13,6 @@ span:hover .hover-text {
     display: none;
 }
 
-.img-desc::before {
-    content: "";
-
-    width: 100%;
-    height: 500%;
-
-    background: rgba(0, 0, 0, 0.637);
-
-    position: absolute;
-
-    z-index: -1;
-}
-
 span:hover .img-desc,
 span:hover .img-desc::before {
     opacity: 1;
