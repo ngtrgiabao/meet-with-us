@@ -4,6 +4,7 @@ const { Server } = require("socket.io");
 
 const app = require("./app");
 const { route } = require("./src/api/v1/user/user.route");
+const { port } = require("./src/config/database.config");
 const httpServer = createServer(app);
 
 app.listen(3000, () => {
@@ -18,4 +19,4 @@ io.on("connection", (socket) => {
     console.log("hello");
 });
 
-httpServer.listen(3000);
+httpServer.listen(port);
