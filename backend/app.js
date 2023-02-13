@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
-<<<<<<< HEAD
 const middleWare = require("./src/api/v1/user/user.middleware");
+const router = require("./src/api/v1/user/user.route.js");
 
 const corsOptions = {
   origin: "http://localhost:3000",
@@ -10,10 +10,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(middleWare);
-=======
-const router = require("./src/api/v1/user/user.route.js");
 
 app.use("/api/v1", router);
 
->>>>>>> main
 module.exports = app;
