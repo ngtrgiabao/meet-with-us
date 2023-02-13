@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const middleWare = require("./src/api/v1/user/user.middleware");
 const router = require("./src/api/v1/user/user.route.js");
