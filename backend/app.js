@@ -19,7 +19,7 @@ app.use(middleWare);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use("/api/v1/user", route.userRoute);
+app.use("/api/v1", route.userRoute);
 
 app.use((req, res, next) => {
     return next(new ApiError(404, "Resource not found"));
