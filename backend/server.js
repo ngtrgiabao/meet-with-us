@@ -3,20 +3,21 @@ const { createServer } = require("http");
 const { Server } = require("socket.io");
 
 const app = require("./app");
-const { port } = require("./src/config/database.config");
+const config = require("./src/config/database.config");
+
+const PORT = config.app.port;
+const SOCKET_PORT = config.socket.port;
 
 const httpServer = createServer(app);
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
     console.log("Conected to server!");
 });
 
-const io = new Server(httpServer, {
-    /* options */
-});
+const io = new Server(httpServer);
 
 io.on("connection", (socket) => {
-    console.log("hello", socket);
+    console.log(socket, "is connected");
 });
 
-httpServer.listen(port);
+io.listen(SOCKET_PORT);

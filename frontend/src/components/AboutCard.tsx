@@ -1,17 +1,17 @@
 import React from "react";
 import { gsap } from "gsap";
 
-type BackgroundImgType = {
+type aboutPropsType = {
     name: string;
     role: string;
     bgImg: string;
 };
 
-const AboutCard = (props: BackgroundImgType) => {
-    React.useEffect(() => {
-        const hoverText = gsap.timeline();
+const AboutCard = (props: aboutPropsType) => {
+    const aboutCard = gsap.timeline();
 
-        hoverText.fromTo(
+    React.useEffect(() => {
+        aboutCard.fromTo(
             ".hover-text",
             {
                 y: "-5",

@@ -16,7 +16,7 @@ const useroverview = gsap.timeline();
 const UserOverview = () => {
     return (
         <>
-            <Transition timeline={useroverview} />
+            <Transition timeline={useroverview} duration={2.5} />
             <div className="h-screen w-full flex justify-between items-center pl-[16rem] pr-[19rem]">
                 <WebcamOverview />
 
