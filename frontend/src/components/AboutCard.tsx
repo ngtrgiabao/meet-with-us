@@ -1,17 +1,17 @@
 import React from "react";
 import { gsap } from "gsap";
 
-type BackgroundImgType = {
+type aboutPropsType = {
     name: string;
     role: string;
     bgImg: string;
 };
 
-const AboutCard = (props: BackgroundImgType) => {
-    React.useEffect(() => {
-        const tl = gsap.timeline();
+const AboutCard = (props: aboutPropsType) => {
+    const aboutCard = gsap.timeline();
 
-        tl.fromTo(
+    React.useEffect(() => {
+        aboutCard.fromTo(
             ".hover-text",
             {
                 y: "-5",
@@ -27,8 +27,12 @@ const AboutCard = (props: BackgroundImgType) => {
     }, []);
 
     return (
-        <span className="border-x-[1px] cursor-pointer overflow-hidden relative">
-            <img src={props.bgImg} alt="img" className="h-full object-cover" />
+        <>
+            <img
+                src={props.bgImg}
+                alt="img"
+                className="h-full object-cover before:bg-black before:w-full before:h-full"
+            />
             <div className="absolute top-[40%] w-full flex justify-center items-center flex-col img-desc text-white font-bold h-[20%]">
                 <p className="text-xl">{props.name}</p>
                 <span className="font-thin">{props.role}</span>
@@ -36,7 +40,7 @@ const AboutCard = (props: BackgroundImgType) => {
             <span className="hover-text absolute top-1/2 left-1/2 -translate-x-1/2 text-white font-bold text-lg">
                 HOVER ME
             </span>
-        </span>
+        </>
     );
 };
 
