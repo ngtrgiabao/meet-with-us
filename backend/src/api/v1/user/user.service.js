@@ -1,3 +1,6 @@
+const { firebaseDB } = require("../../../config/firebase");
+const { collection, addDoc } = require("firebase/firestore");
+
 class UserService {
     constructor() {}
 
