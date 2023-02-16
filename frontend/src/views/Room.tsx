@@ -32,7 +32,7 @@ const Room = () => {
 
     return (
         <>
-            <Transition timeline={room} />
+            <Transition timeline={room} duration={2.5}/>
             <div className="h-screen w-screen overflow-hidden relative p-4 text-white grid grid-cols-5">
                 <div
                     className="border-2 grid col-span-4"

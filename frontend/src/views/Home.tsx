@@ -7,7 +7,6 @@ import "../styles/index.css";
 
 import BackgroundVideo from "../layouts/Background";
 import PopupRoomId from "../components/PopupRoomId";
-import Transition from "../components/Transition";
 
 const bgImg = require("../assets/background/home.mp4");
 
@@ -50,11 +49,9 @@ const Home = () => {
         mixBlendMode: "",
     });
 
-    const home = gsap.timeline();
 
     return (
         <>
-            <Transition timeline={home} />
             <div
                 id="Home"
                 className="h-screen w-screen overflow-hidden relative flex justify-center items-center p-4"

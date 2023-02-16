@@ -1,9 +1,14 @@
 import React from "react";
 import { Power4 } from "gsap";
 
-const Transition = ({ timeline }: { timeline: GSAPTimeline }) => {
+type transitionPropsType = {
+    timeline: GSAPTimeline;
+    duration: number;
+};
+
+const Transition = (props: transitionPropsType) => {
     React.useEffect(() => {
-        timeline.fromTo(
+        props.timeline.fromTo(
             ".transition-effect",
             {
                 width: "100%",
@@ -11,9 +16,9 @@ const Transition = ({ timeline }: { timeline: GSAPTimeline }) => {
             },
             {
                 width: "0%",
-                duration: 2.5,
+                duration: props.duration,
                 ease: Power4.easeOut,
-                display: "none"
+                display: "none",
             }
         );
     }, []);
