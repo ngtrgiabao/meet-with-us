@@ -6,7 +6,7 @@ import Peer from "peerjs";
 import "../styles/index.css";
 import BackgroundVideo from "../layouts/Background";
 import PopupRoomId from "../components/PopupRoomId";
-
+// import { Login } from "../components/Login";
 const bgImg = require("../assets/background/home.mp4");
 
 const { CopyToClipboard } = require("react-copy-to-clipboard");

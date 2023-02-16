@@ -7,6 +7,7 @@ interface authInitialState {
         uid: string;
         email: string;
         name: string;
+        
       };
   isDarkTheme: boolean;
 }
@@ -29,6 +30,7 @@ export const authSlice = createSlice({
         uid: string;
         email: string;
         name: string;
+        
       }>
     ) => {
       state.userInfo = action.payload;
