@@ -18,9 +18,7 @@ router.get("/about", (req, res) => {
 router.post("/login", (req, res) => {
     res.send("Login Meet with us");
 });
-
 router.post("/register", (req, res) => {});
-
 router.get("/logout", (req, res) => {
     res.send("Logout Meet with us");
 });
