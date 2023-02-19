@@ -41,7 +41,7 @@ const create = async (req, res, next) => {
 
         res.status(200).send({
             msg: `created user successfully`,
-            id: document.id,
+            UserID: document.id,
         });
     } catch (error) {
         return next(new ApiError(500, "An error occured while creating user"));
