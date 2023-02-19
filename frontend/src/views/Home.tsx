@@ -49,7 +49,6 @@ const Home = () => {
         mixBlendMode: "",
     });
 
-
     return (
         <>
             <div
