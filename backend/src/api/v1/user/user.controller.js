@@ -1,23 +1,32 @@
-const ApiError = require("../../../api.error");
 const {
     collection,
     addDoc,
     getDocs,
-    query,
-    where,
-    onSnapshot,
+    updateDoc,
+    doc,
+    deleteDoc,
 } = require("firebase/firestore");
+
 const { firebaseDB } = require("../../../config/firebase");
+const ApiError = require("../../../api.error");
 
+// Create a user
 const create = async (req, res, next) => {
-    const { firstName, lastName, email, phoneNumber, password, photoUrl } =
-        req.body;
-
     if (!req.body?.email) {
         return next(new ApiError(404, "Email can't be empty"));
     }
 
     try {
+        const {
+            firstName,
+            lastName,
+            email,
+            phoneNumber,
+            password,
+            photoUrl,
+            isHost,
+        } = req.body;
+
         const document = await addDoc(collection(firebaseDB, "users"), {
             firstName,
             lastName,
@@ -26,6 +35,7 @@ const create = async (req, res, next) => {
             phoneNumber,
             password,
             photoUrl,
+            isHost,
             createdAt: Date(),
         });
 
@@ -34,24 +44,20 @@ const create = async (req, res, next) => {
             id: document.id,
         });
     } catch (error) {
-        return next(new ApiError(500, "server error"));
+        return next(new ApiError(500, "An error occured while creating user"));
     }
 };
 
+// Find user by name
 const findAll = async (req, res, next) => {
     try {
         let users = [];
         const userCollection = collection(firebaseDB, "users");
+        // Get docs
         const userDocs = await getDocs(userCollection);
         const name = req.query.name;
 
-        /*
-        1. We’re using the get() method to get all the documents in the users collection.
-        2. We’re using the forEach() method to loop through the documents.
-        3. We’re using the push() method to push the documents into the users array.
-        4. We’re using the status() method to set the status code to 200.
-        5. We’re using the send() method to send the users array back to the client.
-        */
+        // If username not exist in db return all users
         if (!name) {
             userDocs.forEach((doc) => {
                 users.push({
@@ -62,38 +68,33 @@ const findAll = async (req, res, next) => {
             return res.status(200).send(users);
         }
 
-        /*
-        1. We’re using the query() function to create a query object.
-        2. We’re using the where() function to create a where clause.
-        3. We’re using the onSnapshot() function to listen for changes to the query.
-        4. We’re using the forEach() function to iterate over the documents in the snapshot.
-        5. We’re using the push() function to add the documents to the users array.
-        6. We’re using the send() function to send the users array back to the client.
-        */
-        const q = query(userCollection, where("firstName", "==", name));
-        onSnapshot(q, (snapshot) => {
-            snapshot.docs.forEach((doc) => {
+        // Filter user by name
+        userDocs.forEach((doc) => {
+            if (doc.get("firstName") === name) {
                 users.push({ id: doc.id, ...doc.data() });
-            });
-            res.status(200).send(users);
+            }
         });
+
+        res.status(200).send(users);
     } catch (error) {
         return next(new ApiError(404, "An error occured while get data"));
     }
 };
 
-// Fix this
+// Find user by ID
 const findOne = async (req, res, next) => {
     try {
         let users = [];
         const id = req.params.id;
         const userCollection = collection(firebaseDB, "users");
-        const q = query(userCollection, where("id", "==", id));
+        // Get Docs
+        const userDocs = await getDocs(userCollection);
 
-        onSnapshot(q, (snapshot) => {
-            snapshot.docs.forEach((doc) => {
+        // Filter user by ID
+        userDocs.forEach((doc) => {
+            if (doc.id === id) {
                 users.push({ id: doc.id, ...doc.data() });
-            });
+            }
         });
 
         res.status(200).send(users);
@@ -102,11 +103,81 @@ const findOne = async (req, res, next) => {
     }
 };
 
-const update = async (req, res, next) => {};
+// Update a user
+const update = async (req, res, next) => {
+    if (Object.keys(req.body).length === 0) {
+        return next(new ApiError(404, "Data to update can not be empty"));
+    }
 
-const deleteOne = async (req, res, next) => {};
+    try {
+        const id = req.params.id;
+        // Get a doc
+        const userDoc = doc(firebaseDB, "users", id);
 
-const deleteAll = async (req, res, next) => {};
+        updateDoc(userDoc, req.body)
+            .then(() =>
+                res.status(200).send({ msg: `Update user: ${id} successfully` })
+            )
+            .catch(() =>
+                res
+                    .status(404)
+                    .send({ msg: `Failed to update user: ${id} data` })
+            );
+    } catch (error) {
+        return next(
+            new ApiError(500, `An error occured while update data user ${id}`)
+        );
+    }
+};
+
+// Delete a user
+const deleteOne = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        // Get a doc
+        const userDoc = doc(firebaseDB, "users", id);
+
+        await deleteDoc(userDoc)
+            .then(() => {
+                res.status(200).send({
+                    msg: `Deleted user: ${id} successfully`,
+                });
+            })
+            .catch(() => {
+                res.status(404).send({
+                    msg: `Deleted user: ${id} failed`,
+                });
+            });
+    } catch (error) {
+        return next(new ApiError(500, "An error occured while delete user"));
+    }
+};
+
+// Delete all users
+const deleteAll = async (req, res, next) => {
+    try {
+        // Get collection
+        const userCollection = collection(firebaseDB, "users");
+        // Get docs
+        const userDocs = await getDocs(userCollection);
+
+        userDocs.forEach(async (document) => {
+            const docRef = doc(firebaseDB, "users", document.id);
+            await deleteDoc(docRef);
+        });
+
+        res.status(200).send({
+            msg: "Deleted all docs in collection users successfully",
+        });
+    } catch (error) {
+        return next(
+            new ApiError(
+                500,
+                "An error occured while delete all document in collection users"
+            )
+        );
+    }
+};
 
 const controller = {
     create,
