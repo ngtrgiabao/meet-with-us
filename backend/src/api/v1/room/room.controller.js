@@ -1,25 +1,27 @@
-const ApiError = require("../../../api.error");
 const {
     collection,
     addDoc,
     getDocs,
-    query,
-    where,
-    onSnapshot,
+    updateDoc,
+    doc,
+    deleteDoc,
 } = require("firebase/firestore");
+
 const { firebaseDB } = require("../../../config/firebase");
+const ApiError = require("../../../api.error");
 
+// Create a room
 const create = async (req, res, next) => {
-    const { members, hostName } = req.body;
-
-    if (!req.body?.email) {
-        return next(new ApiError(404, "Email can't be empty"));
+    if (!req.body?.hostName) {
+        return next(new ApiError(404, "Hostname can't be empty"));
     }
 
     try {
+        const { hostName, members } = req.body;
+
         const document = await addDoc(collection(firebaseDB, "rooms"), {
-            members,
             hostName,
+            members,
             createdAt: Date(),
         });
 
@@ -28,81 +30,151 @@ const create = async (req, res, next) => {
             id: document.id,
         });
     } catch (error) {
-        return next(
-            new ApiError(500, "An error occured while creating a room")
-        );
+        return next(new ApiError(500, "An error occured while creating room"));
     }
 };
 
+// Find room by host name
 const findAll = async (req, res, next) => {
     try {
-        let rooms = [];
+        let hosts = [];
         const roomCollection = collection(firebaseDB, "rooms");
+        // Get docs
         const roomDocs = await getDocs(roomCollection);
-        const roomID = req.query.name;
 
-        /*
-        1. We’re using the get() method to get all the documents in the users collection.
-        2. We’re using the forEach() method to loop through the documents.
-        3. We’re using the push() method to push the documents into the users array.
-        4. We’re using the status() method to set the status code to 200.
-        5. We’re using the send() method to send the users array back to the client.
-        */
-        if (!roomID) {
+        const name = req.query.name;
+        // If host name not exist in db return all host name
+        if (!name) {
             roomDocs.forEach((doc) => {
-                rooms.push({
+                hosts.push({
                     id: doc.id,
                     ...doc.data(),
                 });
             });
-            return res.status(200).send(rooms);
+            return res.status(200).send(hosts);
         }
 
-        /*
-        1. We’re using the query() function to create a query object.
-        2. We’re using the where() function to create a where clause.
-        3. We’re using the onSnapshot() function to listen for changes to the query.
-        4. We’re using the forEach() function to iterate over the documents in the snapshot.
-        5. We’re using the push() function to add the documents to the users array.
-        6. We’re using the send() function to send the users array back to the client.
-        */
-        const q = query(roomCollection, where("roomID", "==", roomID));
-        onSnapshot(q, (snapshot) => {
-            snapshot.docs.forEach((doc) => {
-                users.push({ id: doc.id, ...doc.data() });
-            });
-            res.status(200).send(rooms);
+        // Filter room by host name
+        roomDocs.forEach((doc) => {
+            if (doc.get("hostName") === name) {
+                hosts.push({ id: doc.id, ...doc.data() });
+            }
         });
+
+        res.status(200).send(hosts);
     } catch (error) {
-        return next(new ApiError(404, "An error occured while get room ID"));
+        return next(new ApiError(404, "An error occured while get data room"));
     }
 };
 
-// Fix this
+// Find room by ID
 const findOne = async (req, res, next) => {
     try {
         let rooms = [];
         const id = req.params.id;
         const roomCollection = collection(firebaseDB, "rooms");
-        const q = query(roomCollection, where("id", "==", id));
-
-        onSnapshot(q, (snapshot) => {
-            snapshot.docs.forEach((doc) => {
-                rooms.push({ id: doc.id, ...doc.data() });
+        // Get Docs
+        await getDocs(roomCollection)
+            .then((roomDocs) => {
+                // Filter user by ID
+                roomDocs.forEach((doc) => {
+                    if (doc.id === id) {
+                        rooms.push({ id: doc.id, ...doc.data() });
+                    }
+                });
+                res.status(200).send(rooms);
+            })
+            .catch(() => {
+                res.status(404).send({
+                    msg: "Can not get rooms",
+                });
             });
-        });
-
-        res.status(200).send(rooms);
     } catch (error) {
-        return next(new ApiError(500, "An error occured while find a user"));
+        return next(new ApiError(500, "An error occured while find a room ID"));
     }
 };
 
-const update = async (req, res, next) => {};
+// Update a room
+const update = async (req, res, next) => {
+    if (Object.keys(req.body).length === 0) {
+        return next(new ApiError(404, "Data to update can not be empty"));
+    }
 
-const deleteOne = async (req, res, next) => {};
+    try {
+        const id = req.params.id;
+        // Get a doc
+        const roomDoc = doc(firebaseDB, "rooms", id);
 
-const deleteAll = async (req, res, next) => {};
+        updateDoc(roomDoc, req.body)
+            .then(() =>
+                res.status(200).send({ msg: `Update room: ${id} successfully` })
+            )
+            .catch(() =>
+                res
+                    .status(404)
+                    .send({ msg: `Failed to update room: ${id} data` })
+            );
+    } catch (error) {
+        return next(
+            new ApiError(500, `An error occured while update data room ${id}`)
+        );
+    }
+};
+
+// Delete a room
+const deleteOne = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        // Get a doc
+        const roomDoc = doc(firebaseDB, "rooms", id);
+
+        await deleteDoc(roomDoc)
+            .then(() => {
+                res.status(200).send({
+                    msg: `Deleted room: ${id} successfully`,
+                });
+            })
+            .catch(() => {
+                res.status(404).send({
+                    msg: `Deleted room: ${id} failed`,
+                });
+            });
+    } catch (error) {
+        return next(new ApiError(500, "An error occured while delete room"));
+    }
+};
+
+// Delete all rooms
+const deleteAll = async (req, res, next) => {
+    try {
+        // Get collection
+        const roomCollection = collection(firebaseDB, "rooms");
+        // Get docs
+        await getDocs(roomCollection)
+            .then((roomDocs) => {
+                roomDocs.forEach(async (document) => {
+                    const docRef = doc(firebaseDB, "rooms", document.id);
+                    await deleteDoc(docRef);
+                });
+
+                res.status(200).send({
+                    msg: "Deleted all docs in collection rooms successfully",
+                });
+            })
+            .catch(() => {
+                res.status(404).send({
+                    msg: "Can not delete all rooms",
+                });
+            });
+    } catch (error) {
+        return next(
+            new ApiError(
+                500,
+                "An error occured while delete all document in collection rooms"
+            )
+        );
+    }
+};
 
 const controller = {
     create,
