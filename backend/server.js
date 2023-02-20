@@ -1,4 +1,3 @@
-const express = require("express");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 
@@ -10,14 +9,19 @@ const SOCKET_PORT = config.socket.port;
 
 const httpServer = createServer(app);
 
-app.listen(PORT, () => {
-    console.log("Conected to server!");
+const io = new Server(httpServer, {
+    cors: {
+        origin: "http://localhost:3002",
+        credentials: true,
+        optionSuccessStatus: 200,
+    },
 });
 
-const io = new Server(httpServer);
-
 io.on("connection", (socket) => {
-    console.log(socket, "is connected");
+    console.log("Socketio in server connected");
 });
 
 io.listen(SOCKET_PORT);
+httpServer.listen(PORT, () => {
+    console.log("server connected");
+});

@@ -5,7 +5,7 @@ module.exports = {
         port: process.env.PORT || 5000,
     },
     socket: {
-        port: process.env.SOCKET_PORT || 5001,
+        port: process.env.SOCKET_PORT || 4001,
     },
     firebase: {
         config: {
