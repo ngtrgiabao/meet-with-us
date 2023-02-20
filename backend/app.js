@@ -8,14 +8,7 @@ const logEvents = require("./src/api/v1/helper/log.helper");
 const ApiError = require("./src/api.error");
 const middleWare = require("./src/api/v1/user/user.middleware");
 
-//Config backend
-const corsOptions = {
-    origin: "http://localhost:3001",
-    credentials: true,
-    optionSuccessStatus: 200,
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(middleWare);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
