@@ -1,27 +1,27 @@
-const { createServer } = require("http");
+const http = require("http");
 const { Server } = require("socket.io");
 
 const app = require("./app");
 const config = require("./src/config/database.config");
 
 const PORT = config.app.port;
-const SOCKET_PORT = config.socket.port;
 
-const httpServer = createServer(app);
+const httpServer = http.createServer(app);
 
 const io = new Server(httpServer, {
     cors: {
-        origin: "http://localhost:3002",
-        credentials: true,
-        optionSuccessStatus: 200,
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"],
     },
 });
 
 io.on("connection", (socket) => {
-    console.log("Socketio in server connected");
+    console.log(`user  connected: ${socket.id}`);
+    socket.on("send-msg", (data) => {
+        console.log(data);
+    });
 });
 
-io.listen(SOCKET_PORT);
 httpServer.listen(PORT, () => {
     console.log("server connected");
 });
