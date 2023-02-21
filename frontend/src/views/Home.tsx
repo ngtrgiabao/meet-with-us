@@ -2,30 +2,122 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import Peer from "peerjs";
-
+import { useNavigate } from "react-router-dom";
 import "../styles/index.css";
+
+// import Login from "../components/Login";
+import { collection, query, where, addDoc, getDocs } from "firebase/firestore";
+import {
+//   getAuth,
+    GoogleAuthProvider,
+    onAuthStateChanged,
+    signInWithPopup,
+  } from "firebase/auth";
+
+import { firebaseAuth,usersRef,firebaseDB } from "../utils/firebaseconfig";
+
+import { setUser } from "../hooks/slices/AuthSlice"
+import { useAppDispatch } from "../hooks/index";
 import BackgroundVideo from "../layouts/Background";
 import PopupRoomId from "../components/PopupRoomId";
-import Login from "./Login";
-// import { Login } from "../components/Login";
+
 const bgImg = require("../assets/background/home.mp4");
 
 const { CopyToClipboard } = require("react-copy-to-clipboard");
 
+
+
+// import { async } from "@firebase/util";
+
 const Home = () => {
+
     const [inputValue, setInputValue] = React.useState<string>("");
     const [isCopied, setIsCopied] = React.useState<boolean>(false);
     const [isActive, setIsActive] = React.useState<boolean>(false);
 
     const [peerId, setPeerId] = React.useState<string>("");
-    const peer = new Peer();
+    // const peer = new Peer();
 
-    const handleCreateIdRoom = () => {
-        peer.on("open", (id) => {
-            setPeerId(id);
-        });
-        console.log(peerId);
-    };
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
+    onAuthStateChanged(firebaseAuth, (currentUser) => {
+        if (currentUser) navigate("/");
+      });
+    
+        const login = async () => {
+        const provider = new GoogleAuthProvider();
+        const {
+          user: { displayName, email, uid },
+        } = await signInWithPopup(firebaseAuth, provider);
+    
+        if (email) {
+          const firestoreQuery = query(usersRef, where("uid", "==", uid));
+          const fetchedUser = await getDocs(firestoreQuery);
+          if (fetchedUser.docs.length === 0) {
+            await addDoc(collection(firebaseDB, "users"), {
+              uid,
+              name: displayName,
+              email,
+            });
+          }
+          dispatch(setUser({ uid, email: email!, name: displayName! }));
+         
+          navigate("/");
+        }
+      };
+//         const express = require('express');
+//         const app = express();
+//         const admin = require('firebase-admin');
+//         const functions = require('firebase-functions');
+//         interface MyRequest extends Request {
+//             myCustomProperty: string;
+//           }
+          
+//           interface MyResponse extends Response {
+//             myCustomMethod: (message: string) => void;
+//           }
+          
+//           app.get('/', (req: MyRequest, res: MyResponse) => {
+//             const myCustomProperty = req.myCustomProperty;
+//             res.myCustomMethod;
+//           });
+//         // Khởi tạo Firebase
+//         admin.initializeApp(functions.config().firebase);
+
+//         // Khởi tạo Firebase Authentication
+//         const auth = admin.auth();
+//         // Xử lý đăng ký
+//         // Xử lý đăng ký
+//         app.post('/signup', async (req, res) => {
+//         try {
+//             const { email, password } = req.body;
+  
+//         // Tạo tài khoản
+//         const userRecord = await auth.createUser({
+//         email: email,
+//         password: password,
+//         });
+  
+//         // Trả về thông tin người dùng
+//         res.status(200).json({
+//         message: 'Đăng ký thành công',
+//         user: userRecord.toJSON(),
+//         });
+//         } catch (error) {
+//         res.status(400).json({
+//         message: 'Đăng ký không thành công',
+//         error: error.message,
+//         });
+//         }
+//         });
+//   exports.app = functions.https.onRequest(app);
+    // const handleCreateIdRoom = () => {
+    //     peer.on("open", (id) => {
+    //         setPeerId(id);
+    //     });
+    //     console.log(peerId);
+    // };
 
     const handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void = (
         e
@@ -48,7 +140,7 @@ const Home = () => {
         height: "2rem",
         mixBlendMode: "",
     });
-
+    
 
     return (
         <>
@@ -100,7 +192,7 @@ const Home = () => {
                         <button
                             className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white animate__animated animate__bounceIn"
                             onClick={() => {
-                                Login()
+                                login()
                             }}
                         >
                             Tạo phòng
