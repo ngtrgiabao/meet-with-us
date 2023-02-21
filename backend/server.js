@@ -20,6 +20,9 @@ io.on("connection", (socket) => {
     socket.on("send-msg", (data) => {
         console.log(data);
     });
+    socket.emit("server", {
+        msg: "hello from server",
+    });
 });
 
 httpServer.listen(PORT, () => {

@@ -1,140 +1,74 @@
-import React, { useState, useRef, useEffect } from "react";
-import slide8 from "../assets/background/4.jpg";
-import { Link, useNavigate } from "react-router-dom";
-import Login from "./Login";
-import Home from "./Home";
+import React from "react";
+import { Link } from "react-router-dom";
 
-const color = {
-    primary: "#060606",
-    background: "#f5f5f5",
-    disbaled: "#D9D9D9",
-};
+import sideImg from "../assets/background/register-cover.gif";
 
 const Register = () => {
-    const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
-    const PSW_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,}$/;
-    const EMAIL_REGEX =
-        /^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$/;
-
-    const navigate = useNavigate();
-
-    const userRef = useRef<HTMLInputElement>();
-    const errRef = useRef<HTMLInputElement>();
-
-    const [username, setUsername] = useState("");
-    const [validName, setValidName] = useState(false);
-    const [userFocus, setUserFocus] = useState(false);
-
-    const [email, setEmail] = useState("");
-    const [validEmail, setValidEmail] = useState(false);
-    const [emailFocus, setEmailFocus] = useState(false);
-    const [pwd, setPwd] = useState("");
-
-    const [validPwd, setValidPwd] = useState(false);
-    const [pwdFocus, setPwdFocus] = useState(false);
-    const [matchPwd, setMatchPwd] = useState("");
-
-    const [validMatch, setValidMatch] = useState(false);
-    const [matchFocus, setMatchFocus] = useState(false);
-
-    const [errMsg, setErrMsg] = useState("");
-    const [success, setSuccess] = useState(false);
-
-    // AUTO FOCUS USER NAME INPUT
-    useEffect(() => {
-        userRef.current && userRef.current.focus();
-    }, []);
-
-    // CHECK VALID NAME
-    useEffect(() => {
-        const result = USER_REGEX.test(username);
-        setValidName(result);
-    }, [username]);
-
-    // CHECK VALID EMAIL
-    useEffect(() => {
-        const result = EMAIL_REGEX.test(email);
-        setValidEmail(result);
-    }, [email]);
-
-    // DELETE ERR MSG WHEN USER CHANGE DATA INPUT
-    useEffect(() => {
-        setErrMsg("");
-    }, [username, pwd, matchPwd]);
-
-    const handleSubmit = async (e: any) => {
-        // e.preventDefault();
-
-        // if user put unknown input to hacking
-        const v1 = USER_REGEX.test(username);
-        const v2 = PSW_REGEX.test(pwd);
-
-        if (!v1 || !v2) {
-            return setErrMsg("Invalid Entry");
-        }
-
-        navigate("/");
-    };
-
     return (
-        <div className="w-full h-screen flex items-start">
-            <div className="absolute top-[2%] left-[97%] flex flex-col">
-                <Link to="/">
-                    <i className="fa-solid fa-house"></i>
-                </Link>
+        <div className="w-full h-screen flex items-center bg-white overflow-hidden">
+            {/* Side img */}
+            <div className="w-1/2 h-screen flex flex-col animate__animated animate__bounceInLeft">
+                <img src={sideImg} className="w-full h-full object-cover rounded-lg" />
             </div>
-            <div className="relative w-1/2 h-screen flex flex-col">
-                <img src={slide8} className="w-full h-full object-cover" />
-            </div>
-            <div className="w-1/2 h-full bg-[#f5f5f5] flex flex-col p-40 justify-between items-center">
-                <h1 className="w-full max-w-[500px] mx-auto text-xl text-[#2C2F77] font-semibold mr-auto">
-                    Meet With US
-                </h1>
 
-                <form action="" id="register-form" onSubmit={handleSubmit}>
-                    <div className="w-full flex flex-col max-w-[500px]">
-                        <div className="w-full flex flex-col mb-2">
-                            <h1 className="text-3xl font-bold mb-2 text-center">
-                                Register
-                            </h1>
+            {/* Form */}
+            <div className="w-1/2 h-full flex flex-col p-10 justify-center items-center animate__animated animate__bounceInRight relative">
+                <div className="w-full h-full flex flex-col p-10 justify-center items-center relative">
+                    <Link
+                        to="/"
+                        className="absolute top-[5%] right-[5%] p-2 px-3 hover:text-blue-500"
+                    >
+                        <i className="fa-solid fa-house"></i>
+                    </Link>
+
+                    <form
+                        action=""
+                        id="register-form"
+                        className="w-full h-full flex flex-col items-center justify-center"
+                    >
+                        <div className="w-full flex flex-col max-w-[500px]">
+                            <div className="w-full flex flex-col mb-2">
+                                <h1 className="text-3xl font-bold mb-2 text-center">
+                                    Sign up
+                                </h1>
+                            </div>
                         </div>
-                    </div>
-                    <div className="w-full flex flex-col">
+                        {/* username */}
                         <input
+                            required
                             type="text"
-                            placeholder="Enter Your Name "
-                            className="w-full text-black by-2 my-2  bg-transparent border-b border-black outline-none focus:outline-none"
+                            placeholder="Enter Your Username"
+                            className="w-full text-black text-lg by-2 my-5 bg-transparent border-b-2 border-gray-400 outline-none focus:outline-none focus:border-b-4 focus:border-blue-500"
                         />
-                    </div>
-                    <div className="w-full flex flex-col">
+                        {/* email */}
                         <input
+                            required
                             type="Email"
                             placeholder="Enter Email"
-                            className="w-full text-black by-2 my-2  bg-transparent border-b border-black outline-none focus:outline-none"
+                            className="w-full text-black text-lg by-2 my-5 bg-transparent border-b-2 border-gray-400 outline-none focus:outline-none focus:border-b-4 focus:border-blue-500"
                         />
-                    </div>
-
-                    <div className="w-full flex flex-col">
+                        {/* password */}
                         <input
-                            type="PassWord"
-                            placeholder="Enter PassWord"
-                            className="w-full text-black by-2 my-2  bg-transparent border-b border-black outline-none focus:outline-none"
+                            required
+                            type="password"
+                            placeholder="Enter Password"
+                            className="w-full text-black text-lg by-2 my-5 bg-transparent border-b-2 border-gray-400 outline-none focus:outline-none focus:border-b-4 focus:border-blue-500"
                         />
-                    </div>
-
-                    <div className="w-full flex flex-col">
+                        {/* re-password */}
                         <input
-                            type="PassWord"
-                            placeholder="Enter PassWord Again"
-                            className="w-full text-black by-2 my-2  bg-transparent border-b border-black outline-none focus:outline-none"
+                            required
+                            type="password"
+                            placeholder="Enter Password Again"
+                            className="w-full text-black text-lg by-2 my-5 bg-transparent border-b-2 border-gray-400 outline-none focus:outline-none focus:border-b-4 focus:border-blue-500"
                         />
-                    </div>
-                    <input
-                        type="submit"
-                        value="Register"
-                        className="w-full text-white bg-[#060606] font-sembold rounded-md p-4 text-center flex items-center justify-center flex-col my-4"
-                    />
-                </form>
+
+                        <input
+                            type="submit"
+                            value="Register"
+                            className="w-full text-xl font-bold text-white bg-[#060606] font-sembold rounded-md p-4 text-center flex items-center justify-center flex-col my-4 hover:cursor-pointer hover:bg-blue-500 mt-10"
+                        />
+                    </form>
+                </div>
 
                 <div className="w-full flex items-center justify-center">
                     <p className="text-sm font-normal text-[#060606]">
@@ -142,8 +76,8 @@ const Register = () => {
                     </p>
                     <div>
                         <Link
-                            to="/FormLogin"
-                            className="font-semibold underline underline-offset-2 cursor-pointer"
+                            to="/login"
+                            className="font-semibold underline underline-offset-2 cursor-pointer ml-2 hover:text-blue-400"
                         >
                             Sign in here!
                         </Link>
