@@ -1,7 +1,5 @@
 import React from "react";
 
-import { ThemeContext } from "../context/ThemeContext";
-
 import Logo from "../assets/logo.svg";
 
 type BackgroundVideoType = {
@@ -9,12 +7,9 @@ type BackgroundVideoType = {
 };
 
 const BackgroundVideo = (props: BackgroundVideoType) => {
-    const context = React.useContext(ThemeContext);
-    const theme = context.theme;
-
     return (
         <>
-            <div className="top-20 object-cover absolute flex flex-col items-center justify-between ">
+            <div className="top-20 object-cover absolute flex flex-col items-center justify-between animate__animated animate__fadeIn">
                 <video
                     autoPlay
                     loop
@@ -25,25 +20,14 @@ const BackgroundVideo = (props: BackgroundVideoType) => {
                 >
                     <source src={props.bgImg} />
                 </video>
-                <div className="flex w-full justify-center items-center mt-3">
+
+                <div className="flex w-full justify-center items-center mt-3 animate__animated  animate__bounceIn">
                     <img src={Logo} alt="" width={60} height={60} />
                     <div className="flex flex-col ml-3">
-                        <span
-                            className={
-                                theme === "bg-white"
-                                    ? "text-2xl font-bold"
-                                    : "text-2xl font-bold text-white"
-                            }
-                        >
+                        <span className="text-2xl font-bold text-white">
                             MEET WITH US
                         </span>
-                        <span
-                            className={
-                                theme === "bg-white"
-                                    ? "font-thin text-center"
-                                    : "font-thin text-center text-white"
-                            }
-                        >
+                        <span className="font-thin text-center text-white">
                             Bring Everyone together
                         </span>
                     </div>

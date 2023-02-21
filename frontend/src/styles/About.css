@@ -1,0 +1,21 @@
+span .img-desc {
+    opacity: 0;
+
+    z-index: 1;
+}
+
+span:hover .img-desc {
+    opacity: 1;
+}
+
+span:hover img,
+span:hover .hover-text {
+    display: none;
+}
+
+span:hover .img-desc,
+span:hover .img-desc::before {
+    opacity: 1;
+
+    transition: opacity 0.3s;
+}
