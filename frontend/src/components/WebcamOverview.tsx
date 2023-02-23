@@ -1,12 +1,8 @@
 import React from "react";
-import Peer from "peerjs";
-import { v4 as uuidV4 } from "uuid";
-import VideoPlayer from "./VideoPlayer";
 
 const WebcamStreamCapture = () => {
     const [isAudio, setIsAudio] = React.useState<boolean>(true);
     const [isVideo, setIsVideo] = React.useState<boolean>(true);
-    const [me, setMe] = React.useState<Peer>();
 
     console.log(isAudio, isVideo);
 

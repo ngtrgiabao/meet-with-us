@@ -9,6 +9,7 @@ import bg1 from "../assets/background/1.jpg";
 import bg2 from "../assets/background/2.jpg";
 import bg3 from "../assets/background/3.jpg";
 import bg4 from "../assets/background/4.jpg";
+
 import WebcamOverview from "../components/WebcamOverview";
 import Transition from "../components/Transition";
 
