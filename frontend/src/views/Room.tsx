@@ -7,6 +7,7 @@ const Room = () => {
     const videoRef = React.useRef<HTMLVideoElement | any>(null);
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
 
+  
     const shareScreen = async () => {
         if (videoRef.current.srcObject) {
             /* Stopping the stream and setting the video element to null. */
@@ -32,7 +33,7 @@ const Room = () => {
 
     return (
         <>
-            <Transition timeline={room} duration={2.5}/>
+            <Transition timeline={room} duration={2.5} />
             <div className="h-screen w-screen overflow-hidden relative p-4 text-white grid grid-cols-5">
                 <div
                     className="border-2 grid col-span-4"

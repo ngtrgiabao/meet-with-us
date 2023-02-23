@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
-import Peer from "peerjs";
+import { v4 as uuid } from "uuid";
 
 import "../styles/index.css";
 
@@ -18,15 +18,10 @@ const Home = () => {
     const [inputValue, setInputValue] = React.useState<string>("");
     const [isCopied, setIsCopied] = React.useState<boolean>(false);
     const [isActive, setIsActive] = React.useState<boolean>(false);
-
-    const [peerId, setPeerId] = React.useState<string>("");
-    const peer = new Peer();
+    const [roomID, setRoomID] = React.useState<string>(uuid());
 
     const handleCreateIdRoom = () => {
-        peer.on("open", (id) => {
-            setPeerId(id);
-        });
-        console.log(peerId);
+        setRoomID(uuid());
     };
 
     const handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void = (
@@ -63,7 +58,7 @@ const Home = () => {
                     });
                 }}
             >
-                <Navbar logo={Logo}/>
+                <Navbar logo={Logo} />
 
                 <BackgroundVideo bgImg={bgImg} />
 
@@ -184,7 +179,7 @@ const Home = () => {
 
                 {/* Popup */}
                 <PopupRoomId
-                    id={peerId}
+                    id={roomID}
                     isActive={isActive}
                     togglePopup={handleActive}
                 />
