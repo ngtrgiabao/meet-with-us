@@ -1,22 +1,30 @@
-const express = require("express");
-const { createServer } = require("http");
+const http = require("http");
 const { Server } = require("socket.io");
 
 const app = require("./app");
-const { route } = require("./src/api/v1/user/user.route");
-const { port } = require("./src/config/database.config");
-const httpServer = createServer(app);
+const config = require("./src/config/database.config");
 
-app.listen(3000, () => {
-    console.log("Conected to server!");
-});
+const PORT = config.app.port;
+
+const httpServer = http.createServer(app);
 
 const io = new Server(httpServer, {
-    /* options */
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"],
+    },
 });
 
 io.on("connection", (socket) => {
-    console.log("hello");
+    console.log(`user  connected: ${socket.id}`);
+    socket.on("send-msg", (data) => {
+        console.log(data);
+    });
+    socket.emit("server", {
+        msg: "hello from server",
+    });
 });
 
-httpServer.listen(port);
+httpServer.listen(PORT, () => {
+    console.log("server connected");
+});

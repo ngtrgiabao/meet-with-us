@@ -1,17 +1,17 @@
 import React from "react";
 import { gsap } from "gsap";
 
-type BackgroundImgType = {
+type aboutPropsType = {
     name: string;
     role: string;
     bgImg: string;
 };
 
-const AboutCard = (props: BackgroundImgType) => {
-    React.useEffect(() => {
-        const hoverText = gsap.timeline();
+const AboutCard = (props: aboutPropsType) => {
+    const aboutCard = gsap.timeline();
 
-        hoverText.fromTo(
+    React.useEffect(() => {
+        aboutCard.fromTo(
             ".hover-text",
             {
                 y: "-5",
@@ -31,7 +31,7 @@ const AboutCard = (props: BackgroundImgType) => {
             <img
                 src={props.bgImg}
                 alt="img"
-                className="h-full object-cover before:bg-black before:w-full before:h-full"
+                className="h-full object-cover before:bg-black before:w-full before:h-full bg-img"
             />
             <div className="absolute top-[40%] w-full flex justify-center items-center flex-col img-desc text-white font-bold h-[20%]">
                 <p className="text-xl">{props.name}</p>

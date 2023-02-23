@@ -5,9 +5,9 @@ import { gsap } from "gsap/all";
 import AboutCard from "../components/AboutCard";
 import Transition from "../components/Transition";
 
-import bg1 from "../assets/background/1.jpg";
+import bg1 from "../assets/background/baoBg.svg";
 import bg2 from "../assets/background/2.jpg";
-import bg3 from "../assets/background/3.jpg";
+import bg3 from "../assets/background/crocodile.svg";
 import bg4 from "../assets/background/4.jpg";
 import bg5 from "../assets/background/5.jpg";
 
@@ -87,7 +87,7 @@ const About = () => {
                 <p className="text text-5xl font-bold">🍍 MY TEAM 🍍</p>
             </div>
 
-            <Transition timeline={about} />
+            <Transition timeline={about} duration={2.5} />
 
             <div
                 id="About"
@@ -101,6 +101,7 @@ const About = () => {
                         <i className="fa-solid fa-house"></i>
                     </Link>
 
+                    {/* Cards */}
                     <span className="border-x-[1px] cursor-pointer overflow-hidden relative pic-1">
                         <AboutCard name="GIA BẢO" role="Leader" bgImg={bg1} />
                     </span>

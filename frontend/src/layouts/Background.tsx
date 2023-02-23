@@ -22,7 +22,13 @@ const BackgroundVideo = (props: BackgroundVideoType) => {
                 </video>
 
                 <div className="flex w-full justify-center items-center mt-3 animate__animated  animate__bounceIn">
-                    <img src={Logo} alt="" width={60} height={60} />
+                    <img
+                        src={Logo}
+                        alt=""
+                        width={60}
+                        height={60}
+                        className="w-[12%] border-2 rounded-full border-white"
+                    />
                     <div className="flex flex-col ml-3">
                         <span className="text-2xl font-bold text-white">
                             MEET WITH US

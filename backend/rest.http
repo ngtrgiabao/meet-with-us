@@ -1,0 +1,14 @@
+### GET HOMEPAGE
+GET http://localhost:3000/api/v1
+
+### GET ABOUT PAGE
+GET http://localhost:3000/api/v1/about
+
+### LOGIN
+GET http://localhost:3000/api/v1/login
+
+### LOGOUT
+GET http://localhost:3000/api/v1/logout
+
+### REGISTER
+POST http://localhost:3000/api/v1/register

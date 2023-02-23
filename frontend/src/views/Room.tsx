@@ -1,5 +1,6 @@
 import { positions } from "@mui/system";
 import React from "react";
+
 const logo1 = require("../assets/background/2.jpg");
 const logo2 = require("../assets/background/1.jpg");
 
