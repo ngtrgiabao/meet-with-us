@@ -1,7 +1,5 @@
 import React from "react";
 import Peer from "peerjs";
-import { v4 as uuidV4 } from "uuid";
-import VideoPlayer from "./VideoPlayer";
 
 const WebcamOverview = () => {
     const [isAudio, setIsAudio] = React.useState<boolean>(true);
