@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap/all";
-
+// 
 import AboutCard from "../components/AboutCard";
 import Transition from "../components/Transition";
 
