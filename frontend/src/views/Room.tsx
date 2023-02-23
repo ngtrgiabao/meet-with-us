@@ -1,4 +1,3 @@
-import { positions } from "@mui/system";
 import React from "react";
 const logo1 = require("../assets/background/2.jpg");
 const logo2 = require("../assets/background/1.jpg");
@@ -193,7 +192,7 @@ const Room = () => {
                     className={
                         isSharing
                             ? "h-full col-span-1 bg-slate-700 rounded-xl"
-                            : "h-full w-[100%] h-[80%] bg-slate-700 rounded-xl" //translate-x-[-163%]
+                            : "h-full w-[100%] bg-slate-700 rounded-xl"
                     }
                 >
                     <div className="bg-black/50">

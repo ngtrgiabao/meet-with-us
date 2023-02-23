@@ -10,6 +10,7 @@ type PopupRoomIdType = {
 
 const PopupRoomId = (props: PopupRoomIdType) => {
     const [isCopied, setIsCopied] = React.useState<boolean>(false);
+    const [roomID, setRoomID] = React.useState<string>(props.id);
 
     const handleCopyClipboard: () => void = () => {
         setIsCopied((isCopied) => !isCopied);
@@ -28,7 +29,10 @@ const PopupRoomId = (props: PopupRoomIdType) => {
                         <div className="relative">
                             <input
                                 type="text"
-                                value={props.id}
+                                value={roomID}
+                                onChange={() => {
+                                    setRoomID(props.id);
+                                }}
                                 className="mr-3 text-black p-2"
                             />
                             <Link to="/room">
@@ -47,7 +51,7 @@ const PopupRoomId = (props: PopupRoomIdType) => {
                                 </span>
                             ) : (
                                 <CopyToClipboard
-                                    text={props.id}
+                                    text={roomID}
                                     onCopy={handleCopyClipboard}
                                 >
                                     <span className="text-white cursor-pointer hover:text-white hover:bg-blue-400 p-2 px-4 rounded-md animate__animated animate__bounceIn">
