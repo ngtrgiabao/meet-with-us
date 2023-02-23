@@ -1,9 +1,5 @@
 import { positions } from "@mui/system";
 import React from "react";
-import { gsap } from "gsap";
-
-import Transition from "../components/Transition";
-
 const logo1 = require("../assets/background/2.jpg");
 const logo2 = require("../assets/background/1.jpg");
 

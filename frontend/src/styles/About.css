@@ -8,7 +8,7 @@ span:hover .img-desc {
     opacity: 1;
 }
 
-span:hover img,
+span:hover .bg-img,
 span:hover .hover-text {
     display: none;
 }

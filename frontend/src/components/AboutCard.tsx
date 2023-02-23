@@ -31,7 +31,7 @@ const AboutCard = (props: aboutPropsType) => {
             <img
                 src={props.bgImg}
                 alt="img"
-                className="h-full object-cover before:bg-black before:w-full before:h-full"
+                className="h-full object-cover before:bg-black before:w-full before:h-full bg-img"
             />
             <div className="absolute top-[40%] w-full flex justify-center items-center flex-col img-desc text-white font-bold h-[20%]">
                 <p className="text-xl">{props.name}</p>

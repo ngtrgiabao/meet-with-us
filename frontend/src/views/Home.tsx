@@ -7,7 +7,9 @@ import "../styles/index.css";
 
 import BackgroundVideo from "../layouts/Background";
 import PopupRoomId from "../components/PopupRoomId";
+import Navbar from "../layouts/Navbar";
 
+import Logo from "../assets/logo.svg";
 const bgImg = require("../assets/background/home.mp4");
 
 const { CopyToClipboard } = require("react-copy-to-clipboard");
@@ -49,7 +51,6 @@ const Home = () => {
         mixBlendMode: "",
     });
 
-
     return (
         <>
             <div
@@ -62,6 +63,8 @@ const Home = () => {
                     });
                 }}
             >
+                <Navbar logo={Logo}/>
+
                 <BackgroundVideo bgImg={bgImg} />
 
                 <div
