@@ -90,19 +90,23 @@ const Room = () => {
 
   // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX RENDER XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX//
   return (
-    <div className="h-screen  overflow-hidden relative p-4 text-white grid grid-cols-5">
+    <div
+      className={
+        isSharing
+          ? "h-screen  overflow-hidden p-4 text-white grid grid-cols-5"
+          : "h-screen  w-screen overflow-hidden p-4 text-white grid grid-cols-11"
+      }
+    >
       {/* =================== MAIN SCREEN ====================== */}
       <div
-        className={
-          isSharing ? "border-2 grid col-span-4" : "border-0 grid col-span-4"
-        }
+        className={isSharing ? "grid col-span-4" : ""}
         style={{
           gridTemplateRows: "repeat(auto-fit, minmax(3rem, 1fr))",
         }}
       >
         {/* ===================================== MÀN HÌNH CHÍNH ========================================= */}
         <div
-          className="w-full"
+          className={isSharing ? "w-full" : "flex justify-center"}
           style={{
             gridRow: "span 8",
           }}
@@ -118,7 +122,13 @@ const Room = () => {
               : "flex justify-center items-center z-10 w-screen"
           }
         >
-          <div className="nav-bar fixed bottom-6 w-fit grid grid-cols-4 place-items-center text-xl gap-8">
+          <div
+            className={
+              isSharing
+                ? "nav-bar fixed bottom-10 bg-black/25 p-4 px-4 rounded-xl w-fit grid grid-cols-4 place-items-center text-xl gap-8"
+                : "w-[365px] nav-bar fixed bottom-10 bg-black/25 p-4 mr-[2rem] px-4 rounded-xl grid grid-cols-4 place-items-center text-xl gap-8" //translate-x-[-163%]
+            }
+          >
             {/* MIC */}
             {isAudio ? (
               <button
@@ -178,29 +188,33 @@ const Room = () => {
       </div>
 
       {/* =================== PEOPLE ====================== */}
-      <div className={isSharing ? "" : "w-screen flex jusstify-center"}>
+      <div
+        className={isSharing ? "" : "col-start-5 col-end-8"}
+        col-start-5
+        col-end-8
+      >
         <div
           className={
             isSharing
-              ? "h-full border-2 col-span-1"
-              : "h-full w-[350px] border-2 col-span-1 translate-x-[-160%] h-[85%]"
+              ? "h-full col-span-1 bg-slate-700 rounded-xl"
+              : "h-full w-[100%] h-[80%] bg-slate-700 rounded-xl" //translate-x-[-163%]
           }
         >
-          <div>
+          <div className="bg-black/50">
             {isVideo ? (
               <video
                 ref={video}
-                className="bg-black w-full "
+                className="bg-black/50 rounded-t-xl"
                 style={{
                   transform: "rotateY(180deg)",
                 }}
               ></video>
             ) : (
-              <div className="w-0 h-0 rounded-2xl"></div>
+              <div className="bg-black/50 w-0 h-0 rounded-t-xl"></div>
             )}
 
-            <div className="relative bg-slate-300/25 w-full h-[10px] p-4">
-              <div className="absolute bottom-0 left-2">Bạn</div>
+            <div className="relative bg-black/50 w-full h-[10px] p-4">
+              <div className="absolute bottom-0 left-2 rounded-0">Bạn</div>
               <span className="absolute bottom-0.5 right-10">
                 <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem]">
                   <i className="fa-solid fa-microphone"></i>
@@ -215,7 +229,7 @@ const Room = () => {
           </div>
           {/* USER */}
           <div className="flex jusstify-center">
-            <div className="relative bg-gray-800 w-full h-[3rem] border-2 border-slate-400 hover:bg-slate-300/25">
+            <div className="relative bg-gray-800/50 w-full h-[3rem] border-slate-400 hover:bg-slate-300/25">
               <div>
                 <img
                   className="absolute top-1 left-2 rounded-full w-[2.5rem] h-[2.5rem]"
@@ -241,7 +255,7 @@ const Room = () => {
             </div>
           </div>
           {/* USER */}
-          <div className="relative bg-gray-800 w-full h-[3rem] border-2 border-slate-400 hover:bg-slate-300/25">
+          <div className="relative bg-gray-800/50 w-full h-[3rem] border-slate-400 hover:bg-slate-300/25">
             <div>
               <img
                 className="absolute top-1 left-2 rounded-full w-[2.5rem] h-[2.5rem]"
