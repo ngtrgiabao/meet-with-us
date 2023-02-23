@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
+import io from "socket.io-client";
 
 import MiniAvatar from "../components/MiniAvatar";
 
@@ -12,8 +13,18 @@ import WebcamOverview from "../components/WebcamOverview";
 import Transition from "../components/Transition";
 
 const useroverview = gsap.timeline();
+const socket = io("http://localhost:3001");
 
 const UserOverview = () => {
+    React.useEffect(() => {
+        socket.emit("send-msg", {
+            msg: "hello from react",
+        });
+        socket.on("server", (data) => {
+            console.log(data);
+        });
+    }, []);
+
     return (
         <>
             <Transition timeline={useroverview} duration={2.5} />
