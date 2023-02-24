@@ -2,11 +2,11 @@ import React from "react";
 
 import Logo from "../assets/logo.svg";
 
-type BackgroundVideoType = {
+type BannerVideoType = {
     bgImg: string;
 };
 
-const BackgroundVideo = (props: BackgroundVideoType) => {
+const BannerVideo = (props: BannerVideoType) => {
     return (
         <>
             <div className="top-20 object-cover absolute flex flex-col items-center justify-between animate__animated animate__fadeIn">
@@ -43,4 +43,4 @@ const BackgroundVideo = (props: BackgroundVideoType) => {
     );
 };
 
-export default BackgroundVideo;
+export default BannerVideo;

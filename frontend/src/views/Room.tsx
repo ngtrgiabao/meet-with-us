@@ -1,5 +1,7 @@
-import { positions } from "@mui/system";
 import React from "react";
+
+import "../styles/Room.css";
+
 const logo1 = require("../assets/background/2.jpg");
 const logo2 = require("../assets/background/1.jpg");
 
@@ -33,7 +35,6 @@ const Room = () => {
     // ====================================== SHARE SCREEN ======================================
     const videoRef = React.useRef<HTMLVideoElement | any>(null);
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
-    const [isActive, setIsActive] = React.useState<boolean>(false);
 
     const shareScreen = async () => {
         if (videoRef.current.srcObject) {
@@ -62,7 +63,7 @@ const Room = () => {
     const insertToMainScreen = () => {
         document.getElementsByClassName("main-screen")[0].innerHTML = "";
         document.getElementsByClassName("main-screen")[0].innerHTML = `(
-      <div style="background: pink; width:100%"></div>
+        <div style="background: pink; width:100%"></div>
     )`;
         console.log(`${videoRef.current}`);
     };
@@ -79,10 +80,11 @@ const Room = () => {
     // };
 
     //========================================== STOP CALL =======================================================
-    const stopCall = () => {
-        alert("Bạn đang rời khỏi cuộc họp...");
-    };
-    console.log(isSharing);
+    function stopCall() {
+        if (window.confirm("Bạn có muốn rời khỏi cuộc gọi không?")) {
+            window.location.replace("/");
+        }
+    }
 
     // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX RENDER XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX//
     return (
@@ -90,7 +92,7 @@ const Room = () => {
             className={
                 isSharing
                     ? "h-screen  overflow-hidden p-4 text-white grid grid-cols-5"
-                    : "h-screen  w-screen overflow-hidden p-4 text-white grid grid-cols-11"
+                    : "h-screen  w-screen overflow-hidden p-4 text-white grid grid-cols-11 bg-gradient-to-r from-cyan-500 to-blue-500"
             }
         >
             {/* =================== MAIN SCREEN ====================== */}
@@ -121,22 +123,22 @@ const Room = () => {
                     <div
                         className={
                             isSharing
-                                ? "nav-bar fixed bottom-10 bg-black/25 p-4 px-4 rounded-xl w-fit grid grid-cols-4 place-items-center text-xl gap-8"
-                                : "w-[365px] nav-bar fixed bottom-10 bg-black/25 p-4 mr-[2rem] px-4 rounded-xl grid grid-cols-4 place-items-center text-xl gap-8" //translate-x-[-163%]
+                                ? "nav-bar fixed bottom-10 bg-black/25 p-2 px-2 rounded-xl w-fit grid grid-cols-4 place-items-center text-xl gap-8"
+                                : "w-[27%] nav-bar fixed bottom-[8%] bg-white p-2 mr-[2rem] px-2 rounded-xl grid grid-cols-4 place-items-center text-xl gap-8"
                         }
                     >
                         {/* MIC */}
                         {isAudio ? (
                             <button
                                 onClick={handleAudio}
-                                className="bg-slate-500 font-bold rounded-full w-[3rem] h-[3rem]"
+                                className="bg-blue-500 font-bold rounded-full w-[3rem] h-[3rem] btn_action"
                             >
                                 <i className="fa-solid fa-microphone"></i>
                             </button>
                         ) : (
                             <button
                                 onClick={handleAudio}
-                                className="text-white font-bold rounded-full w-[3rem] h-[3rem] bg-red-500 "
+                                className="text-white font-bold rounded-full w-[3rem] h-[3rem] bg-red-500 btn_action-denied"
                             >
                                 <i className="fa-solid fa-microphone-slash"></i>
                             </button>
@@ -146,14 +148,14 @@ const Room = () => {
                         {isVideo ? (
                             <button
                                 onClick={handleVideo}
-                                className="bg-slate-500 font-bold rounded-full w-[3rem] h-[3rem] ml-1"
+                                className="bg-blue-500 font-bold rounded-full w-[3rem] h-[3rem] ml-1 btn_action"
                             >
                                 <i className="fa-solid fa-video"></i>
                             </button>
                         ) : (
                             <button
                                 onClick={handleVideo}
-                                className="text-white font-bold rounded-full w-[3rem] h-[3rem] bg-red-500 ml-1"
+                                className="text-white font-bold rounded-full w-[3rem] h-[3rem] bg-red-500 ml-1 btn_action-denied"
                             >
                                 <i className="fa-solid fa-video-slash"></i>
                             </button>
@@ -163,37 +165,31 @@ const Room = () => {
                         <button
                             className={
                                 isSharing
-                                    ? "hover:cursor-pointer rounded-full w-[3rem] h-[3rem] hover:bg-blue-400 flex items-center justify-center bg-green-600"
-                                    : "hover:cursor-pointer rounded-full w-[3rem] h-[3rem]  hover:bg-red-400 flex items-center justify-center bg-red-600"
+                                    ? "hover:cursor-pointer rounded-full w-[3rem] h-[3rem] bg-blue-500 flex items-center justify-center btn_action"
+                                    : "hover:cursor-pointer rounded-full w-[3rem] h-[3rem]  flex items-center justify-center bg-red-600 btn_action-denied"
                             }
                             onClick={() => shareScreen()}
                         >
                             <i className="fa-solid fa-desktop"></i>
                         </button>
                         {/* END CALL */}
-                        <a href="/">
-                            <button
-                                onClick={() => stopCall()}
-                                className="hover:cursor-pointer rounded-full w-[3rem] h-[3rem] bg-red-600 flex items-center justify-center"
-                            >
-                                <i className="fa-solid fa-phone"></i>
-                            </button>
-                        </a>
+                        <button
+                            onClick={() => stopCall()}
+                            className="hover:cursor-pointer rounded-full w-[3rem] h-[3rem] bg-red-600 flex items-center justify-center btn_action-denied"
+                        >
+                            <i className="fa-solid fa-phone"></i>
+                        </button>
                     </div>
                 </div>
             </div>
 
             {/* =================== PEOPLE ====================== */}
-            <div
-                className={isSharing ? "" : "col-start-5 col-end-8"}
-                col-start-5
-                col-end-8
-            >
+            <div className={isSharing ? "" : "col-start-5 col-end-8"}>
                 <div
                     className={
                         isSharing
-                            ? "h-full col-span-1 bg-slate-700 rounded-xl"
-                            : "h-full w-[100%] h-[80%] bg-slate-700 rounded-xl" //translate-x-[-163%]
+                            ? "h-full col-span-1  rounded-xl"
+                            : "h-[75%] w-[100%] mb-[5%] bg-white rounded-xl overflow-hidden"
                     }
                 >
                     <div className="bg-black/50">
@@ -203,6 +199,7 @@ const Room = () => {
                                 className="bg-black/50 rounded-t-xl"
                                 style={{
                                     transform: "rotateY(180deg)",
+                                    width: "100%",
                                 }}
                             ></video>
                         ) : (
@@ -234,10 +231,10 @@ const Room = () => {
                                     src={logo2}
                                 />
                             </div>
-                            <div className="absolute top-1 left-16 text-white text-sm">
+                            <div className="absolute top-1 left-[20%] text-white text-sm">
                                 Nguyễn Trần Gia bảo
                             </div>
-                            <div className="absolute bottom-0.5 left-16 text-white text-xs">
+                            <div className="absolute bottom-0.5 left-[20%] text-white text-xs">
                                 (Người tổ chức cuộc họp)
                             </div>
                             <span className="absolute bottom-0.5 right-10">
@@ -260,7 +257,7 @@ const Room = () => {
                                 src={logo1}
                             />
                         </div>
-                        <div className="absolute top-3 left-16 text-white text-sm">
+                        <div className="absolute top-3 left-[10%] text-white text-sm">
                             Vương Minh Đăng
                         </div>
                         <div className="absolute bottom-0.5 left-16 text-white text-xs"></div>

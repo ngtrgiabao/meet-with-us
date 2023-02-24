@@ -2,14 +2,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import Peer from "peerjs";
+import { v4 as uuid } from "uuid";
 
 import io from "socket.io-client";
 
 import "../styles/index.css";
 
-import BackgroundVideo from "../layouts/Background";
+import BannerVideo from "../layouts/BannerVideo";
 import PopupRoomId from "../components/PopupRoomId";
 import Navbar from "../layouts/Navbar";
+import { RoomContext } from "../context/room/RoomProvider";
 
 import Logo from "../assets/logo.svg";
 const bgImg = require("../assets/background/home.mp4");
@@ -23,25 +25,10 @@ const Home = () => {
     const [isCopied, setIsCopied] = React.useState<boolean>(false);
     const [isActive, setIsActive] = React.useState<boolean>(false);
 
+    const roomID = React.useContext(RoomContext);
+
     const [peerId, setPeerId] = React.useState<string>("");
     const peer = new Peer();
-
-    const handleCreateIdRoom = () => {
-        peer.on("open", (id) => {
-            setPeerId(id);
-        });
-        console.log(peerId);
-    };
-    /*const handleJoinRoom = () => {
-        socket.emit("join-room", {
-            msg: "user has join from client",
-        });
-    };
-    const handleRoomJoin = () => {
-        socket.on("room-join", (data) => {
-            console.log(data);
-        });
-    };*/
 
     const handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void = (
         e
@@ -79,7 +66,7 @@ const Home = () => {
             >
                 <Navbar logo={Logo} />
 
-                <BackgroundVideo bgImg={bgImg} />
+                <BannerVideo bgImg={bgImg} />
 
                 <div
                     className="mt-[32rem] flex w-1/2 justify-center items-center"
@@ -108,7 +95,7 @@ const Home = () => {
                 >
                     {inputValue ? (
                         <Link
-                            to="/overview-camera"
+                            to={`/user-overview/${inputValue}`}
                             className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn"
                             /*onClick={() => {
                                 handleRoomJoin();
@@ -118,9 +105,8 @@ const Home = () => {
                         </Link>
                     ) : (
                         <button
-                            className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white animate__animated animate__bounceIn"
+                            className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn"
                             onClick={() => {
-                                handleCreateIdRoom();
                                 handleActive();
                                 //handleJoinRoom();
                             }}
@@ -134,7 +120,9 @@ const Home = () => {
                         type="text"
                         placeholder="enter your link room here"
                         className="text-lg uppercase font-bold outline outline-1 focus:outline-2 p-2 rounded animate__animated animate__fadeIn mx-4 flex-1"
-                        onChange={handleInput}
+                        onChange={(e) => {
+                            handleInput(e);
+                        }}
                     />
 
                     {/* Copy clipboard */}
@@ -202,7 +190,7 @@ const Home = () => {
 
                 {/* Popup */}
                 <PopupRoomId
-                    id={peerId}
+                    id={roomID}
                     isActive={isActive}
                     togglePopup={handleActive}
                 />
