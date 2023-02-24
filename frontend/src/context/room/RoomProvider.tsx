@@ -8,7 +8,7 @@ const RoomProvider = ({ children }: { children: ReactNode }) => {
 
     React.useEffect(() => {
         setRoomID(uuid());
-    }, [uuid()]);
+    }, []);
 
     return (
         <RoomContext.Provider value={roomID}>{children}</RoomContext.Provider>
