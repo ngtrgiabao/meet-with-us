@@ -1,5 +1,7 @@
 import React from "react";
 
+import "../styles/Room.css";
+
 const logo1 = require("../assets/background/2.jpg");
 const logo2 = require("../assets/background/1.jpg");
 
@@ -33,7 +35,6 @@ const Room = () => {
     // ====================================== SHARE SCREEN ======================================
     const videoRef = React.useRef<HTMLVideoElement | any>(null);
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
-    const [isActive, setIsActive] = React.useState<boolean>(false);
 
     const shareScreen = async () => {
         if (videoRef.current.srcObject) {
@@ -79,201 +80,65 @@ const Room = () => {
     // };
 
     //========================================== STOP CALL =======================================================
-    const stopCall = () => {
-        alert("Bạn đang rời khỏi cuộc họp...");
-    };
+    function stopCall() {
+        if (window.confirm("Bạn có muốn rời khỏi cuộc gọi không?")) {
+            window.location.replace("/");
+        }
+    }
 
     // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX RENDER XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX//
     return (
         <div
             className={
                 isSharing
-                    ? "h-screen overflow-hidden p-4 text-white grid grid-cols-5"
-                    : "h-screen w-full overflow-hidden p-4 text-white flex justify-center"
+                    ? "h-screen  overflow-hidden p-4 text-white grid grid-cols-5"
+                    : "h-screen  w-screen overflow-hidden p-4 text-white grid grid-cols-11 bg-gradient-to-r from-cyan-500 to-blue-500"
             }
         >
             {/* =================== MAIN SCREEN ====================== */}
             <div
-                className={isSharing ? "grid col-span-4" : "hidden"}
+                className={isSharing ? "grid col-span-4" : ""}
                 style={{
                     gridTemplateRows: "repeat(auto-fit, minmax(3rem, 1fr))",
                 }}
             >
-                <video ref={videoRef} autoPlay />
-            </div>
+                {/* ===================================== MÀN HÌNH CHÍNH ========================================= */}
+                <div
+                    className={isSharing ? "w-full" : "flex justify-center"}
+                    style={{
+                        gridRow: "span 8",
+                    }}
+                >
+                    <video ref={videoRef} autoPlay />
+                </div>
 
-            {/* =================== PEOPLE ====================== */}
-            <div
-                className={
-                    isSharing ? "" : "col-start-5 col-end-8 flex justify-center"
-                }
-                col-start-5
-                col-end-8
-            >
+                {/* ========================================  ACTION NAVBAR ============================================== */}
                 <div
                     className={
                         isSharing
-                            ? "h-full col-span-1 bg-slate-700 rounded-xl p-2 flex flex-col justify-between"
-                            : "h-full w-full bg-slate-700 rounded-xl flex flex-col justify-between"
+                            ? "flex justify-center items-center"
+                            : "flex justify-center items-center z-10 w-screen"
                     }
                 >
-                    <div className="h-full">
-                        <div className="bg-black/50 rounded-xl">
-                            {isVideo ? (
-                                <video
-                                    ref={video}
-                                    className="bg-black/50 rounded-t-xl w-full"
-                                    style={{
-                                        transform: "rotateY(180deg)",
-                                    }}
-                                ></video>
-                            ) : (
-                                <div className="bg-black/50 w-0 h-0"></div>
-                            )}
-
-                            <div className="relative bg-black/50 w-full h-[10px] p-4">
-                                <div className="absolute bottom-0 left-2 rounded-0">
-                                    Bạn
-                                </div>
-                                <span className="absolute bottom-0.5 right-10">
-                                    <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem]">
-                                        <i className="fa-solid fa-microphone"></i>
-                                    </span>
-                                </span>
-                                <button className="absolute bottom-0.5 right-3">
-                                    <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem] ml-4">
-                                        <i className="text-sm fa-solid fa-video"></i>
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* USERS */}
-                        <div className="max-h-[20rem] overflow-y-scroll">
-                            {/* USER */}
-                            <div className="flex jusstify-center">
-                                <div className="relative bg-gray-800/50 w-full h-[3rem] border-slate-400 hover:bg-slate-300/25">
-                                    <div>
-                                        <img
-                                            className="absolute top-1 left-2 rounded-full w-[2.5rem] h-[2.5rem]"
-                                            src={logo2}
-                                        />
-                                    </div>
-                                    <div className="absolute top-1 left-16 text-white text-sm">
-                                        Nguyễn Trần Gia bảo
-                                    </div>
-                                    <div className="absolute bottom-0.5 left-16 text-white text-xs">
-                                        (Người tổ chức cuộc họp)
-                                    </div>
-                                    <span className="absolute bottom-0.5 right-10">
-                                        <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem]">
-                                            <i className="fa-solid fa-microphone"></i>
-                                        </span>
-                                    </span>
-                                    <span className="absolute bottom-0.5 right-3">
-                                        <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem] ml-4">
-                                            <i className="text-sm fa-solid fa-video"></i>
-                                        </span>
-                                    </span>
-                                </div>
-                            </div>
-                            {/* USER */}
-                            <div className="relative bg-gray-800/50 w-full h-[3rem] border-slate-400 hover:bg-slate-300/25">
-                                <div>
-                                    <img
-                                        className="absolute top-1 left-2 rounded-full w-[2.5rem] h-[2.5rem]"
-                                        src={logo1}
-                                    />
-                                </div>
-                                <div className="absolute top-3 left-16 text-white text-sm">
-                                    Vương Minh Đăng
-                                </div>
-                                <div className="absolute bottom-0.5 left-16 text-white text-xs"></div>
-                                <span className="absolute bottom-0.5 right-10">
-                                    <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem]">
-                                        <i className="fa-solid fa-microphone"></i>
-                                    </span>
-                                </span>
-                                <span className="absolute bottom-0.5 right-3">
-                                    <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem] ml-4">
-                                        <i className="text-sm fa-solid fa-video"></i>
-                                    </span>
-                                </span>
-                            </div>
-                            {/* USER */}
-                            <div className="flex jusstify-center">
-                                <div className="relative bg-gray-800/50 w-full h-[3rem] border-slate-400 hover:bg-slate-300/25">
-                                    <div>
-                                        <img
-                                            className="absolute top-1 left-2 rounded-full w-[2.5rem] h-[2.5rem]"
-                                            src={logo2}
-                                        />
-                                    </div>
-                                    <div className="absolute top-1 left-16 text-white text-sm">
-                                        Nguyễn Trần Gia bảo
-                                    </div>
-                                    <div className="absolute bottom-0.5 left-16 text-white text-xs">
-                                        (Người tổ chức cuộc họp)
-                                    </div>
-                                    <span className="absolute bottom-0.5 right-10">
-                                        <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem]">
-                                            <i className="fa-solid fa-microphone"></i>
-                                        </span>
-                                    </span>
-                                    <span className="absolute bottom-0.5 right-3">
-                                        <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem] ml-4">
-                                            <i className="text-sm fa-solid fa-video"></i>
-                                        </span>
-                                    </span>
-                                </div>
-                            </div>
-                            {/* USER */}
-                            <div className="relative bg-gray-800/50 w-full h-[3rem] border-slate-400 hover:bg-slate-300/25">
-                                <div>
-                                    <img
-                                        className="absolute top-1 left-2 rounded-full w-[2.5rem] h-[2.5rem]"
-                                        src={logo1}
-                                    />
-                                </div>
-                                <div className="absolute top-3 left-16 text-white text-sm">
-                                    Vương Minh Đăng
-                                </div>
-                                <div className="absolute bottom-0.5 left-16 text-white text-xs"></div>
-                                <span className="absolute bottom-0.5 right-10">
-                                    <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem]">
-                                        <i className="fa-solid fa-microphone"></i>
-                                    </span>
-                                </span>
-                                <span className="absolute bottom-0.5 right-3">
-                                    <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem] ml-4">
-                                        <i className="text-sm fa-solid fa-video"></i>
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* ========================================  ACTION NAVBAR ============================================== */}
-
                     <div
                         className={
                             isSharing
-                                ? "w-full flex justify-between p-2 rounded-lg"
-                                : "w-full flex justify-between p-2 rounded-lg px-4"
+                                ? "nav-bar fixed bottom-10 bg-black/25 p-2 px-2 rounded-xl w-fit grid grid-cols-4 place-items-center text-xl gap-8"
+                                : "w-[27%] nav-bar fixed bottom-[8%] bg-white p-2 mr-[2rem] px-2 rounded-xl grid grid-cols-4 place-items-center text-xl gap-8"
                         }
                     >
                         {/* MIC */}
                         {isAudio ? (
                             <button
                                 onClick={handleAudio}
-                                className="bg-slate-800 font-bold rounded-full w-[3rem] h-[3rem] hover:opacity-80"
+                                className="bg-blue-500 font-bold rounded-full w-[3rem] h-[3rem] btn_action"
                             >
-                                <i className="fa-solid fa-microphone shadow-lg"></i>
+                                <i className="fa-solid fa-microphone"></i>
                             </button>
                         ) : (
                             <button
                                 onClick={handleAudio}
-                                className="text-white font-bold rounded-full w-[3rem] h-[3rem] bg-red-500 hover:opacity-80"
+                                className="text-white font-bold rounded-full w-[3rem] h-[3rem] bg-red-500 btn_action-denied"
                             >
                                 <i className="fa-solid fa-microphone-slash"></i>
                             </button>
@@ -283,14 +148,14 @@ const Room = () => {
                         {isVideo ? (
                             <button
                                 onClick={handleVideo}
-                                className="bg-slate-800 font-bold rounded-full w-[3rem] h-[3rem] ml-1 hover:opacity-80"
+                                className="bg-blue-500 font-bold rounded-full w-[3rem] h-[3rem] ml-1 btn_action"
                             >
                                 <i className="fa-solid fa-video"></i>
                             </button>
                         ) : (
                             <button
                                 onClick={handleVideo}
-                                className="text-white font-bold rounded-full w-[3rem] h-[3rem] hover:opacity-80 bg-red-500 ml-1"
+                                className="text-white font-bold rounded-full w-[3rem] h-[3rem] bg-red-500 ml-1 btn_action-denied"
                             >
                                 <i className="fa-solid fa-video-slash"></i>
                             </button>
@@ -300,22 +165,112 @@ const Room = () => {
                         <button
                             className={
                                 isSharing
-                                    ? "hover:cursor-pointer rounded-full w-[3rem] h-[3rem] hover:opacity-80 flex items-center justify-center bg-slate-800"
-                                    : "hover:cursor-pointer rounded-full w-[3rem] h-[3rem] hover:opacity-80 flex items-center justify-center bg-red-600"
+                                    ? "hover:cursor-pointer rounded-full w-[3rem] h-[3rem] bg-blue-500 flex items-center justify-center btn_action"
+                                    : "hover:cursor-pointer rounded-full w-[3rem] h-[3rem]  flex items-center justify-center bg-red-600 btn_action-denied"
                             }
                             onClick={() => shareScreen()}
                         >
                             <i className="fa-solid fa-desktop"></i>
                         </button>
                         {/* END CALL */}
-                        <a href="/">
-                            <button
-                                onClick={() => stopCall()}
-                                className="hover:cursor-pointer rounded-full w-[3rem] h-[3rem] bg-red-600 flex items-center justify-center"
-                            >
-                                <i className="fa-solid fa-phone"></i>
+                        <button
+                            onClick={() => stopCall()}
+                            className="hover:cursor-pointer rounded-full w-[3rem] h-[3rem] bg-red-600 flex items-center justify-center btn_action-denied"
+                        >
+                            <i className="fa-solid fa-phone"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* =================== PEOPLE ====================== */}
+            <div className={isSharing ? "" : "col-start-5 col-end-8"}>
+                <div
+                    className={
+                        isSharing
+                            ? "h-full col-span-1  rounded-xl"
+                            : "h-[75%] w-[100%] mb-[5%] bg-white rounded-xl overflow-hidden"
+                    }
+                >
+                    <div className="bg-black/50">
+                        {isVideo ? (
+                            <video
+                                ref={video}
+                                className="bg-black/50 rounded-t-xl"
+                                style={{
+                                    transform: "rotateY(180deg)",
+                                    width: "100%",
+                                }}
+                            ></video>
+                        ) : (
+                            <div className="bg-black/50 w-0 h-0 rounded-t-xl"></div>
+                        )}
+
+                        <div className="relative bg-black/50 w-full h-[10px] p-4">
+                            <div className="absolute bottom-0 left-2 rounded-0">
+                                Bạn
+                            </div>
+                            <span className="absolute bottom-0.5 right-10">
+                                <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem]">
+                                    <i className="fa-solid fa-microphone"></i>
+                                </span>
+                            </span>
+                            <button className="absolute bottom-0.5 right-3">
+                                <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem] ml-4">
+                                    <i className="text-sm fa-solid fa-video"></i>
+                                </span>
                             </button>
-                        </a>
+                        </div>
+                    </div>
+                    {/* USER */}
+                    <div className="flex jusstify-center">
+                        <div className="relative bg-gray-800/50 w-full h-[3rem] border-slate-400 hover:bg-slate-300/25">
+                            <div>
+                                <img
+                                    className="absolute top-1 left-2 rounded-full w-[2.5rem] h-[2.5rem]"
+                                    src={logo2}
+                                />
+                            </div>
+                            <div className="absolute top-1 left-[20%] text-white text-sm">
+                                Nguyễn Trần Gia bảo
+                            </div>
+                            <div className="absolute bottom-0.5 left-[20%] text-white text-xs">
+                                (Người tổ chức cuộc họp)
+                            </div>
+                            <span className="absolute bottom-0.5 right-10">
+                                <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem]">
+                                    <i className="fa-solid fa-microphone"></i>
+                                </span>
+                            </span>
+                            <span className="absolute bottom-0.5 right-3">
+                                <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem] ml-4">
+                                    <i className="text-sm fa-solid fa-video"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    {/* USER */}
+                    <div className="relative bg-gray-800/50 w-full h-[3rem] border-slate-400 hover:bg-slate-300/25">
+                        <div>
+                            <img
+                                className="absolute top-1 left-2 rounded-full w-[2.5rem] h-[2.5rem]"
+                                src={logo1}
+                            />
+                        </div>
+                        <div className="absolute top-3 left-[10%] text-white text-sm">
+                            Vương Minh Đăng
+                        </div>
+                        <div className="absolute bottom-0.5 left-16 text-white text-xs"></div>
+                        <span className="absolute bottom-0.5 right-10">
+                            <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem]">
+                                <i className="fa-solid fa-microphone"></i>
+                            </span>
+                        </span>
+                        <span className="absolute bottom-0.5 right-3">
+                            <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem] ml-4">
+                                <i className="text-sm fa-solid fa-video"></i>
+                            </span>
+                        </span>
                     </div>
                 </div>
             </div>
