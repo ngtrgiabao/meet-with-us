@@ -15,13 +15,29 @@ const io = new Server(httpServer, {
     },
 });
 
-io.on("connection", (socket) => {
-    console.log(`user  connected: ${socket.id}`);
-    socket.on("send-msg", (data) => {
-        console.log(data);
+app.get("/:room", (req, res) => {
+    res.render("room", {
+        roomID: req.params.room,
     });
+});
+
+io.on("connection", (socket) => {
+    console.log(`user connected socket: ${socket.id}`);
+
     socket.emit("server", {
         msg: "hello from server",
+    });
+
+    socket.on("react", (data) => {
+        console.log(data);
+    });
+    socket.on("join-room", (data) => {
+        const { roomID, userID } = data;
+        console.log("connected a room:", roomID, socket.rooms);
+        socket.to(roomID).emit("join-room-accept", "hello");
+    });
+    socket.on("disconnect", () => {
+        console.log(`user disconnected: ${socket.id}`);
     });
 });
 
