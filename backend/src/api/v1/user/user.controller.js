@@ -39,6 +39,8 @@ const create = async (req, res, next) => {
             createdAt: Date(),
         });
 
+        const userId = document.id;
+
         res.status(200).send({
             msg: `created user successfully`,
             UserID: document.id,

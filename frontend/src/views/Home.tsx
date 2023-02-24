@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import Peer from "peerjs";
 
+import io from "socket.io-client";
+
 import "../styles/index.css";
 
 import BackgroundVideo from "../layouts/Background";
@@ -13,6 +15,8 @@ import Logo from "../assets/logo.svg";
 const bgImg = require("../assets/background/home.mp4");
 
 const { CopyToClipboard } = require("react-copy-to-clipboard");
+
+const socket = io("http://localhost:3000");
 
 const Home = () => {
     const [inputValue, setInputValue] = React.useState<string>("");
@@ -28,6 +32,16 @@ const Home = () => {
         });
         console.log(peerId);
     };
+    /*const handleJoinRoom = () => {
+        socket.emit("join-room", {
+            msg: "user has join from client",
+        });
+    };
+    const handleRoomJoin = () => {
+        socket.on("room-join", (data) => {
+            console.log(data);
+        });
+    };*/
 
     const handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void = (
         e
@@ -63,7 +77,7 @@ const Home = () => {
                     });
                 }}
             >
-                <Navbar logo={Logo}/>
+                <Navbar logo={Logo} />
 
                 <BackgroundVideo bgImg={bgImg} />
 
@@ -96,6 +110,9 @@ const Home = () => {
                         <Link
                             to="/overview-camera"
                             className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn"
+                            /*onClick={() => {
+                                handleRoomJoin();
+                            }}*/
                         >
                             Tham gia phòng
                         </Link>
@@ -105,6 +122,7 @@ const Home = () => {
                             onClick={() => {
                                 handleCreateIdRoom();
                                 handleActive();
+                                //handleJoinRoom();
                             }}
                         >
                             Tạo phòng

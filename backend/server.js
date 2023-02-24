@@ -4,6 +4,8 @@ const { Server } = require("socket.io");
 const app = require("./app");
 const config = require("./src/config/database.config");
 
+const { controler } = require("./src/api/v1/user/user.controller");
+
 const PORT = config.app.port;
 
 const httpServer = http.createServer(app);
@@ -22,6 +24,24 @@ io.on("connection", (socket) => {
     });
     socket.emit("server", {
         msg: "hello from server",
+    });
+    // socket.on("createUser", async (userData, callback) => {
+    //     try {
+    //         const {userId} = await controler.create(userData);
+    //         callback({ userId });
+    //         console.log(`user id: ${userId} `);
+    //     } catch (error) {
+    //         callback({ error: error.message });
+    //     }
+    // });
+    /*io.on("connection", (socket) => {
+        socket.broadcast.emit("hello", "world");
+    });*/
+    socket.on("join-room", (text) => {
+        console.log(text);
+    });
+    socket.broadcast.emit("room-join", {
+        msg: "helllo from broadcast backend",
     });
 });
 

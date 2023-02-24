@@ -23,6 +23,16 @@ const UserOverview = () => {
         socket.on("server", (data) => {
             console.log(data);
         });
+        socket.emit("connection", () => {
+            console.log("eh");
+        });
+
+        socket.emit("join-room", {
+            msg: "user has join from client",
+        });
+        socket.on("room-join", (text) => {
+            console.log(text.msg);
+        });
     }, []);
 
     return (
