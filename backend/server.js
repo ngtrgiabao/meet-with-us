@@ -4,6 +4,8 @@ const { Server } = require("socket.io");
 const app = require("./app");
 const config = require("./src/config/database.config");
 
+const { controler } = require("./src/api/v1/user/user.controller");
+
 const PORT = config.app.port;
 
 const httpServer = http.createServer(app);
@@ -27,8 +29,27 @@ io.on("connection", (socket) => {
     socket.emit("server", {
         msg: "hello from server",
     });
+    socket.broadcast.emit("member-join", {
+        msg: "helllo from broadcast backend",
+    });
+    // socket.on("createUser", async (userData, callback) => {
+    //     try {
+    //         const {userId} = await controler.create(userData);
+    //         callback({ userId });
+    //         console.log(`user id: ${userId} `);
+    //     } catch (error) {
+    //         callback({ error: error.message });
+    //     }
+    // });
 
-    socket.on("react", (data) => {
+    io.on("connection", (socket) => {
+        socket.broadcast.emit("hello", "world");
+    });
+
+    socket.on("join-room", (text) => {
+        console.log(text);
+    });
+    /*socket.on("react", (data) => {
         console.log(data);
     });
     socket.on("join-room", (data) => {
@@ -38,7 +59,7 @@ io.on("connection", (socket) => {
     });
     socket.on("disconnect", () => {
         console.log(`user disconnected: ${socket.id}`);
-    });
+    });*/
 });
 
 httpServer.listen(PORT, () => {

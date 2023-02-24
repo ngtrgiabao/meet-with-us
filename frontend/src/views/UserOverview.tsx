@@ -29,10 +29,17 @@ const UserOverview = () => {
             roomID: uuid(),
             userID: 10,
         });
+        socket.emit("connection", () => {
+            console.log("eh");
+        });
 
         socket.on("server", (data) => {
             console.log(data);
         });
+        socket.on("member-join", (text) => {
+            console.log(text.msg);
+        });
+        /*
         socket.on("user-connected", (data) => {
             console.log("user connected with ID:", data);
         });
@@ -41,7 +48,7 @@ const UserOverview = () => {
         });
         socket.on("join-room-accept", (data) => {
             console.log(data);
-        });
+        });*/
     }, []);
 
     return (

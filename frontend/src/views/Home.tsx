@@ -4,6 +4,8 @@ import { gsap } from "gsap";
 import Peer from "peerjs";
 import { v4 as uuid } from "uuid";
 
+import io from "socket.io-client";
+
 import "../styles/index.css";
 
 import BannerVideo from "../layouts/BannerVideo";
@@ -15,6 +17,8 @@ import Logo from "../assets/logo.svg";
 const bgImg = require("../assets/background/home.mp4");
 
 const { CopyToClipboard } = require("react-copy-to-clipboard");
+
+const socket = io("http://localhost:3000");
 
 const Home = () => {
     const [inputValue, setInputValue] = React.useState<string>("");
@@ -93,6 +97,9 @@ const Home = () => {
                         <Link
                             to={`/user-overview/${inputValue}`}
                             className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn"
+                            /*onClick={() => {
+                                handleRoomJoin();
+                            }}*/
                         >
                             Tham gia phòng
                         </Link>
@@ -101,6 +108,7 @@ const Home = () => {
                             className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn"
                             onClick={() => {
                                 handleActive();
+                                //handleJoinRoom();
                             }}
                         >
                             Tạo phòng
