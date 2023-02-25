@@ -108,7 +108,6 @@ const Home = () => {
                             className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn"
                             onClick={() => {
                                 handleActive();
-                                //handleJoinRoom();
                             }}
                         >
                             Tạo phòng
