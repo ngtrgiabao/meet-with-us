@@ -25,41 +25,26 @@ app.get("/:room", (req, res) => {
 
 io.on("connection", (socket) => {
     console.log(`user connected socket: ${socket.id}`);
-
     socket.emit("server", {
         msg: "hello from server",
     });
-    socket.broadcast.emit("member-join", {
-        msg: "helllo from broadcast backend",
-    });
-    // socket.on("createUser", async (userData, callback) => {
-    //     try {
-    //         const {userId} = await controler.create(userData);
-    //         callback({ userId });
-    //         console.log(`user id: ${userId} `);
-    //     } catch (error) {
-    //         callback({ error: error.message });
-    //     }
-    // });
 
-    io.on("connection", (socket) => {
-        socket.broadcast.emit("hello", "world");
-    });
-
-    socket.on("join-room", (text) => {
-        console.log(text);
-    });
-    /*socket.on("react", (data) => {
+    socket.on("react", (data) => {
         console.log(data);
     });
     socket.on("join-room", (data) => {
-        const { roomID, userID } = data;
-        console.log("connected a room:", roomID, socket.rooms);
-        socket.to(roomID).emit("join-room-accept", "hello");
+        const { userID, roomID } = data;
+        console.log("user connected a room:", roomID);
+        
+        socket.broadcast.emit("member-join", {
+            userID,
+            roomID,
+        });
     });
+
     socket.on("disconnect", () => {
         console.log(`user disconnected: ${socket.id}`);
-    });*/
+    });
 });
 
 httpServer.listen(PORT, () => {
