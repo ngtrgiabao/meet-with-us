@@ -1,11 +1,40 @@
 import React from "react";
+import io from "socket.io-client";
+import { v4 as uuid } from "uuid";
 
 import "../styles/Room.css";
 
 const logo1 = require("../assets/background/2.jpg");
 const logo2 = require("../assets/background/1.jpg");
 
+const socket = io("http://localhost:3001");
+
 const Room = () => {
+    React.useEffect(() => {
+        socket.emit("react", {
+            msg: "hello from react",
+        });
+        socket.emit("join-room", {
+            roomID: uuid(),
+            userID: 10,
+        });
+
+        socket.on("server", (data) => {
+            console.log(data);
+        });
+        socket.on("member-join", (data) => {
+            const { userID, roomID } = data;
+
+            console.log(
+                `user ${userID} - connected to room ${roomID} successfully :D`
+            );
+        });
+
+        socket.on("disconnect", () => {
+            console.log("disconnect from server");
+        });
+    }, []);
+
     // ====================================== SHOW CAM ==========================================
     const [isAudio, setIsAudio] = React.useState(true);
     const [isVideo, setIsVideo] = React.useState(true);
@@ -24,13 +53,17 @@ const Room = () => {
     getUserMedia({
         video: isVideo,
         audio: isAudio,
-    }).then(async (stream) => {
-        // Changing the source of video to current stream.
-        if (video.current && isVideo) {
-            video.current.srcObject = stream;
-            video.current.play();
-        }
-    });
+    })
+        .then(async (stream) => {
+            // Changing the source of video to current stream.
+            if (video.current && isVideo) {
+                video.current.srcObject = stream;
+                video.current.play();
+            }
+        })
+        .catch(() => {
+            console.log("Cannot get camera :<");
+        });
 
     // ====================================== SHARE SCREEN ======================================
     const videoRef = React.useRef<HTMLVideoElement | any>(null);

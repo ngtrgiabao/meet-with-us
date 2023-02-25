@@ -29,13 +29,13 @@ const PopupRoomId = (props: PopupRoomIdType) => {
                         <div className="relative">
                             <input
                                 type="text"
-                                value={roomID}
+                                value={props.id || roomID}
                                 className="mr-3 text-black p-2"
                                 onChange={() => {
                                     setRoomID(props.id);
                                 }}
                             />
-                            <Link to={`/room/${roomID}`}>
+                            <Link to={`/room/${props.id}`}>
                                 <span
                                     onClick={props.togglePopup}
                                     className="p-2 py-[0.15rem] absolute -top-12 -right-8 hover:text-red-500 cursor-pointer"
