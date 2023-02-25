@@ -21,13 +21,17 @@ const WebcamStreamCapture = () => {
     getUserMedia({
         video: isVideo,
         audio: isAudio,
-    }).then(async (stream) => {
-        // Changing the source of video to current stream.
-        if (video.current && isVideo) {
-            video.current.srcObject = stream;
-            video.current.play();
-        }
-    });
+    })
+        .then(async (stream) => {
+            // Changing the source of video to current stream.
+            if (video.current && isVideo) {
+                video.current.srcObject = stream;
+                video.current.play();
+            }
+        })
+        .catch(() => {
+            console.log("Failed to get camera :<");
+        });
 
     return (
         <>

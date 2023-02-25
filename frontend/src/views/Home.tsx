@@ -95,11 +95,10 @@ const Home = () => {
                 >
                     {inputValue ? (
                         <Link
-                            to={`/user-overview/${inputValue}`}
+                            to={`/user-overview/${
+                                inputValue ? inputValue : roomID
+                            }`}
                             className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn"
-                            /*onClick={() => {
-                                handleRoomJoin();
-                            }}*/
                         >
                             Tham gia phòng
                         </Link>

@@ -1,8 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
-import io from "socket.io-client";
-import { v4 as uuid } from "uuid";
 
 import MiniAvatar from "../components/MiniAvatar";
 import { RoomContext } from "../context/room/RoomProvider";
@@ -16,40 +14,9 @@ import WebcamOverview from "../components/WebcamOverview";
 import Transition from "../components/Transition";
 
 const useroverview = gsap.timeline();
-const socket = io("http://localhost:3001");
 
 const UserOverview = () => {
     const roomID = React.useContext(RoomContext);
-
-    React.useEffect(() => {
-        socket.emit("react", {
-            msg: "hello from react",
-        });
-        socket.emit("join-room", {
-            roomID: uuid(),
-            userID: 10,
-        });
-        socket.emit("connection", () => {
-            console.log("eh");
-        });
-
-        socket.on("server", (data) => {
-            console.log(data);
-        });
-        socket.on("member-join", (text) => {
-            console.log(text.msg);
-        });
-        /*
-        socket.on("user-connected", (data) => {
-            console.log("user connected with ID:", data);
-        });
-        socket.on("disconnect", () => {
-            console.log("disconnect from server");
-        });
-        socket.on("join-room-accept", (data) => {
-            console.log(data);
-        });*/
-    }, []);
 
     return (
         <>
