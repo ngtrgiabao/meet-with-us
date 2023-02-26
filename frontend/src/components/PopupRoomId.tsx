@@ -1,14 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
+import { IPopupRoomId } from "../utils/interfaces";
+
 const { CopyToClipboard } = require("react-copy-to-clipboard");
 
-type PopupRoomIdType = {
-    id: string;
-    isActive: boolean;
-    togglePopup: () => void;
-};
-
-const PopupRoomId = (props: PopupRoomIdType) => {
+const PopupRoomId = (props: IPopupRoomId) => {
     const [isCopied, setIsCopied] = React.useState<boolean>(false);
     const [roomID, setRoomID] = React.useState<string>(props.id);
 

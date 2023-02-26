@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap/all";
-// 
+
 import AboutCard from "../components/AboutCard";
 import Transition from "../components/Transition";
 
@@ -9,7 +9,6 @@ import bg1 from "../assets/background/baoBg.svg";
 import bg2 from "../assets/background/2.jpg";
 import bg3 from "../assets/background/crocodile.svg";
 import bg4 from "../assets/background/4.jpg";
-import bg5 from "../assets/background/5.jpg";
 
 import "../styles/About.css";
 
@@ -93,7 +92,7 @@ const About = () => {
                 id="About"
                 className="main-page header__subtitle  h-screen w-full  bg-center -z-10"
             >
-                <div className="grid grid-cols-5 h-screen relative">
+                <div className="grid grid-cols-auto-fit-100 h-screen relative">
                     <Link
                         to="/"
                         className="absolute top-4 z-[9] font-bold text-xl left-4 text-blue-400"
@@ -117,9 +116,6 @@ const About = () => {
                             role="Member"
                             bgImg={bg4}
                         />
-                    </span>
-                    <span className="border-x-[1px] cursor-pointer overflow-hidden relative pic-5">
-                        <AboutCard name="THÁI DUY" role="Member" bgImg={bg5} />
                     </span>
                 </div>
             </div>

@@ -2,6 +2,8 @@ import React from "react";
 import io from "socket.io-client";
 import { v4 as uuid } from "uuid";
 
+import UserService from "../api/user/user.service";
+
 import "../styles/Room.css";
 
 const logo1 = require("../assets/background/2.jpg");
@@ -10,34 +12,45 @@ const logo2 = require("../assets/background/1.jpg");
 const socket = io("http://localhost:3001");
 
 const Room = () => {
+    const [isAudio, setIsAudio] = React.useState(true);
+    const [isVideo, setIsVideo] = React.useState(true);
+    const [isSharing, setIsSharing] = React.useState<boolean>(false);
+
     React.useEffect(() => {
-        socket.emit("react", {
-            msg: "hello from react",
-        });
-        socket.emit("join-room", {
-            roomID: uuid(),
-            userID: 10,
-        });
+        const getUsername = async () => {
+            const data = (await UserService.getAll()).data;
+            const name = data[0].displayname;
 
-        socket.on("server", (data) => {
-            console.log(data);
-        });
-        socket.on("member-join", (data) => {
-            const { userID, roomID } = data;
+            // Emit event fromt client to server
+            socket.emit("react", {
+                msg: "hello from react",
+            });
+            socket.emit("join-room", {
+                roomID: uuid(),
+                username: name,
+            });
 
-            console.log(
-                `user ${userID} - connected to room ${roomID} successfully :D`
-            );
-        });
+            socket.on("server", (data) => {
+                console.log(data);
+            });
+            socket.on("member-join", (data) => {
+                const { username, roomID } = data;
 
-        socket.on("disconnect", () => {
-            console.log("disconnect from server");
-        });
+                console.log(
+                    `user ${username} - connected to room ${roomID} successfully :D`
+                );
+            });
+
+            socket.on("disconnect", () => {
+                console.log("disconnect from server");
+            });
+        };
+
+        getUsername();
     }, []);
 
     // ====================================== SHOW CAM ==========================================
-    const [isAudio, setIsAudio] = React.useState(true);
-    const [isVideo, setIsVideo] = React.useState(true);
+
     const handleAudio = () => {
         setIsAudio((isAudio) => !isAudio);
     };
@@ -54,7 +67,7 @@ const Room = () => {
         video: isVideo,
         audio: isAudio,
     })
-        .then(async (stream) => {
+        .then((stream) => {
             // Changing the source of video to current stream.
             if (video.current && isVideo) {
                 video.current.srcObject = stream;
@@ -67,7 +80,6 @@ const Room = () => {
 
     // ====================================== SHARE SCREEN ======================================
     const videoRef = React.useRef<HTMLVideoElement | any>(null);
-    const [isSharing, setIsSharing] = React.useState<boolean>(false);
 
     const shareScreen = async () => {
         if (videoRef.current.srcObject) {
@@ -113,19 +125,19 @@ const Room = () => {
     // };
 
     //========================================== STOP CALL =======================================================
-    function stopCall() {
+    const stopCall = () => {
         if (window.confirm("Bạn có muốn rời khỏi cuộc gọi không?")) {
             window.location.replace("/");
         }
-    }
+    };
 
     // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX RENDER XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX//
     return (
         <div
             className={
                 isSharing
-                    ? "h-screen  overflow-hidden p-4 text-white grid grid-cols-5"
-                    : "h-screen  w-screen overflow-hidden p-4 text-white grid grid-cols-11 bg-gradient-to-r from-cyan-500 to-blue-500"
+                    ? "h-screen overflow-hidden p-4 text-white grid grid-cols-5 relative"
+                    : "h-screen w-screen overflow-hidden p-4 text-white grid grid-cols-11 bg-gradient-to-r from-cyan-500 to-blue-500 relative"
             }
         >
             {/* =================== MAIN SCREEN ====================== */}

@@ -1,12 +1,9 @@
 import React from "react";
 import { Power4 } from "gsap";
 
-type transitionPropsType = {
-    timeline: GSAPTimeline;
-    duration: number;
-};
+import { ITransitionProps } from "../utils/interfaces";
 
-const Transition = (props: transitionPropsType) => {
+const Transition = (props: ITransitionProps) => {
     React.useEffect(() => {
         props.timeline.fromTo(
             ".transition-effect",

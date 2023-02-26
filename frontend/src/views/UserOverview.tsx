@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 
 import MiniAvatar from "../components/MiniAvatar";
-import { RoomContext } from "../context/room/RoomProvider";
 
 import bg1 from "../assets/background/1.jpg";
 import bg2 from "../assets/background/2.jpg";
@@ -16,7 +15,7 @@ import Transition from "../components/Transition";
 const useroverview = gsap.timeline();
 
 const UserOverview = () => {
-    const roomID = React.useContext(RoomContext);
+    const roomID = window.location.pathname.split("/").at(2);
 
     return (
         <>

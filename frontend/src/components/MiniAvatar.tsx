@@ -1,10 +1,8 @@
 import React from "react";
 
-type avatarType = {
-    avatar: string;
-};
+import { IMiniAvatar } from "../utils/interfaces";
 
-const MiniAvatar = (props: avatarType) => {
+const MiniAvatar = (props: IMiniAvatar) => {
     return (
         <div className="-mr-3">
             <img

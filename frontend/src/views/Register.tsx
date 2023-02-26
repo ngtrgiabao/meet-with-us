@@ -8,7 +8,7 @@ const Register = () => {
         <div className="w-full h-screen flex items-center bg-white overflow-hidden">
             {/* Side img */}
             <div className="w-1/2 h-screen flex flex-col animate__animated animate__bounceInLeft">
-                <img src={sideImg} className="w-full h-full object-cover rounded-lg" />
+                <img src={sideImg} className="w-full h-full object-cover" />
             </div>
 
             {/* Form */}

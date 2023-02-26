@@ -4,8 +4,6 @@ const { Server } = require("socket.io");
 const app = require("./app");
 const config = require("./src/config/database.config");
 
-const { controler } = require("./src/api/v1/user/user.controller");
-
 const PORT = config.app.port;
 
 const httpServer = http.createServer(app);
@@ -25,6 +23,7 @@ app.get("/:room", (req, res) => {
 
 io.on("connection", (socket) => {
     console.log(`user connected socket: ${socket.id}`);
+    // Emit event fromt server to client
     socket.emit("server", {
         msg: "hello from server",
     });
@@ -33,11 +32,11 @@ io.on("connection", (socket) => {
         console.log(data);
     });
     socket.on("join-room", (data) => {
-        const { userID, roomID } = data;
-        console.log("user connected a room:", roomID);
-        
+        const { username, roomID } = data;
+        console.log("user connected a room:", roomID, "with name", username);
+
         socket.broadcast.emit("member-join", {
-            userID,
+            username,
             roomID,
         });
     });

@@ -1,13 +1,9 @@
 import React from "react";
 import { gsap } from "gsap";
 
-type aboutPropsType = {
-    name: string;
-    role: string;
-    bgImg: string;
-};
+import { IAboutCardProps } from "../utils/interfaces";
 
-const AboutCard = (props: aboutPropsType) => {
+const AboutCard = (props: IAboutCardProps) => {
     const aboutCard = gsap.timeline();
 
     React.useEffect(() => {
