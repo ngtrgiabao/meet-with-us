@@ -2,23 +2,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import Peer from "peerjs";
-import { v4 as uuid } from "uuid";
-
-import io from "socket.io-client";
 
 import "../styles/index.css";
 
 import BannerVideo from "../layouts/BannerVideo";
-import PopupRoomId from "../components/PopupRoomId";
 import Navbar from "../layouts/Navbar";
+import PopupRoomId from "../components/PopupRoomId";
 import { RoomContext } from "../context/room/RoomProvider";
 
 import Logo from "../assets/logo.svg";
 const bgImg = require("../assets/background/home.mp4");
 
 const { CopyToClipboard } = require("react-copy-to-clipboard");
-
-const socket = io("http://localhost:3000");
 
 const Home = () => {
     const [inputValue, setInputValue] = React.useState<string>("");

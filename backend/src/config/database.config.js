@@ -10,10 +10,10 @@ module.exports = {
     firebase: {
         config: {
             apiKey: process.env.API_KEY_FIREBASE,
-            authDomain: "test-626ec.firebaseapp.com",
-            projectId: "test-626ec",
-            storageBucket: "test-626ec.appspot.com",
-            messagingSenderId: "542868177162",
+            authDomain: process.env.AUTH_DOMAIN,
+            projectId: process.env.PROJECT_ID,
+            storageBucket: process.env.STORAGE_BUCKET,
+            messagingSenderId: process.env.MSG_SENDER_ID,
             appId: process.env.APP_ID,
         },
     },

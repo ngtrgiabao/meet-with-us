@@ -34,7 +34,7 @@ const BannerVideo = (props: BannerVideoType) => {
                             MEET WITH US
                         </span>
                         <span className="font-thin text-center text-white">
-                            Bring Everyone together
+                            Bring Everyone Together
                         </span>
                     </div>
                 </div>

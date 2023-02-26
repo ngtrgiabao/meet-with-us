@@ -14,9 +14,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 //Routes
-app.use("/api/v1", route.userRoute.get("/"));
 app.use("/api/v1/user", route.userRoute);
 app.use("/api/v1/room", route.roomRoute);
+app.use("/api/v1", route.userRoute.get("/"));
 
 //_404
 app.use((req, res, next) => {
