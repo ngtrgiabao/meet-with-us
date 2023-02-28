@@ -1,9 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+// import { getAuth,createUserWithEmailAndPassword } from "firebase/auth";
 const sideVideo = require("../assets/background/login-video.mp4");
 
 const Login = () => {
+    // const handleSubmid = (e: any) =>{   
+    //         e.preventDefault();
+    //         const email = e.target[0].value;
+    //         const password = e.target[1].value;
+        
+    //     const auth = getAuth();
+    //     createUserWithEmailAndPassword(auth, email, password)
+    //       .then((userCredential) => {
+    //         // Signed in 
+    //         const user = userCredential.user;
+    //         // ...
+    //       })
+    //       .catch((error) => {
+    //         const errorCode = error.code;
+    //         const errorMessage = error.message;
+    //         // ..
+    //       });
+    //     }
     return (
         <div className="w-full h-screen flex items-center bg-white overflow-hidden">
             {/* Side img */}
@@ -31,7 +49,7 @@ const Login = () => {
                         <i className="fa-solid fa-house"></i>
                     </Link>
 
-                    <form
+                    <form 
                         action=""
                         id="register-form"
                         className="w-full h-full flex flex-col items-center justify-center"
