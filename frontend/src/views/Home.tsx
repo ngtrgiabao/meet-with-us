@@ -124,7 +124,7 @@ const Home = () => {
                             className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white animate__animated animate__bounceIn"
                             onClick={() => {
                                 handleActive();
-                                handleCreateIdRoom()
+                                handleCreateIdRoom();
                             }}
                         >
                             Tạo phòng
