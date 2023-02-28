@@ -1,0 +1,27 @@
+.avatar-user {
+    transition: all 0.25s ease;
+}
+
+.avatar-user::before {
+    content: "";
+
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-right: 20px solid white;
+
+    bottom: -1.5rem;
+    position: absolute;
+
+    transform: rotate(90deg);
+
+    display: none;
+}
+
+.avatar-user:hover .setting-user,
+.avatar-user:hover::before {
+    display: block;
+}
+
+.setting-user {
+    display: none;
+}

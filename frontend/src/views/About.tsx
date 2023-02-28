@@ -101,6 +101,7 @@ const About = () => {
                         <i className="fa-solid fa-house"></i>
                     </Link>
 
+                    {/* Cards */}
                     <span className="border-x-[1px] cursor-pointer overflow-hidden relative pic-1">
                         <AboutCard name="GIA BẢO" role="Leader" bgImg={bg1} />
                     </span>

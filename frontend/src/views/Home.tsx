@@ -20,7 +20,9 @@ import { setUser } from "../hooks/slices/AuthSlice"
 import { useAppDispatch } from "../hooks/index";
 import BackgroundVideo from "../layouts/Background";
 import PopupRoomId from "../components/PopupRoomId";
+import Navbar from "../layouts/Navbar";
 
+import Logo from "../assets/logo.svg";
 const bgImg = require("../assets/background/home.mp4");
 
 const { CopyToClipboard } = require("react-copy-to-clipboard");
@@ -140,7 +142,6 @@ const Home = () => {
         height: "2rem",
         mixBlendMode: "",
     });
-    
 
     return (
         <>
@@ -154,6 +155,8 @@ const Home = () => {
                     });
                 }}
             >
+                <Navbar logo={Logo}/>
+
                 <BackgroundVideo bgImg={bgImg} />
 
                 <div
