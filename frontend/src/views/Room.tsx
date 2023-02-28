@@ -131,7 +131,7 @@ const Room = () => {
     });
   }, []);
 
-  // ====================================== SHARE SCREEN ======================================
+  // ====================================== SHARE SCREEN =======================================
   const videoRef = React.useRef<HTMLVideoElement | any>(null);
 
   const shareScreen = async () => {
