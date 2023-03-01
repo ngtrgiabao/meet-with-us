@@ -39,6 +39,9 @@ const acceptCall = async (
             }
 
             const myStream = stream;
+            /*
+            It calls the roomID and streams the myStream to the room.
+            */
             const call = myPeer.call(roomID, myStream);
 
             /* add a webcam to the videoGridRef and videoRefDiv only if the peerList does not include the call.peer. */
@@ -95,7 +98,6 @@ const useRoom = () => {
         stopCall,
         addRemoteWebcam,
         acceptCall,
-        // addOurVideo,
     };
 };
 
