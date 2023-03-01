@@ -16,12 +16,12 @@ const Room = () => {
     const [isAudio, setIsAudio] = React.useState(true);
     const [isVideo, setIsVideo] = React.useState(true);
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
-    const [userID, setUserID] = React.useState<string>("");
 
     const room = useRoom();
     const useMyPeer = usePeer();
-    // Connect to socketio backend
-    useSocket(ROOM_ID, setUserID);
+
+    // Connect to client to server
+    useSocket(ROOM_ID);
 
     const handleAudio = () => {
         setIsAudio((isAudio) => !isAudio);
@@ -34,20 +34,12 @@ const Room = () => {
     const videoRef = React.useRef<HTMLVideoElement>(null);
     const videoGridRef = React.useRef<HTMLDivElement>(null);
 
-    room.addHostWebcam(
-        isVideo,
-        isAudio,
-        videoRef,
-        ROOM_ID,
-        userID,
-        videoGridRef
-    );
+    room.acceptCall(isVideo, isAudio, videoRef, ROOM_ID, videoGridRef);
 
     React.useEffect(() => {
         useMyPeer.connectPeer(ROOM_ID);
+        useMyPeer.callPeer(isVideo, isAudio, videoGridRef);
     }, []);
-
-    useMyPeer.callPeer(userID, isVideo, isAudio, videoGridRef);
 
     //  SHARE SCREEN
     const shareScreenRef = React.useRef<HTMLVideoElement | any>(null);
@@ -166,14 +158,16 @@ const Room = () => {
                         ref={videoGridRef}
                     >
                         {isVideo ? (
-                            <video
-                                ref={videoRef}
-                                className="bg-black/50 rounded-t-xl"
-                                style={{
-                                    transform: "rotateY(180deg)",
-                                    width: "100%",
-                                }}
-                            ></video>
+                            <>
+                                <video
+                                    ref={videoRef}
+                                    className="bg-black/50 rounded-t-xl"
+                                    style={{
+                                        transform: "rotateY(180deg)",
+                                        width: "100%",
+                                    }}
+                                ></video>
+                            </>
                         ) : (
                             <div className="bg-black/50 w-0 h-0 rounded-t-xl"></div>
                         )}
