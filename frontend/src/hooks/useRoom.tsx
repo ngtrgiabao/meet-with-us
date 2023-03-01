@@ -14,20 +14,20 @@ const addRemoteWebcam = (
     myVideo.play();
 
     videoGridRef.current?.append(myVideo);
+
+    console.log("this is remote webcam");
 };
 
-const addHostWebcam = (
+const acceptCall = async (
     isVideo: boolean,
     isAudio: boolean,
     videoRef: RefObject<HTMLVideoElement>,
     roomID: string,
-    userID: string,
     videoGridRef: RefObject<HTMLDivElement>
 ) => {
     const getUserMedia = navigator.mediaDevices.getUserMedia;
-    let peerList: any[] = [];
 
-    getUserMedia({
+    await getUserMedia({
         video: isVideo,
         audio: isAudio,
     })
@@ -41,12 +41,10 @@ const addHostWebcam = (
             const myStream = stream;
             const call = myPeer.call(roomID, myStream);
 
-            // if (!peerList.includes(call.peer)) {
-            if (userID) {
+            /* add a webcam to the videoGridRef and videoRefDiv only if the peerList does not include the call.peer. */
+            if (call.peer) {
                 addRemoteWebcam(stream, videoGridRef);
             }
-            // peerList.push(call.peer);
-            // }
         })
         .catch(() => {
             console.error("Unable to get webcam :<");
@@ -60,7 +58,8 @@ const shareScreen = async (
     if (shareScreenRef.current?.srcObject) {
         // Stopping the stream and setting the video element to null.
         const mediaStream = shareScreenRef.current.srcObject;
-        mediaStream
+        /* Stopping the stream and setting the video element to null. */
+        await mediaStream
             .getVideoTracks()
             .forEach((shareScreen: MediaStreamTrack) => shareScreen.stop());
 
@@ -91,7 +90,13 @@ const stopCall = () => {
 };
 
 const useRoom = () => {
-    return { shareScreen, stopCall, addRemoteWebcam, addHostWebcam };
+    return {
+        shareScreen,
+        stopCall,
+        addRemoteWebcam,
+        acceptCall,
+        // addOurVideo,
+    };
 };
 
 export default useRoom;

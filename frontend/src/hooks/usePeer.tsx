@@ -3,26 +3,28 @@ import { RefObject } from "react";
 
 import { socket } from "../utils/socket";
 import useRoom from "./useRoom";
+import userService from "../api/user/user.service";
 
 const myPeer = new Peer();
 
-const connectPeer = (roomID: string) => {
+const connectPeer = async (roomID: string) => {
+    const data = (await userService.getAll()).data;
+    const userID = data[0].id;
+
     myPeer.on("open", () => {
-        socket.emit("join-room", {
+        return socket.emit("join-room", {
             roomID: roomID,
-            userID: 12212121,
+            userID: userID,
         });
     });
 };
 
 const callPeer = (
-    userID: string,
     isVideo: boolean,
     isAudio: boolean,
     videoGridRef: RefObject<HTMLDivElement>
 ) => {
     const getUserMedia = navigator.mediaDevices.getUserMedia;
-    let peerList: any[] = [];
 
     myPeer.on("call", async (call) => {
         await getUserMedia({
@@ -32,17 +34,14 @@ const callPeer = (
             .then((stream: MediaStream) => {
                 call.answer(stream);
 
-                // if (!peerList.includes(call.peer)) {
-                if (userID) {
+                if (call.peer) {
+                    // Adding webcam of user want to join room
                     useRoom().addRemoteWebcam(stream, videoGridRef);
                 }
-                // peerList.push(call.peer);
-                // }
             })
             .catch((err) => {
                 console.error(err + "unable to get webcam :<");
             });
-        console.log("call");
     });
 };
 
