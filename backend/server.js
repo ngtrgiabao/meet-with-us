@@ -29,14 +29,15 @@ io.on("connection", (socket) => {
     });
 
     socket.on("react", (data) => {
-        console.log(data);
+        const { msg } = data;
+        console.log(msg);
     });
     socket.on("join-room", (data) => {
-        const { username, roomID } = data;
-        console.log("user connected a room:", roomID, "with name", username);
+        const { roomID, userID } = data;
+        console.log("user connected a room:", roomID, "with name", userID);
 
         socket.broadcast.emit("member-join", {
-            username,
+            userID,
             roomID,
         });
     });

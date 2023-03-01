@@ -1,55 +1,27 @@
 import React from "react";
-import io from "socket.io-client";
-import { v4 as uuid } from "uuid";
-
-import UserService from "../api/user/user.service";
 
 import "../styles/Room.css";
+import useRoom from "../hooks/useRoom";
+import usePeer from "../hooks/usePeer";
+import useSocket from "../hooks/useSocket";
 
 const logo1 = require("../assets/background/2.jpg");
 const logo2 = require("../assets/background/1.jpg");
 
-const socket = io("http://localhost:3001");
-
 const Room = () => {
+    const ROOM_ID = JSON.stringify(
+        window.location?.pathname?.split("/")?.at(2)
+    );
+
     const [isAudio, setIsAudio] = React.useState(true);
     const [isVideo, setIsVideo] = React.useState(true);
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
+    const [userID, setUserID] = React.useState<string>("");
 
-    React.useEffect(() => {
-        const getUsername = async () => {
-            const data = (await UserService.getAll()).data;
-            const name = data[0].displayname;
-
-            // Emit event fromt client to server
-            socket.emit("react", {
-                msg: "hello from react",
-            });
-            socket.emit("join-room", {
-                roomID: uuid(),
-                username: name,
-            });
-
-            socket.on("server", (data) => {
-                console.log(data);
-            });
-            socket.on("member-join", (data) => {
-                const { username, roomID } = data;
-
-                console.log(
-                    `user ${username} - connected to room ${roomID} successfully :D`
-                );
-            });
-
-            socket.on("disconnect", () => {
-                console.log("disconnect from server");
-            });
-        };
-
-        getUsername();
-    }, []);
-
-    // ====================================== SHOW CAM ==========================================
+    const room = useRoom();
+    const useMyPeer = usePeer();
+    // Connect to socketio backend
+    useSocket(ROOM_ID, setUserID);
 
     const handleAudio = () => {
         setIsAudio((isAudio) => !isAudio);
@@ -59,79 +31,27 @@ const Room = () => {
         setIsVideo((isVideo) => !isVideo);
     };
 
-    const video = React.useRef<HTMLVideoElement>(null);
+    const videoRef = React.useRef<HTMLVideoElement>(null);
+    const videoGridRef = React.useRef<HTMLDivElement>(null);
 
-    const getUserMedia = navigator.mediaDevices.getUserMedia;
+    room.addHostWebcam(
+        isVideo,
+        isAudio,
+        videoRef,
+        ROOM_ID,
+        userID,
+        videoGridRef
+    );
 
-    getUserMedia({
-        video: isVideo,
-        audio: isAudio,
-    })
-        .then((stream) => {
-            // Changing the source of video to current stream.
-            if (video.current && isVideo) {
-                video.current.srcObject = stream;
-                video.current.play();
-            }
-        })
-        .catch(() => {
-            console.log("Cannot get camera :<");
-        });
+    React.useEffect(() => {
+        useMyPeer.connectPeer(ROOM_ID);
+    }, []);
 
-    // ====================================== SHARE SCREEN ======================================
-    const videoRef = React.useRef<HTMLVideoElement | any>(null);
+    useMyPeer.callPeer(userID, isVideo, isAudio, videoGridRef);
 
-    const shareScreen = async () => {
-        if (videoRef.current.srcObject) {
-            /* Stopping the stream and setting the video element to null. */
-            const tracks = videoRef.current.srcObject.getTracks();
+    //  SHARE SCREEN
+    const shareScreenRef = React.useRef<HTMLVideoElement | any>(null);
 
-            tracks.forEach((t: MediaStreamTrack) => t.stop());
-            videoRef.current.srcObject = null;
-
-            alert("Bạn đã dừng chia sẻ màn hình của mình");
-            setIsSharing(false);
-            console.log(isSharing);
-        } else if (navigator.mediaDevices) {
-            /* Getting the screen sharing stream and setting it to the video element. */
-            const stream = await navigator.mediaDevices.getDisplayMedia({
-                video: true,
-                audio: false,
-            });
-            videoRef.current.srcObject = stream;
-            setIsSharing(true);
-            console.log(isSharing);
-            alert("Bạn đang chia sẻ màn hình của mình với tất cả mọi người");
-        }
-    };
-    // ======================================= INSERT TO MAIN SCREEN =============================================
-    const insertToMainScreen = () => {
-        document.getElementsByClassName("main-screen")[0].innerHTML = "";
-        document.getElementsByClassName("main-screen")[0].innerHTML = `(
-        <div style="background: pink; width:100%"></div>
-    )`;
-        console.log(`${videoRef.current}`);
-    };
-
-    // ======================================== SHOW ALL MEMBERs ===============================================
-    // const displayMessage = () => {
-    //   document
-    //     .getElementsByClassName("people")[0]
-    //     ?.classList.toggle("translate-x-full");
-
-    //   document
-    //     .getElementsByClassName("main-screen")[0]
-    //     ?.classList.toggle("w-full");
-    // };
-
-    //========================================== STOP CALL =======================================================
-    const stopCall = () => {
-        if (window.confirm("Bạn có muốn rời khỏi cuộc gọi không?")) {
-            window.location.replace("/");
-        }
-    };
-
-    // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX RENDER XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX//
     return (
         <div
             className={
@@ -154,7 +74,7 @@ const Room = () => {
                         gridRow: "span 8",
                     }}
                 >
-                    <video ref={videoRef} autoPlay />
+                    <video ref={shareScreenRef} autoPlay />
                 </div>
 
                 {/* ========================================  ACTION NAVBAR ============================================== */}
@@ -213,13 +133,15 @@ const Room = () => {
                                     ? "hover:cursor-pointer rounded-full w-[3rem] h-[3rem] bg-blue-500 flex items-center justify-center btn_action"
                                     : "hover:cursor-pointer rounded-full w-[3rem] h-[3rem]  flex items-center justify-center bg-red-600 btn_action-denied"
                             }
-                            onClick={() => shareScreen()}
+                            onClick={() =>
+                                room.shareScreen(shareScreenRef, setIsSharing)
+                            }
                         >
                             <i className="fa-solid fa-desktop"></i>
                         </button>
                         {/* END CALL */}
                         <button
-                            onClick={() => stopCall()}
+                            onClick={() => room.stopCall()}
                             className="hover:cursor-pointer rounded-full w-[3rem] h-[3rem] bg-red-600 flex items-center justify-center btn_action-denied"
                         >
                             <i className="fa-solid fa-phone"></i>
@@ -229,18 +151,23 @@ const Room = () => {
             </div>
 
             {/* =================== PEOPLE ====================== */}
+
             <div className={isSharing ? "" : "col-start-5 col-end-8"}>
                 <div
                     className={
                         isSharing
-                            ? "h-full col-span-1  rounded-xl"
+                            ? "h-full col-span-1 rounded-xl"
                             : "h-[75%] w-[100%] mb-[5%] bg-white rounded-xl overflow-hidden"
                     }
                 >
-                    <div className="bg-black/50">
+                    <div
+                        className="bg-black/50"
+                        id="video-grid"
+                        ref={videoGridRef}
+                    >
                         {isVideo ? (
                             <video
-                                ref={video}
+                                ref={videoRef}
                                 className="bg-black/50 rounded-t-xl"
                                 style={{
                                     transform: "rotateY(180deg)",
