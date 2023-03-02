@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 
 import "../styles/Room.css";
 import useRoom from "../hooks/useRoom";
