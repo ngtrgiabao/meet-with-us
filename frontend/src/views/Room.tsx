@@ -1,11 +1,8 @@
 import React from "react";
-import styled from "styled-components";
 
 import "../styles/Room.css";
 import useRoom from "../hooks/useRoom";
-import usePeer from "../hooks/usePeer";
 import useSocket from "../hooks/useSocket";
-import { socket } from "../utils/socket";
 
 const logo1 = require("../assets/background/2.jpg");
 const logo2 = require("../assets/background/1.jpg");
@@ -19,13 +16,16 @@ const Room = () => {
     const [isVideo, setIsVideo] = React.useState(true);
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
 
-    const room = useRoom(ROOM_ID);
-    useRoom(ROOM_ID);
+    const mySocket = useSocket();
 
-    // const useMyPeer = usePeer();
+    // Connect socket server
+    React.useEffect(() => {
+        mySocket.connectClientToServer();
+        mySocket.messageServerConnectSuccess();
 
-    // Connect to client to server
-    useSocket(ROOM_ID);
+        mySocket.messageMemberJoinSuccess();
+        mySocket.disconnectServer();
+    }, [ROOM_ID]);
 
     const handleAudio = () => {
         setIsAudio((isAudio) => !isAudio);
@@ -38,74 +38,7 @@ const Room = () => {
     const videoRef = React.useRef<HTMLVideoElement>(null);
     const videoGridRef = React.useRef<HTMLDivElement>(null);
 
-    // room.acceptCall(isVideo, isAudio, videoRef, ROOM_ID, videoGridRef);
-
-    // React.useEffect(() => {
-    //     useMyPeer.connectPeer(ROOM_ID);
-    //     useMyPeer.callPeer(isVideo, isAudio, videoGridRef, ROOM_ID);
-    // }, []);
-
-    const [peers, setPeers] = React.useState<any>([]);
-    const userVideo = document.createElement("video");
-    let peersRef = React.useRef<any[]>([]);
-    const peer = usePeer();
-    const getUserMedia = navigator.mediaDevices.getUserMedia;
-
-    React.useEffect(() => {
-        
-        getUserMedia({ video: true, audio: true }).then(
-            (stream: MediaStream) => {
-                if (videoRef.current) {
-                    videoRef.current.srcObject = stream;
-                    videoRef.current.play();
-                }
-                socket.emit("join-room", { ROOM_ID });
-
-                socket.on("all-users", (users) => {
-                    let peers: any[] = [];
-                    // Get each ID of user
-                    users.forEach((userID: string) => {
-                        peer.createPeer(userID, socket.id, stream);
-
-                        peersRef.current.push({
-                            peerID: userID,
-                            peer,
-                        });
-                        peers.push(peer);
-                    });
-
-                    setPeers(peer);
-
-                    console.log(peers);
-                });
-
-                // Alert when someone want to room
-                socket.on("user-joined", (payload) => {
-                    const addPeer = peer.addPeer(
-                        payload.signal,
-                        payload.callerID,
-                        stream
-                    );
-
-                    // Push info of someone joined room
-                    peersRef.current.push({
-                        peerID: payload.callerID,
-                        peer,
-                    });
-
-                    setPeers((users: any) => [...users, addPeer]);
-                });
-
-                socket.on("receiving-returned-signal", (payload) => {
-                    const item = peersRef.current.find(
-                        (p) => p.peerID === payload.id
-                    );
-
-                    item.peer.signal(payload.signal);
-                });
-            }
-        );
-    }, []);
+    const room = useRoom(ROOM_ID, videoRef);
 
     //  SHARE SCREEN
     const shareScreenRef = React.useRef<HTMLVideoElement | any>(null);

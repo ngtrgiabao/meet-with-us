@@ -21,6 +21,9 @@ app.get("/:room", (req, res) => {
     });
 });
 
+const users = {};
+const socketToRoom = {};
+
 io.on("connection", (socket) => {
     console.log(`user connected socket: ${socket.id}`);
     // Emit event fromt server to client
@@ -29,21 +32,57 @@ io.on("connection", (socket) => {
     });
 
     socket.on("react", (data) => {
+        // Get msg from client
         const { msg } = data;
         console.log(msg);
     });
-    socket.on("join-room", (data) => {
-        const { roomID, userID } = data;
-        console.log("user connected a room:", roomID, "with name", userID);
+    socket.on("join-room", (roomID) => {
+        /* Checking if the roomID exists in the users object. */
+        if (users[roomID]) {
+            const length = users[roomID].length;
 
-        socket.broadcast.emit("member-join", {
-            userID,
-            roomID,
+            // Length of room
+            if (length === 4) {
+                socket.emit("room-full");
+                return;
+            }
+            users[roomID].push(socket.id);
+        } else {
+            /* creating a new room if the room doesn't exist. */
+            users[roomID] = [socket.id];
+        }
+
+        // Add member ID to list room
+        socketToRoom[socket.id] = roomID;
+
+        // Log list of members joined room, except member join recently
+        const usersInThisRoom = users[roomID].filter((id) => id !== socket.id);
+
+        socket.broadcast.emit("all-users", usersInThisRoom);
+    });
+    socket.on("sending-signal", (payload) => {
+        // Emit when member join
+        io.to(payload.userToSignal).emit("user-joined", {
+            signal: payload.signal,
+            callerID: payload.callerID,
+        });
+    });
+    socket.on("returning-signal", (payload) => {
+        // Emit msg get signal success from client
+        io.to(payload.callerID).emit("receiving-returned-signal", {
+            signal: payload.signal,
+            id: socket.id,
         });
     });
 
     socket.on("disconnect", () => {
-        console.log(`user disconnected: ${socket.id}`);
+        // Delete user when leave room
+        const roomID = socketToRoom[socket.id];
+        let room = users[roomID];
+        if (room) {
+            room = room.filter((id) => id !== socket.id);
+            users[roomID] = room;
+        }
     });
 });
 

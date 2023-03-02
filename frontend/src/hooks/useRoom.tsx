@@ -1,56 +1,10 @@
 import React, { RefObject } from "react";
+
 import usePeer from "./usePeer";
+import useSocket from "./useSocket";
 import { socket } from "../utils/socket";
 
 const getUserMedia = navigator.mediaDevices.getUserMedia;
-
-const addRemoteWebcam = (
-    stream: MediaStream,
-    videoGridRef: RefObject<HTMLDivElement>
-) => {
-    const myVideo = document.createElement("video");
-
-    myVideo.srcObject = stream;
-    myVideo.style.transform = "rotateY(180deg)";
-    myVideo.play();
-
-    videoGridRef.current?.append(myVideo);
-
-    console.log("this is remote webcam");
-};
-
-const acceptCall = async (
-    isVideo: boolean,
-    isAudio: boolean,
-    videoRef: RefObject<HTMLVideoElement>,
-    roomID: string,
-    videoGridRef: RefObject<HTMLDivElement>
-) => {
-    // const getUserMedia = navigator.mediaDevices.getUserMedia;
-    // await getUserMedia({
-    //     video: isVideo,
-    //     audio: isAudio,
-    // })
-    //     .then((stream: MediaStream) => {
-    //         // Changing the source of video to current stream.
-    //         if (videoRef.current && isVideo) {
-    //             videoRef.current.srcObject = stream;
-    //             videoRef.current.play();
-    //         }
-    //         const myStream = stream;
-    //         /*
-    //         It calls the roomID and streams the myStream to the room.
-    //         */
-    //         const call = myPeer.call(roomID, myStream);
-    //         /* add a webcam to the videoGridRef and videoRefDiv only if the peerList does not include the call.peer. */
-    //         if (call.peer) {
-    //             addRemoteWebcam(stream, videoGridRef);
-    //         }
-    //     })
-    //     .catch(() => {
-    //         console.error("Unable to get webcam :<");
-    //     });
-};
 
 const shareScreen = async (
     shareScreenRef: RefObject<HTMLVideoElement | any>,
@@ -90,21 +44,26 @@ const stopCall = () => {
     }
 };
 
-const useRoom = (roomID: string) => {
-    const [peers, setPeers] = React.useState<any>([]);
-    const userVideo = document.createElement("video");
-    let peersRef = React.useRef<any[]>([]);
+const useRoom = (roomID: string, videoRef: RefObject<HTMLVideoElement>) => {
+    const mySocket = useSocket();
     const peer = usePeer();
+    const [peers, setPeers] = React.useState<any>([]);
+    let peersRef = React.useRef<any[]>([]);
 
     React.useEffect(() => {
-        let peers: any[] = [];
-
         getUserMedia({ video: true, audio: true }).then(
             (stream: MediaStream) => {
-                userVideo.srcObject = stream;
-                socket.emit("join-room", { roomID, userID: socket.id });
+                if (videoRef.current) {
+                    videoRef.current.srcObject = stream;
+                    videoRef.current.play();
+                }
+
+                mySocket.signalJoinRoom(roomID);
 
                 socket.on("all-users", (users) => {
+                    /* Getting the peer of each user in the room. */
+                    let peers: any[] = [];
+
                     // Get each ID of user
                     users.forEach((userID: string) => {
                         peer.createPeer(userID, socket.id, stream);
@@ -117,6 +76,8 @@ const useRoom = (roomID: string) => {
                     });
 
                     setPeers(peer);
+
+                    console.log(peers);
                 });
 
                 // Alert when someone want to room
@@ -127,31 +88,36 @@ const useRoom = (roomID: string) => {
                         stream
                     );
 
-                    // Push info of someone joined room
+                    // Push info of member who want to join room
                     peersRef.current.push({
                         peerID: payload.callerID,
                         peer,
                     });
 
+                    /* Adding the new peer to the array of peers. */
                     setPeers((users: any) => [...users, addPeer]);
                 });
 
                 socket.on("receiving-returned-signal", (payload) => {
+                    /* Finding the peer of the user who is sending the signal and then sending the
+                   signal to that peer. */
                     const item = peersRef.current.find(
                         (p) => p.peerID === payload.id
                     );
 
                     item.peer.signal(payload.signal);
                 });
+
+                mySocket.isRoomFull();
+                mySocket.disconnectServer();
             }
         );
-    });
+    }, [roomID]);
 
     return {
         shareScreen,
         stopCall,
-        addRemoteWebcam,
-        acceptCall,
+        peers,
     };
 };
 
