@@ -2,7 +2,6 @@ import React from "react";
 
 import "../styles/Room.css";
 import useRoom from "../hooks/useRoom";
-import usePeer from "../hooks/usePeer";
 import useSocket from "../hooks/useSocket";
 
 const logo1 = require("../assets/background/2.jpg");
@@ -17,11 +16,16 @@ const Room = () => {
     const [isVideo, setIsVideo] = React.useState(true);
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
 
-    const room = useRoom();
-    const useMyPeer = usePeer();
+    const mySocket = useSocket();
 
-    // Connect to client to server
-    useSocket(ROOM_ID);
+    // Connect socket server
+    React.useEffect(() => {
+        mySocket.connectClientToServer();
+        mySocket.messageServerConnectSuccess();
+
+        mySocket.messageMemberJoinSuccess();
+        mySocket.disconnectServer();
+    }, [ROOM_ID]);
 
     const handleAudio = () => {
         setIsAudio((isAudio) => !isAudio);
@@ -34,12 +38,7 @@ const Room = () => {
     const videoRef = React.useRef<HTMLVideoElement>(null);
     const videoGridRef = React.useRef<HTMLDivElement>(null);
 
-    room.acceptCall(isVideo, isAudio, videoRef, ROOM_ID, videoGridRef);
-
-    React.useEffect(() => {
-        useMyPeer.connectPeer(ROOM_ID);
-        useMyPeer.callPeer(isVideo, isAudio, videoGridRef);
-    }, []);
+    const room = useRoom(ROOM_ID, videoRef);
 
     //  SHARE SCREEN
     const shareScreenRef = React.useRef<HTMLVideoElement | any>(null);
@@ -171,6 +170,10 @@ const Room = () => {
                         ) : (
                             <div className="bg-black/50 w-0 h-0 rounded-t-xl"></div>
                         )}
+
+                        {/* {peers.map((peer: MediaStream, index: number) => {
+                            return <video key={index} peer={peer} />;
+                        })} */}
 
                         <div className="relative bg-black/50 w-full h-[10px] p-4">
                             <div className="absolute bottom-0 left-2 rounded-0">

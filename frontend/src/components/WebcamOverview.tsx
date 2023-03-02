@@ -28,9 +28,11 @@ const WebcamStreamCapture = () => {
                 video.current.srcObject = stream;
                 video.current.play();
             }
+
+            console.log("Get webcam success :D")
         })
         .catch(() => {
-            console.log("Failed to get camera :<");
+            console.log("Failed to get webcam :<");
         });
 
     return (
