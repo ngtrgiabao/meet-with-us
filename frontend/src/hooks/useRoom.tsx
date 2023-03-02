@@ -1,7 +1,8 @@
 import React, { RefObject } from "react";
-import Peer from "peerjs";
+import usePeer from "./usePeer";
+import { socket } from "../utils/socket";
 
-const myPeer = new Peer();
+const getUserMedia = navigator.mediaDevices.getUserMedia;
 
 const addRemoteWebcam = (
     stream: MediaStream,
@@ -14,43 +15,41 @@ const addRemoteWebcam = (
     myVideo.play();
 
     videoGridRef.current?.append(myVideo);
+
+    console.log("this is remote webcam");
 };
 
-const addHostWebcam = (
+const acceptCall = async (
     isVideo: boolean,
     isAudio: boolean,
     videoRef: RefObject<HTMLVideoElement>,
     roomID: string,
-    userID: string,
     videoGridRef: RefObject<HTMLDivElement>
 ) => {
-    const getUserMedia = navigator.mediaDevices.getUserMedia;
-    let peerList: any[] = [];
-
-    getUserMedia({
-        video: isVideo,
-        audio: isAudio,
-    })
-        .then((stream: MediaStream) => {
-            // Changing the source of video to current stream.
-            if (videoRef.current && isVideo) {
-                videoRef.current.srcObject = stream;
-                videoRef.current.play();
-            }
-
-            const myStream = stream;
-            const call = myPeer.call(roomID, myStream);
-
-            // if (!peerList.includes(call.peer)) {
-            if (userID) {
-                addRemoteWebcam(stream, videoGridRef);
-            }
-            // peerList.push(call.peer);
-            // }
-        })
-        .catch(() => {
-            console.error("Unable to get webcam :<");
-        });
+    // const getUserMedia = navigator.mediaDevices.getUserMedia;
+    // await getUserMedia({
+    //     video: isVideo,
+    //     audio: isAudio,
+    // })
+    //     .then((stream: MediaStream) => {
+    //         // Changing the source of video to current stream.
+    //         if (videoRef.current && isVideo) {
+    //             videoRef.current.srcObject = stream;
+    //             videoRef.current.play();
+    //         }
+    //         const myStream = stream;
+    //         /*
+    //         It calls the roomID and streams the myStream to the room.
+    //         */
+    //         const call = myPeer.call(roomID, myStream);
+    //         /* add a webcam to the videoGridRef and videoRefDiv only if the peerList does not include the call.peer. */
+    //         if (call.peer) {
+    //             addRemoteWebcam(stream, videoGridRef);
+    //         }
+    //     })
+    //     .catch(() => {
+    //         console.error("Unable to get webcam :<");
+    //     });
 };
 
 const shareScreen = async (
@@ -60,7 +59,8 @@ const shareScreen = async (
     if (shareScreenRef.current?.srcObject) {
         // Stopping the stream and setting the video element to null.
         const mediaStream = shareScreenRef.current.srcObject;
-        mediaStream
+        /* Stopping the stream and setting the video element to null. */
+        await mediaStream
             .getVideoTracks()
             .forEach((shareScreen: MediaStreamTrack) => shareScreen.stop());
 
@@ -90,8 +90,69 @@ const stopCall = () => {
     }
 };
 
-const useRoom = () => {
-    return { shareScreen, stopCall, addRemoteWebcam, addHostWebcam };
+const useRoom = (roomID: string) => {
+    const [peers, setPeers] = React.useState<any>([]);
+    const userVideo = document.createElement("video");
+    let peersRef = React.useRef<any[]>([]);
+    const peer = usePeer();
+
+    React.useEffect(() => {
+        let peers: any[] = [];
+
+        getUserMedia({ video: true, audio: true }).then(
+            (stream: MediaStream) => {
+                userVideo.srcObject = stream;
+                socket.emit("join-room", { roomID, userID: socket.id });
+
+                socket.on("all-users", (users) => {
+                    // Get each ID of user
+                    users.forEach((userID: string) => {
+                        peer.createPeer(userID, socket.id, stream);
+
+                        peersRef.current.push({
+                            peerID: userID,
+                            peer,
+                        });
+                        peers.push(peer);
+                    });
+
+                    setPeers(peer);
+                });
+
+                // Alert when someone want to room
+                socket.on("user-joined", (payload) => {
+                    const addPeer = peer.addPeer(
+                        payload.signal,
+                        payload.callerID,
+                        stream
+                    );
+
+                    // Push info of someone joined room
+                    peersRef.current.push({
+                        peerID: payload.callerID,
+                        peer,
+                    });
+
+                    setPeers((users: any) => [...users, addPeer]);
+                });
+
+                socket.on("receiving-returned-signal", (payload) => {
+                    const item = peersRef.current.find(
+                        (p) => p.peerID === payload.id
+                    );
+
+                    item.peer.signal(payload.signal);
+                });
+            }
+        );
+    });
+
+    return {
+        shareScreen,
+        stopCall,
+        addRemoteWebcam,
+        acceptCall,
+    };
 };
 
 export default useRoom;

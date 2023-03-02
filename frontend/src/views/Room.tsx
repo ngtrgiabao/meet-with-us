@@ -1,9 +1,11 @@
 import React from "react";
+import styled from "styled-components";
 
 import "../styles/Room.css";
 import useRoom from "../hooks/useRoom";
 import usePeer from "../hooks/usePeer";
 import useSocket from "../hooks/useSocket";
+import { socket } from "../utils/socket";
 
 const logo1 = require("../assets/background/2.jpg");
 const logo2 = require("../assets/background/1.jpg");
