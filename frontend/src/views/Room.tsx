@@ -1,9 +1,9 @@
 import React from "react";
 
-import "../styles/Room.css";
+import Transition from "../components/Transition";
 import useRoom from "../hooks/useRoom";
 import useSocket from "../hooks/useSocket";
-
+// import Login from "./Login";
 const logo1 = require("../assets/background/2.jpg");
 const logo2 = require("../assets/background/1.jpg");
 

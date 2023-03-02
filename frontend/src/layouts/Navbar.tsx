@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import useDate from "../hooks/useDate";
-
+import { useNavigate } from "react-router-dom";
+import { collection, query, where, addDoc, getDocs} from "firebase/firestore";
+import {
+GoogleAuthProvider,
+onAuthStateChanged,
+signInWithPopup,
+} from "firebase/auth";
+// import { createUserWithEmailAndPassword } from "firebase/auth";
+import { firebaseAuth,usersRef,firebaseDB } from "../utils/firebaseconfig";
+import { setUser } from "../hooks/slices/AuthSlice"
+import { useAppDispatch } from "../hooks/index";
 import "../styles/Navbar.css";
 
 type NavbarProps = {
@@ -11,8 +21,57 @@ type NavbarProps = {
 
 function Navbar(props: NavbarProps) {
     const { date, time, wish } = useDate();
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
-    return (
+    onAuthStateChanged(firebaseAuth, (currentUser) => {
+        if (currentUser) navigate("/");
+        
+    });
+      
+        const login = async () => {
+        const provider = new GoogleAuthProvider();
+        const {
+          user: { displayName, email, uid, phoneNumber,  },
+        } = await signInWithPopup(firebaseAuth, provider);
+    
+        if (email) {
+          const firestoreQuery = query(usersRef, where("uid", "==", uid));
+          const fetchedUser = await getDocs(firestoreQuery);
+          if (fetchedUser.docs.length === 0) {
+            await addDoc(collection(firebaseDB, "users"), {
+              uid,
+              name: displayName,
+              email,
+              phoneNumber,
+              
+            });
+        }
+        dispatch(setUser({ uid, email: email!, name: displayName!, phoneNumber:phoneNumber!}));
+        
+        navigate("/");
+        }
+        };
+    
+        // const handleSubmid = (e: any) =>{   
+        //     e.preventDefault();
+        //     const email = e.target[0].value;
+        //     const password = e.target[1].value;
+        
+        // const auth = getAuth();
+        // createUserWithEmailAndPassword(auth, email, password)
+        //   .then((userCredential) => {
+        //     // Signed in 
+        //     const user = userCredential.user;
+        //     // ...
+        //   })
+        //   .catch((error) => {
+        //     const errorCode = error.code;
+        //     const errorMessage = error.message;
+        //     // ..
+        //   });
+        // }
+            return (
         <>
             <div className="h-[3rem] absolute top-0 w-full flex justify-between items-center p-8 text-white">
                 {/* DATE */}
@@ -26,22 +85,26 @@ function Navbar(props: NavbarProps) {
 
                     {/* Setting user */}
                     <ul className="absolute top-14 -left-[11.2rem] border w-[15rem] rounded-md bg-white text-sm  text-black font-bold setting-user">
-                        <li className="flex justify-center items-center p-3 hover:bg-blue-300">
-                            <span className="flex justify-center items-center w-[2rem] h-[2rem] mr-4 rounded-full bg-red-500 text-white">
-                                <i className="fa-brands fa-google"></i>
+                        <li className="flex justify-center items-center p-3 hover:bg-blue-300" >
+                            <span className="flex justify-center items-center w-[2rem] h-[2rem] mr-4 rounded-full bg-red-500 text-white" >
+                                <i className="fa-brands fa-google" ></i>
+                               
                             </span>
-                            <span>Login with Google</span>
+                            <span onClick={() => {
+                                login()
+                            }}> Login with Google </span>
                         </li>
                         <li>
-                            <Link
+                            <Link 
                                 to="/login"
                                 className="flex justify-center items-center p-3 border-y-2 text-black hover:bg-blue-300"
                             >
+                                
                                 Sign in
                             </Link>
                         </li>
                         <li>
-                            <Link
+                            <Link 
                                 to="/register"
                                 className="flex justify-center items-center p-3 text-black hover:bg-blue-300"
                             >
