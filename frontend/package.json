@@ -19,6 +19,7 @@
         "@types/node": "^16.18.11",
         "@types/react": "^18.0.27",
         "@types/react-dom": "^18.0.10",
+        "@videosdk.live/react-sdk": "^0.1.67",
         "axios": "^1.3.4",
         "dotenv": "^16.0.3",
         "firebase": "^9.17.1",
@@ -27,7 +28,7 @@
         "react": "^18.2.0",
         "react-copy-to-clipboard": "^5.1.0",
         "react-dom": "^18.2.0",
-        "react-player": "^2.11.0",
+        "react-player": "^2.11.2",
         "react-router-dom": "^6.8.0",
         "react-scripts": "^5.0.1",
         "react-webcam": "^7.0.1",
@@ -64,6 +65,7 @@
         ]
     },
     "devDependencies": {
+        "@types/react-copy-to-clipboard": "^5.0.4",
         "@types/simple-peer": "^9.11.5",
         "@types/styled-components": "^5.1.26",
         "@types/uuid": "^9.0.0",

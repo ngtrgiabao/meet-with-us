@@ -8,6 +8,8 @@ const Camera = () => {
     const currentUserVideoRef = React.useRef<any>(null);
     const peerInstance = React.useRef<any>(null);
 
+    const getUserMedia = navigator.mediaDevices.getUserMedia;
+
     React.useEffect(() => {
         const peer = new Peer();
 
@@ -17,40 +19,45 @@ const Camera = () => {
             setPeerId(id);
         });
 
-        peer.on("call", (call) => {
-            const getUserMedia = navigator.mediaDevices.getUserMedia;
-
-            getUserMedia({ video: true })
-                .then((mediaStream: any) => {
+        getUserMedia({ video: true })
+            .then((mediaStream: any) => {
+                if (currentUserVideoRef.current) {
                     /* Setting the srcObject of the video element to the mediaStream. */
                     currentUserVideoRef.current.srcObject = mediaStream;
                     /* Playing the video. */
                     currentUserVideoRef.current.play();
+                }
+                peer.on("call", (call) => {
                     /* Answering the call. */
                     call.answer(mediaStream);
                     /* This is the callback function that is called when the remote peer sends a stream. */
-                    call.on("stream", function (remoteStream) {
+
+                    call.on("stream", async (remoteStream) => {
                         remoteVideoRef.current.srcObject = remoteStream;
                         remoteVideoRef.current.play();
+
+                        console.log(mediaStream);
                     });
-                })
-                .catch((err) => {
-                    console.log(err);
+
+                    console.log("call");
                 });
-        });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
 
         /* Setting the value of the `peerInstance` ref to the `peer` object. */
         peerInstance.current = peer;
     }, []);
 
     const call = (remotePeerId: string) => {
-        const getUserMedia = navigator.mediaDevices.getUserMedia;
-
         getUserMedia({ video: true })
             .then((mediaStream: any) => {
-                /* Setting the srcObject of the video element to the mediaStream. */
-                currentUserVideoRef.current.srcObject = mediaStream;
-                currentUserVideoRef.current.play();
+                if (currentUserVideoRef.current) {
+                    /* Setting the srcObject of the video element to the mediaStream. */
+                    currentUserVideoRef.current.srcObject = mediaStream;
+                    currentUserVideoRef.current.play();
+                }
 
                 /* Calling the remote peer. */
                 const call = peerInstance.current.call(
@@ -83,7 +90,13 @@ const Camera = () => {
                 <video ref={currentUserVideoRef} className="-scaleX-[1]" />
             </div>
             <div>
-                <video ref={remoteVideoRef} width={340} height={440} />
+                <video
+                    className="border-2 border-red-500"
+                    ref={remoteVideoRef}
+                    width={340}
+                    height={440}
+                    autoPlay
+                />
             </div>
         </div>
     );

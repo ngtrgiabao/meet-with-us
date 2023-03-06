@@ -1,10 +1,6 @@
 import React, { RefObject } from "react";
-
-import usePeer from "./usePeer";
-import useSocket from "./useSocket";
+import SimplePeer from "simple-peer";
 import { socket } from "../utils/socket";
-
-const getUserMedia = navigator.mediaDevices.getUserMedia;
 
 const shareScreen = async (
     shareScreenRef: RefObject<HTMLVideoElement | any>,
@@ -44,80 +40,19 @@ const stopCall = () => {
     }
 };
 
-const useRoom = (roomID: string, videoRef: RefObject<HTMLVideoElement>) => {
-    const mySocket = useSocket();
-    const peer = usePeer();
-    const [peers, setPeers] = React.useState<any>([]);
-    let peersRef = React.useRef<any[]>([]);
+const handleJoinRoom = (roomID: string) => {
+    const newPeer = new SimplePeer({ initiator: true });
+    newPeer.on("signal", (signal) => {
+        console.log("sending signal to server");
+        socket.emit("signal", { roomID, signal });
+    });
+};
 
-    React.useEffect(() => {
-        getUserMedia({ video: true, audio: true }).then(
-            (stream: MediaStream) => {
-                if (videoRef.current) {
-                    videoRef.current.srcObject = stream;
-                    videoRef.current.play();
-                }
-
-                mySocket.signalJoinRoom(roomID);
-
-                socket.on("all-users", (users) => {
-                    /* Getting the peer of each user in the room. */
-                    let peers: any[] = [];
-
-                    // Get each ID of user
-                    users.forEach((userID: string) => {
-                        peer.createPeer(userID, socket.id, stream);
-
-                        peersRef.current.push({
-                            peerID: userID,
-                            peer,
-                        });
-                        peers.push(peer);
-                    });
-
-                    setPeers(peer);
-
-                    console.log(peers);
-                });
-
-                // Alert when someone want to room
-                socket.on("user-joined", (payload) => {
-                    const addPeer = peer.addPeer(
-                        payload.signal,
-                        payload.callerID,
-                        stream
-                    );
-
-                    // Push info of member who want to join room
-                    peersRef.current.push({
-                        peerID: payload.callerID,
-                        peer,
-                    });
-
-                    /* Adding the new peer to the array of peers. */
-                    setPeers((users: any) => [...users, addPeer]);
-                });
-
-                socket.on("receiving-returned-signal", (payload) => {
-                    /* Finding the peer of the user who is sending the signal and then sending the
-                   signal to that peer. */
-                    const item = peersRef.current.find(
-                        (p) => p.peerID === payload.id
-                    );
-
-                    item.peer.signal(payload.signal);
-                });
-
-                mySocket.isRoomFull();
-                mySocket.disconnectServer();
-            }
-        );
-    }, [roomID]);
-
+const useRoom = () => {
     return {
         shareScreen,
         stopCall,
-        peers,
+        handleJoinRoom,
     };
 };
 

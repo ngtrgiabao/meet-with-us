@@ -63,6 +63,18 @@ export interface IPopupRoomId {
     togglePopup: () => void;
 }
 
+export interface IJoinScreen {
+    getMeetingAndToken: any;
+}
+
+export interface IContainer {
+    meetingID: string;
+}
+
+export interface IVideoComponent {
+    participantID: string;
+}
+
 //GSAP
 export interface ITransitionProps {
     timeline: GSAPTimeline;

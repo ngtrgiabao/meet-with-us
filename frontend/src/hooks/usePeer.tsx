@@ -10,7 +10,7 @@ const createPeer = (
 ) => {
     // Create a signal from host of room
     const peer = new Peer({
-        // Host of room so set true
+        // Host of room so set initiator true
         initiator: true,
         trickle: false,
         stream,
@@ -29,7 +29,7 @@ const addPeer = (
     stream: MediaStream
 ) => {
     const peer = new Peer({
-        // Not a host of room so set false
+        // Not a host of room so set initiator false
         initiator: false,
         trickle: false,
         stream,
@@ -46,8 +46,14 @@ const addPeer = (
     return peer;
 };
 
+const closePeer = () => {
+    const peer = new Peer({ initiator: false, trickle: false });
+
+    peer.destroy();
+};
+
 const usePeer = () => {
-    return { createPeer, addPeer };
+    return { createPeer, addPeer, closePeer };
 };
 
 export default usePeer;
