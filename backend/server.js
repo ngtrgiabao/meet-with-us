@@ -21,68 +21,25 @@ app.get("/:room", (req, res) => {
     });
 });
 
-const users = {};
-const socketToRoom = {};
-
 io.on("connection", (socket) => {
-    console.log(`user connected socket: ${socket.id}`);
-    // Emit event fromt server to client
-    socket.emit("server", {
-        msg: "hello from server",
+    console.log("New client connected");
+
+    socket.on("join", (room) => {
+        socket.join(room);
+        console.log(`Member ${socket.id} joined room ${room}`);
+        socket.to(room).emit("user-connected", socket.id);
     });
 
-    socket.on("react", (data) => {
-        // Get msg from client
-        const { msg } = data;
-        console.log(msg);
-    });
-    socket.on("join-room", (roomID) => {
-        /* Checking if the roomID exists in the users object. */
-        if (users[roomID]) {
-            const length = users[roomID].length;
-
-            // Length of room
-            if (length === 4) {
-                socket.emit("room-full");
-                return;
-            }
-            users[roomID].push(socket.id);
-        } else {
-            /* creating a new room if the room doesn't exist. */
-            users[roomID] = [socket.id];
-        }
-
-        // Add member ID to list room
-        socketToRoom[socket.id] = roomID;
-
-        // Log list of members joined room, except member join recently
-        const usersInThisRoom = users[roomID].filter((id) => id !== socket.id);
-
-        socket.broadcast.emit("all-users", usersInThisRoom);
-    });
-    socket.on("sending-signal", (payload) => {
-        // Emit when member join
-        io.to(payload.userToSignal).emit("user-joined", {
-            signal: payload.signal,
-            callerID: payload.callerID,
-        });
-    });
-    socket.on("returning-signal", (payload) => {
-        // Emit msg get signal success from client
-        io.to(payload.callerID).emit("receiving-returned-signal", {
-            signal: payload.signal,
-            id: socket.id,
-        });
+    socket.on("signal", (data) => {
+        console.log(`Member ${socket.id} signaling to ${data.target}`);
+        socket
+            .to(data.target)
+            .emit("signal", { sender: socket.id, signal: data.signal });
     });
 
     socket.on("disconnect", () => {
-        // Delete user when leave room
-        const roomID = socketToRoom[socket.id];
-        let room = users[roomID];
-        if (room) {
-            room = room.filter((id) => id !== socket.id);
-            users[roomID] = room;
-        }
+        console.log(`Member ${socket.id} disconnected`);
+        socket.broadcast.emit("user-disconnected", socket.id);
     });
 });
 

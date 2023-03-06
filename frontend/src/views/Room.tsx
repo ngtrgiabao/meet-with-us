@@ -1,16 +1,18 @@
 import React from "react";
+import Peer from "simple-peer";
 
 import "../styles/Room.css";
 import useRoom from "../hooks/useRoom";
 import useSocket from "../hooks/useSocket";
+import usePeer from "../hooks/usePeer";
+import UserService from "../api/user/user.service";
+import { socket } from "../utils/socket";
 
 const logo1 = require("../assets/background/2.jpg");
 const logo2 = require("../assets/background/1.jpg");
 
 const Room = () => {
-    const ROOM_ID = JSON.stringify(
-        window.location?.pathname?.split("/")?.at(2)
-    );
+    const ROOM_ID = JSON.stringify(window.location?.pathname?.split("/")[2]);
 
     const [isAudio, setIsAudio] = React.useState(true);
     const [isVideo, setIsVideo] = React.useState(true);
@@ -19,9 +21,9 @@ const Room = () => {
     const mySocket = useSocket();
 
     // Connect socket server
-    React.useEffect(() => {
+    React.useMemo(() => {
         mySocket.connectClientToServer();
-        mySocket.messageServerConnectSuccess();
+        mySocket.messageServerConnectSuccess(ROOM_ID);
 
         mySocket.messageMemberJoinSuccess();
         mySocket.disconnectServer();
@@ -36,12 +38,80 @@ const Room = () => {
     };
 
     const videoRef = React.useRef<HTMLVideoElement>(null);
+    const videoRef2 = React.useRef<HTMLVideoElement>(null);
     const videoGridRef = React.useRef<HTMLDivElement>(null);
 
-    const room = useRoom(ROOM_ID, videoRef);
+    const room = useRoom();
 
     //  SHARE SCREEN
     const shareScreenRef = React.useRef<HTMLVideoElement | any>(null);
+
+    // Initialize simple-peer instance
+    const member = new Peer({
+        initiator: false,
+        trickle: false,
+    });
+    // Send signaling message to signaling server
+    member.on("signal", (signal) => {
+        socket.emit("signal", { target: socket.id, signal });
+    });
+
+    // Receive signaling message from signaling server
+    socket.on("signal", (data) => {
+        if (data.sender === socket.id) {
+            member.signal(data.signal);
+        }
+    });
+
+    // Connect to other peer
+    member.on("connect", () => {
+        console.log("Peer connected");
+    });
+
+    // Join a room
+    socket.emit("join", ROOM_ID);
+
+    // Initialize simple-peer instance
+    const host = new Peer({
+        initiator: true,
+        trickle: false,
+    });
+
+    // Send signaling message to signaling server
+    host.on("signal", (signal: any) => {
+        socket.emit("signal", { target: ROOM_ID, signal });
+    });
+
+    // Receive signaling message from signaling server
+    socket.on("signal", (data) => {
+        if (data.sender === ROOM_ID) {
+            host.signal(data.signal);
+        }
+    });
+
+    // Connect to other peer
+    host.on("connect", () => {
+        console.log("Peer connected");
+    });
+
+    // Handle errors
+    socket.on("error", (error) => {
+        console.error("Socket error:", error);
+    });
+    host.on("error", (error: string) => {
+        console.error("Peer error:", error);
+    });
+
+    // Handle close and disconnect events
+    socket.on("close", () => {
+        console.log("Socket closed");
+    });
+    host.on("close", () => {
+        console.log("Peer closed");
+    });
+    host.on("disconnect", () => {
+        console.log("Peer disconnected");
+    });
 
     return (
         <div
@@ -99,7 +169,6 @@ const Room = () => {
                                 <i className="fa-solid fa-microphone-slash"></i>
                             </button>
                         )}
-
                         {/* VIDEO */}
                         {isVideo ? (
                             <button
@@ -166,6 +235,14 @@ const Room = () => {
                                         width: "100%",
                                     }}
                                 ></video>
+                                <video
+                                    ref={videoRef2}
+                                    className="bg-black/50 rounded-t-xl"
+                                    style={{
+                                        transform: "rotateY(180deg)",
+                                        width: "100%",
+                                    }}
+                                ></video>
                             </>
                         ) : (
                             <div className="bg-black/50 w-0 h-0 rounded-t-xl"></div>
@@ -174,7 +251,6 @@ const Room = () => {
                         {/* {peers.map((peer: MediaStream, index: number) => {
                             return <video key={index} peer={peer} />;
                         })} */}
-
                         <div className="relative bg-black/50 w-full h-[10px] p-4">
                             <div className="absolute bottom-0 left-2 rounded-0">
                                 Bạn
