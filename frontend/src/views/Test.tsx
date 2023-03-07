@@ -7,8 +7,8 @@ import {
 } from "@videosdk.live/react-sdk";
 
 import { authToken, createMeeting } from "../api/api.service";
-import JoinScreen from "../components/JoinScreen";
-import Container from "../components/Container";
+import RoomContainer from "../components/room/RoomContainer";
+import RoomJoinScreen from "../components/room/RoomJoinScreen";
 
 // const JoinScreen = () => {
 //     return null;
@@ -46,11 +46,11 @@ const Test = () => {
             token={authToken}
         >
             <MeetingConsumer>
-                {() => <Container meetingID={meetingId} />}
+                {() => <RoomContainer meetingID={meetingId} />}
             </MeetingConsumer>
         </MeetingProvider>
     ) : (
-        <JoinScreen getMeetingAndToken={getMeetingAndToken} />
+        <RoomJoinScreen getMeetingAndToken={getMeetingAndToken} />
     );
 };
 

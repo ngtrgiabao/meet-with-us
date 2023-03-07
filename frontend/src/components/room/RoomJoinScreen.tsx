@@ -1,7 +1,8 @@
 import React from "react";
-import { IJoinScreen } from "../utils/interfaces";
 
-const JoinScreen = (props: IJoinScreen) => {
+import { IJoinScreen } from "../../utils/interfaces";
+
+const RoomJoinScreen = (props: IJoinScreen) => {
     const { getMeetingAndToken } = props;
     const [meetingId, setMeetingId] = React.useState<string | null>(null);
 
@@ -28,4 +29,4 @@ const JoinScreen = (props: IJoinScreen) => {
     return <div>JoinScreen</div>;
 };
 
-export default JoinScreen;
+export default RoomJoinScreen;

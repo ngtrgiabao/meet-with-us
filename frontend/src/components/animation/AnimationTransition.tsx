@@ -1,9 +1,9 @@
 import React from "react";
 import { Power4 } from "gsap";
 
-import { ITransitionProps } from "../utils/interfaces";
+import { ITransitionProps } from "../../utils/interfaces";
 
-const Transition = (props: ITransitionProps) => {
+const AnimationTransition = (props: ITransitionProps) => {
     React.useEffect(() => {
         props.timeline.fromTo(
             ".transition-effect",
@@ -27,4 +27,4 @@ const Transition = (props: ITransitionProps) => {
     );
 };
 
-export default Transition;
+export default AnimationTransition;

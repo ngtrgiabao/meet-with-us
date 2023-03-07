@@ -1,7 +1,7 @@
 import React from "react";
 import { gsap } from "gsap";
 
-import { IAboutCardProps } from "../utils/interfaces";
+import { IAboutCardProps } from "../../utils/interfaces";
 
 const AboutCard = (props: IAboutCardProps) => {
     const aboutCard = gsap.timeline();
