@@ -1,8 +1,8 @@
 import React from "react";
 
-import { IMiniAvatar } from "../utils/interfaces";
+import { IMiniAvatar } from "../../utils/interfaces";
 
-const MiniAvatar = (props: IMiniAvatar) => {
+const UserOverviewMiniAvatar = (props: IMiniAvatar) => {
     return (
         <div className="-mr-3">
             <img
@@ -14,4 +14,4 @@ const MiniAvatar = (props: IMiniAvatar) => {
     );
 };
 
-export default MiniAvatar;
+export default UserOverviewMiniAvatar;

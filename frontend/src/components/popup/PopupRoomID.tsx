@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { IPopupRoomId } from "../utils/interfaces";
+import { IPopupRoomID } from "../../utils/interfaces";
 
 const { CopyToClipboard } = require("react-copy-to-clipboard");
 
-const PopupRoomId = (props: IPopupRoomId) => {
+const PopupRoomID = (props: IPopupRoomID) => {
     const [isCopied, setIsCopied] = React.useState<boolean>(false);
     const [roomID, setRoomID] = React.useState<string>(props.id);
 
@@ -66,4 +66,4 @@ const PopupRoomId = (props: IPopupRoomId) => {
     );
 };
 
-export default PopupRoomId;
+export default PopupRoomID;

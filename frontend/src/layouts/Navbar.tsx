@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import useDate from "../hooks/useDate";
+import "../styles/navbar/navbar.css";
 
-import "../styles/Navbar.css";
+import useDate from "../hooks/useDate";
 
 type NavbarProps = {
     logo: string;

@@ -1,6 +1,6 @@
 import React from "react";
 
-const VideoPlayer: React.FC<{ stream: MediaStream }> = ({ stream }) => {
+const RoomVideoPlayer: React.FC<{ stream: MediaStream }> = ({ stream }) => {
     const videoRef = React.useRef<HTMLVideoElement>(null);
 
     React.useEffect(() => {
@@ -12,4 +12,4 @@ const VideoPlayer: React.FC<{ stream: MediaStream }> = ({ stream }) => {
     return <video ref={videoRef} />;
 };
 
-export default VideoPlayer;
+export default RoomVideoPlayer;
