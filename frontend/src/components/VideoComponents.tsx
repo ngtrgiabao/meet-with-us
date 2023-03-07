@@ -77,7 +77,7 @@ const VideoComponent = (props: IVideoComponent) => {
                     //
                     height={"100px"}
                     width={"100px"}
-                    onError={(err) => {
+                    onError={(err: Error) => {
                         console.log(err, "participant video error");
                     }}
                 />
