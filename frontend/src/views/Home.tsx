@@ -5,12 +5,13 @@ import Peer from "peerjs";
 
 import "../styles/index.css";
 
-import BannerVideo from "../layouts/BannerVideo";
 import Navbar from "../layouts/Navbar";
-import PopupRoomId from "../components/PopupRoomId";
 import { RoomContext } from "../context/room/RoomProvider";
+import PopupRoomID from "../components/popup/PopupRoomID";
 
+import BannerVideo from "../layouts/BannerVideo";
 import Logo from "../assets/logo.svg";
+
 const bgImg = require("../assets/background/home.mp4");
 
 const { CopyToClipboard } = require("react-copy-to-clipboard");
@@ -182,7 +183,7 @@ const Home = () => {
                 ></div>
 
                 {/* Popup */}
-                <PopupRoomId
+                <PopupRoomID
                     id={roomID}
                     isActive={isActive}
                     togglePopup={handleActive}

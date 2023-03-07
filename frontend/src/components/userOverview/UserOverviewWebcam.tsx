@@ -1,6 +1,6 @@
 import React from "react";
 
-const WebcamStreamCapture = () => {
+const UserOverviewWebcam = () => {
     const [isAudio, setIsAudio] = React.useState<boolean>(true);
     const [isVideo, setIsVideo] = React.useState<boolean>(true);
 
@@ -29,7 +29,7 @@ const WebcamStreamCapture = () => {
                 video.current.play();
             }
 
-            console.log("Get webcam success :D")
+            console.log("Get webcam success :D");
         })
         .catch(() => {
             console.log("Failed to get webcam :<");
@@ -88,4 +88,4 @@ const WebcamStreamCapture = () => {
     );
 };
 
-export default WebcamStreamCapture;
+export default UserOverviewWebcam;

@@ -6,9 +6,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import { IPopupConfirm } from "../utils/interfaces";
+import { IPopupConfirm } from "../../utils/interfaces";
 
-export default function AlertDialog(props: IPopupConfirm) {
+const PopupConfirm = (props: IPopupConfirm) => {
     return (
         <div>
             <Dialog
@@ -35,4 +35,6 @@ export default function AlertDialog(props: IPopupConfirm) {
             </Dialog>
         </div>
     );
-}
+};
+
+export default PopupConfirm;

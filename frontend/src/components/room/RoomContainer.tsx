@@ -1,11 +1,12 @@
 import React from "react";
 import { useMeeting } from "@videosdk.live/react-sdk";
 
-import { IContainer } from "../utils/interfaces";
-import Controls from "./Controls";
-import VideoComponent from "./VideoComponents";
+import Controls from "./RoomControls";
+import VideoComponent from "./RoomVideoComponents";
 
-const Container = (props: IContainer) => {
+import { IContainer } from "../../utils/interfaces";
+
+const RoomContainer = (props: IContainer) => {
     const { meetingID } = props;
 
     const [joined, setJoined] = React.useState(false);
@@ -36,4 +37,4 @@ const Container = (props: IContainer) => {
     );
 };
 
-export default Container;
+export default RoomContainer;
