@@ -2,15 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap/all";
 
-import AboutCard from "../components/AboutCard";
-import Transition from "../components/Transition";
+import "../styles/about/about.css";
+
+import AboutCard from "../components/about/AboutCard";
+import Transition from "../components/animation/AnimationTransition";
 
 import bg1 from "../assets/background/baoBg.svg";
 import bg2 from "../assets/background/2.jpg";
 import bg3 from "../assets/background/crocodile.svg";
 import bg4 from "../assets/background/4.jpg";
-
-import "../styles/About.css";
 
 const About = () => {
     const about = gsap.timeline();

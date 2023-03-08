@@ -1,10 +1,14 @@
 const http = require("http");
 const { Server } = require("socket.io");
+const jwt = require("jsonwebtoken");
 
 const app = require("./app");
 const config = require("./src/config/database.config");
 
 const PORT = config.app.port;
+const API_KEY = "82f46fe4-9cce-4647-8c6c-ab657a3a58b8";
+const SECRET =
+    "3e313418ceedb3fa1a023e6886ed6cc8d05fcfcfea6f7783d254718544efcfdf";
 
 const httpServer = http.createServer(app);
 
@@ -29,20 +33,23 @@ io.on("connection", (socket) => {
         console.log(`Member ${socket.id} joined room ${room}`);
         socket.to(room).emit("user-connected", socket.id);
     });
-
     socket.on("signal", (data) => {
         console.log(`Member ${socket.id} signaling to ${data.target}`);
-        socket
-            .to(data.target)
-            .emit("signal", { sender: socket.id, signal: data.signal });
+
+        socket.on("signal", (data) => {
+            console.log(`Member ${socket.id} signaling to ${data.target}`);
+            socket
+                .to(data.target)
+                .emit("signal", { sender: socket.id, signal: data.signal });
+        });
+
+        socket.on("disconnect", () => {
+            console.log(`Member ${socket.id} disconnected`);
+            socket.broadcast.emit("user-disconnected", socket.id);
+        });
     });
 
-    socket.on("disconnect", () => {
-        console.log(`Member ${socket.id} disconnected`);
-        socket.broadcast.emit("user-disconnected", socket.id);
+    httpServer.listen(PORT, () => {
+        console.log("server connected");
     });
-});
-
-httpServer.listen(PORT, () => {
-    console.log("server connected");
 });

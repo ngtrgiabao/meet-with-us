@@ -57,10 +57,22 @@ export interface IPopupConfirm {
     togglePopup: () => void;
 }
 
-export interface IPopupRoomId {
+export interface IPopupRoomID {
     id: string;
     isActive: boolean;
     togglePopup: () => void;
+}
+
+export interface IJoinScreen {
+    getMeetingAndToken: any;
+}
+
+export interface IContainer {
+    meetingID: string;
+}
+
+export interface IVideoComponent {
+    participantID: string;
 }
 
 //GSAP
