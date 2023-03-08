@@ -8,11 +8,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 import { IPopupConfirm } from "../../utils/interfaces";
 
-const PopupConfirm = (props: IPopupConfirm) => {
+const PopupConfirm = ({ isActive, togglePopup }: IPopupConfirm) => {
     return (
         <div>
             <Dialog
-                open={props.isActive}
+                open={isActive}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
@@ -27,8 +27,8 @@ const PopupConfirm = (props: IPopupConfirm) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={props.togglePopup}>Disagree</Button>
-                    <Button onClick={props.togglePopup} autoFocus>
+                    <Button onClick={togglePopup}>Disagree</Button>
+                    <Button onClick={togglePopup} autoFocus>
                         Agree
                     </Button>
                 </DialogActions>

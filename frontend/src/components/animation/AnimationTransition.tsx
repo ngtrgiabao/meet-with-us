@@ -3,9 +3,9 @@ import { Power4 } from "gsap";
 
 import { ITransitionProps } from "../../utils/interfaces";
 
-const AnimationTransition = (props: ITransitionProps) => {
+const AnimationTransition = ({ timeline, duration }: ITransitionProps) => {
     React.useEffect(() => {
-        props.timeline.fromTo(
+        timeline.fromTo(
             ".transition-effect",
             {
                 width: "100%",
@@ -13,7 +13,7 @@ const AnimationTransition = (props: ITransitionProps) => {
             },
             {
                 width: "0%",
-                duration: props.duration,
+                duration: duration,
                 ease: Power4.easeOut,
                 display: "none",
             }

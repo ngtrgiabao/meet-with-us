@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 
 import { IAboutCardProps } from "../../utils/interfaces";
 
-const AboutCard = (props: IAboutCardProps) => {
+const AboutCard = ({bgImg, name, role}: IAboutCardProps) => {
     const aboutCard = gsap.timeline();
 
     React.useEffect(() => {
@@ -25,13 +25,13 @@ const AboutCard = (props: IAboutCardProps) => {
     return (
         <>
             <img
-                src={props.bgImg}
+                src={bgImg}
                 alt="img"
                 className="h-full object-cover before:bg-black before:w-full before:h-full bg-img"
             />
             <div className="absolute top-[40%] w-full flex justify-center items-center flex-col img-desc text-white font-bold h-[20%]">
-                <p className="text-xl">{props.name}</p>
-                <span className="font-thin">{props.role}</span>
+                <p className="text-xl">{name}</p>
+                <span className="font-thin">{role}</span>
             </div>
             <span className="hover-text absolute top-1/2 left-1/2 -translate-x-1/2 text-white font-bold text-lg">
                 HOVER ME

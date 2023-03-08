@@ -1,6 +1,14 @@
 import React from "react";
 import { useMeeting } from "@videosdk.live/react-sdk";
 
+const stopMediaStream = (stream: MediaStream) => {
+    stream.getTracks().forEach((track) => {
+        if (track) {
+            track.stop();
+        }
+    });
+};
+
 const RoomControls = () => {
     const { leave, toggleMic, toggleWebcam } = useMeeting();
 
@@ -9,9 +17,7 @@ const RoomControls = () => {
             .getUserMedia({ video: true })
             .then((stream) => {
                 toggleWebcam();
-                stream.getTracks().forEach((track) => {
-                    track.stop();
-                });
+                stopMediaStream(stream);
             })
             .catch((err) => {
                 console.error("Error getting media stream: ", err);
