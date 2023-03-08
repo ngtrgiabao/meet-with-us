@@ -1,12 +1,9 @@
 import React from "react";
 
 import Logo from "../assets/logo.svg";
+import { TBannerVideo } from "../utils/types";
 
-type BannerVideoType = {
-    bgImg: string;
-};
-
-const BannerVideo = (props: BannerVideoType) => {
+const BannerVideo = ({ bgImg }: TBannerVideo) => {
     return (
         <>
             <div className="top-20 object-cover absolute flex flex-col items-center justify-between animate__animated animate__fadeIn">
@@ -18,7 +15,7 @@ const BannerVideo = (props: BannerVideoType) => {
                     width={500}
                     height={560}
                 >
-                    <source src={props.bgImg} />
+                    <source src={bgImg} />
                 </video>
 
                 <div className="flex w-full justify-center items-center mt-3 animate__animated  animate__bounceIn">
