@@ -2,13 +2,13 @@ import React from "react";
 
 import { IJoinScreen } from "../../utils/interfaces";
 
-const RoomJoinScreen = (props: IJoinScreen) => {
-    const { getMeetingAndToken } = props;
+const RoomJoinScreen = ({ getMeetingAndToken }: IJoinScreen) => {
     const [meetingId, setMeetingId] = React.useState<string | null>(null);
 
-    const onClick = () => {
+    const handleGetMeetingAndToken = () => {
         getMeetingAndToken(meetingId);
     };
+
     return (
         <div className="h-screen">
             <input
@@ -18,10 +18,13 @@ const RoomJoinScreen = (props: IJoinScreen) => {
                     setMeetingId(e.target.value);
                 }}
             />
-            <button onClick={onClick} className="text-white mx-10">
+            <button
+                onClick={handleGetMeetingAndToken}
+                className="text-white mx-10"
+            >
                 Join
             </button>
-            <button onClick={onClick} className="text-white">
+            <button onClick={handleGetMeetingAndToken} className="text-white">
                 Create Meeting
             </button>
         </div>

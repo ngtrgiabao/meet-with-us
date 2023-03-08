@@ -10,7 +10,6 @@ import { RoomContext } from "../context/room/RoomProvider";
 import PopupRoomID from "../components/popup/PopupRoomID";
 
 import BannerVideo from "../layouts/BannerVideo";
-import Logo from "../assets/logo.svg";
 
 const bgImg = require("../assets/background/home.mp4");
 
@@ -60,7 +59,7 @@ const Home = () => {
                     });
                 }}
             >
-                <Navbar logo={Logo} />
+                <Navbar />
 
                 <BannerVideo bgImg={bgImg} />
 
