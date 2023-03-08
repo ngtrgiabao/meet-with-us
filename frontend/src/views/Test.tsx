@@ -5,26 +5,11 @@ import {
     useMeeting,
     useParticipant,
 } from "@videosdk.live/react-sdk";
+import { v4 as uuid } from "uuid";
 
 import { authToken, createMeeting } from "../api/api.service";
 import RoomContainer from "../components/room/RoomContainer";
 import RoomJoinScreen from "../components/room/RoomJoinScreen";
-
-// const JoinScreen = () => {
-//     return null;
-// };
-
-const VideoComponent = () => {
-    return null;
-};
-
-const Controls = () => {
-    return null;
-};
-
-// const Container = () => {
-//     return null;
-// };
 
 const Test = () => {
     const [meetingId, setMeetingId] = React.useState<string | null>(null);
@@ -41,7 +26,7 @@ const Test = () => {
                 meetingId,
                 micEnabled: true,
                 webcamEnabled: false,
-                name: "C.V. Raman",
+                name: uuid(),
             }}
             token={authToken}
         >

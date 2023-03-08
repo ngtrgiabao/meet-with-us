@@ -5,11 +5,7 @@ import "../styles/navbar/navbar.css";
 
 import useDate from "../hooks/useDate";
 
-type NavbarProps = {
-    logo: string;
-};
-
-function Navbar(props: NavbarProps) {
+function Navbar() {
     const { date, time, wish } = useDate();
 
     return (

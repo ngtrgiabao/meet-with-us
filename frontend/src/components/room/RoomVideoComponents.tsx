@@ -6,50 +6,74 @@ import { IVideoComponent } from "../../utils/interfaces";
 
 const RoomVideoComponent = (props: IVideoComponent) => {
     const { participantID } = props;
-    const webcamRef = React.useRef<any>(null);
-    const micRef = React.useRef<any>(null);
+    const webcamRef = React.useRef<HTMLVideoElement | null>(null);
+    const micRef = React.useRef<HTMLAudioElement | null>(null);
 
     const { displayName, webcamStream, micStream, webcamOn, micOn, isLocal } =
         useParticipant(participantID);
 
     React.useEffect(() => {
-        if (webcamRef.current) {
-            if (webcamOn) {
-                const mediaStream = new MediaStream();
-                mediaStream.addTrack(webcamStream.track);
-                console.log(webcamStream.track);
-                webcamRef.current.srcObject = mediaStream;
-                webcamRef.current
-                    .play()
-                    .catch((error: Error) =>
-                        console.error("videoElem.current.play() failed", error)
-                    );
-            } else {
-                webcamRef.current.srcObject = null;
+        try {
+            if (webcamRef.current) {
+                if (webcamOn) {
+                    const mediaStream = new MediaStream();
+
+                    if (webcamStream && webcamStream.track) {
+                        mediaStream.addTrack(webcamStream.track);
+                    }
+
+                    webcamRef.current.srcObject = mediaStream;
+                    webcamRef.current.addEventListener("canplay", () => {
+                        if (webcamRef.current) {
+                            webcamRef.current
+                                .play()
+                                .then(() => {
+                                    console.log(
+                                        "Successfully to play video element"
+                                    );
+                                })
+                                .catch((error: Error) => {
+                                    console.log("Failed to play video element");
+                                });
+                        }
+                    });
+                } else {
+                    webcamRef.current.pause();
+                    webcamRef.current.srcObject = null;
+                }
             }
+        } catch (error) {
+            console.log("error", error);
         }
     }, [webcamStream, webcamOn]);
 
     React.useEffect(() => {
-        if (micRef.current) {
-            if (micOn) {
-                const mediaStream = new MediaStream();
-                mediaStream.addTrack(micStream.track);
+        try {
+            if (micRef.current) {
+                if (micOn) {
+                    const mediaStream = new MediaStream();
 
-                if (micRef.current) {
-                    micRef.current.srcObject = mediaStream;
-                    micRef.current
-                        .play()
-                        .catch((error: Error) =>
-                            console.error(
-                                "videoElem.current.play() failed",
-                                error
-                            )
-                        );
+                    if (micStream && micStream.track) {
+                        mediaStream.addTrack(micStream.track);
+                    }
+
+                    if (micRef.current) {
+                        micRef.current.srcObject = mediaStream;
+                        micRef.current
+                            .play()
+                            .catch((error: Error) =>
+                                console.error(
+                                    "videoElem.current.play() failed",
+                                    error
+                                )
+                            );
+                    }
+                } else {
+                    micRef.current.srcObject = null;
                 }
-            } else {
-                micRef.current.srcObject = null;
             }
+        } catch (error) {
+            console.log("error", error);
         }
     }, [micStream, micOn]);
 

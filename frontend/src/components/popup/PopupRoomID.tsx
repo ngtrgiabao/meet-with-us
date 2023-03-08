@@ -5,9 +5,9 @@ import { IPopupRoomID } from "../../utils/interfaces";
 
 const { CopyToClipboard } = require("react-copy-to-clipboard");
 
-const PopupRoomID = (props: IPopupRoomID) => {
+const PopupRoomID = ({ id, isActive, togglePopup }: IPopupRoomID) => {
     const [isCopied, setIsCopied] = React.useState<boolean>(false);
-    const [roomID, setRoomID] = React.useState<string>(props.id);
+    const [roomID, setRoomID] = React.useState<string>(id);
 
     const handleCopyClipboard: () => void = () => {
         setIsCopied((isCopied) => !isCopied);
@@ -15,7 +15,7 @@ const PopupRoomID = (props: IPopupRoomID) => {
 
     return (
         <>
-            {props.isActive ? (
+            {isActive ? (
                 // BACKGROUND
                 <div className="w-full h-full absolute flex flex-col justify-center items-center bg-black/80">
                     {/* POPUP */}
@@ -26,15 +26,15 @@ const PopupRoomID = (props: IPopupRoomID) => {
                         <div className="relative">
                             <input
                                 type="text"
-                                value={props.id || roomID}
+                                value={id || roomID}
                                 className="mr-3 text-black p-2"
                                 onChange={() => {
-                                    setRoomID(props.id);
+                                    setRoomID(id);
                                 }}
                             />
-                            <Link to={`/room/${props.id}`}>
+                            <Link to={`/room/${id}`}>
                                 <span
-                                    onClick={props.togglePopup}
+                                    onClick={togglePopup}
                                     className="p-2 py-[0.15rem] absolute -top-12 -right-8 hover:text-red-500 cursor-pointer"
                                 >
                                     <i className="fa-solid fa-xmark"></i>
@@ -48,7 +48,7 @@ const PopupRoomID = (props: IPopupRoomID) => {
                                 </span>
                             ) : (
                                 <CopyToClipboard
-                                    text={props.id}
+                                    text={id}
                                     onCopy={handleCopyClipboard}
                                 >
                                     <span className="text-white cursor-pointer hover:text-white hover:bg-blue-400 p-2 px-4 rounded-md animate__animated animate__bounceIn">
