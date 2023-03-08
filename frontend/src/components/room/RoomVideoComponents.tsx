@@ -52,21 +52,21 @@ const RoomVideoComponent = (props: IVideoComponent) => {
             if (micRef.current) {
                 if (micOn) {
                     const mediaStream = new MediaStream();
-
                     if (micStream && micStream.track) {
                         mediaStream.addTrack(micStream.track);
                     }
-
                     if (micRef.current) {
                         micRef.current.srcObject = mediaStream;
-                        micRef.current
-                            .play()
-                            .catch((error: Error) =>
-                                console.error(
-                                    "videoElem.current.play() failed",
-                                    error
-                                )
-                            );
+                        if (micRef.current.srcObject !== null) {
+                            micRef.current
+                                .play()
+                                .catch((error: Error) =>
+                                    console.error(
+                                        "videoElem.current.play() failed",
+                                        error
+                                    )
+                                );
+                        }
                     }
                 } else {
                     micRef.current.srcObject = null;
