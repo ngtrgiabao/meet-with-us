@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Peer from "simple-peer";
 
-import "../styles/Room.css";
+import "../styles/room/room.css";
 import useRoom from "../hooks/useRoom";
 import useSocket from "../hooks/useSocket";
 import usePeer from "../hooks/usePeer";
@@ -50,32 +50,6 @@ const Room = () => {
 
     //  SHARE SCREEN
     const shareScreenRef = React.useRef<HTMLVideoElement | any>(null);
-
-    // // Initialize simple-peer instance
-    // const member = new Peer({
-    //     initiator: false,
-    //     trickle: false,
-    // });
-    // // Send signaling message to signaling server
-    // member.on("signal", (signal) => {
-    //     socket.emit("signal", { target: socket.id, signal });
-
-    //     console.log("signal");
-    // });
-
-    // // Receive signaling message from signaling server
-    // socket.on("signal", (data) => {
-    //     if (data.sender === socket.id) {
-    //         member.signal(data.signal);
-    //     }
-    // });
-
-    // // Connect to other peer
-    // member.on("connect", () => {
-    //     console.log("Peer connected");
-    // });
-
-    // Initialize simple-peer instance
 
     const getUserMedia = navigator.mediaDevices.getUserMedia;
 
@@ -142,163 +116,6 @@ const Room = () => {
         };
     }, [handleSignal]);
 
-    // React.useEffect(() => {
-    //     const host = new Peer({
-    //         initiator: true,
-    //         trickle: false,
-    //         channelName: "a123b",
-    //     });
-
-    //     setHostPeer(host);
-
-    //     // Send signaling message to signaling server
-    //     host.on("signal", (signal: any) => {
-    //         console.log("Host join");
-
-    //         getUserMedia({ video: true })
-    //             .then((stream: MediaStream) => {
-    //                 if (videoRef.current) {
-    //                     videoRef.current.srcObject = stream;
-    //                     videoRef.current.play();
-    //                 }
-    //             })
-    //             .catch(() => {
-    //                 console.log("Cannot get webcam :< of host");
-    //             });
-
-    //         handleSignal(signal);
-    //     });
-
-    //     // Receive signaling message from signaling server
-    //     socket.on("signal", (data) => {
-    //         if (data.sender === ROOM_ID) {
-    //             host.signal(data.signal);
-    //         }
-    //     });
-
-    //     // Join a room
-    //     socket.emit("join", ROOM_ID);
-
-    //     // Connect to other peer
-    //     host.on("connect", () => {
-    //         console.log("Peer connected");
-    //     });
-
-    //     // Handle errors
-    //     socket.on("error", (error) => {
-    //         console.error("Socket error:", error);
-    //     });
-    //     host.on("error", (error: string) => {
-    //         console.error("Peer error:", error);
-    //     });
-
-    //     // Handle close and disconnect events
-    //     socket.on("close", () => {
-    //         console.log("Socket closed");
-    //     });
-    //     host.on("close", () => {
-    //         console.log("Peer closed");
-    //     });
-    //     host.on("disconnect", () => {
-    //         console.log("Peer disconnected");
-    //     });
-
-    //     return () => {
-    //         if (hostPeer) {
-    //             hostPeer.destroy();
-    //         }
-    //     };
-    // }, [handleSignal]);
-
-    // React.useEffect(() => {
-    //     const member = new Peer({
-    //         initiator: false,
-    //         trickle: false,
-    //     });
-
-    //     setRemotePeer(member);
-
-    //     const setupStream = async () => {
-    //         await getUserMedia({ video: true })
-    //             .then((stream: MediaStream) => {
-    //                 if (videoRef.current) {
-    //                     videoRef.current.srcObject = stream;
-    //                     videoRef.current.play();
-    //                 }
-
-    //                 socket.on("user-connected", (data) => {
-    //                     member.addStream(stream);
-
-    //                     member.on("stream", (remoteStream: MediaStream) => {
-    //                         if (videoRef2.current) {
-    //                             videoRef2.current.srcObject = remoteStream;
-    //                             videoRef2.current.play();
-    //                         }
-    //                     });
-
-    //                     const { userID } = data;
-    //                     console.log("user connected", userID);
-
-    //                     handleSignal(data.signal);
-    //                 });
-    //             })
-    //             .catch(() => {
-    //                 console.log("Cannot get webcam of member :<");
-    //             });
-    //     };
-
-    //     setupStream();
-
-    //     socket.on("signal", (data) => {
-    //         if (data.sender === ROOM_ID) {
-    //             member.signal(data.signal);
-    //         }
-    //     });
-
-    //     return () => {
-    //         if (remotePeer) {
-    //             remotePeer.destroy();
-    //         }
-    //     };
-    // }, [handleSignal]);
-
-    // const [peer, setPeer] = React.useState<Peer.Instance | null>(null);
-    // const [stream, setStream] = React.useState<MediaStream | null>(null);
-    // const [otherPeerId, setOtherPeerId] = React.useState<string>("");
-
-    // React.useEffect(() => {
-    //     navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-    //         setStream(stream);
-    //         if (videoRef.current) {
-    //             videoRef.current.srcObject = stream;
-    //             videoRef.current.play();
-    //         }
-    //     });
-    // }, []);
-
-    // React.useEffect(() => {
-    //     if (peer) {
-    //         peer.on("signal", (data) => {
-    //             console.log("Signal data:", data);
-    //             setOtherPeerId(JSON.stringify(data));
-    //         });
-
-    //         peer.on("stream", (stream) => {
-    //             console.log("Received stream:", stream);
-    //             if (videoRef2.current) {
-    //                 videoRef2.current.srcObject = stream;
-    //             }
-    //         });
-    //     }
-    // }, [peer]);
-
-    // const connectToOtherPeer = () => {
-    //     if (peer && otherPeerId !== "") {
-    //         const signalData = JSON.parse(otherPeerId);
-    //         peer.signal(signalData);
-    //     }
-    // };
-
     return (
         <div
             className={
@@ -307,6 +124,16 @@ const Room = () => {
                     : "h-screen w-screen overflow-hidden p-4 text-white grid grid-cols-11 bg-gradient-to-r from-cyan-500 to-blue-500 relative"
             }
         >
+            {/* ID's room */}
+            {isSharing ? (
+                <></>
+            ) : (
+                <p className="absolute top-3 left-5 bg-white text-black p-1 text-sm z-[999]">
+                    <span className="font-bold">ID ROOM:</span>{" "}
+                    {ROOM_ID.replaceAll('"', "")}
+                </p>
+            )}
+            
             {/* =================== MAIN SCREEN ====================== */}
             <div
                 className={isSharing ? "grid col-span-4" : ""}
@@ -314,7 +141,6 @@ const Room = () => {
                     gridTemplateRows: "repeat(auto-fit, minmax(3rem, 1fr))",
                 }}
             >
-                {/* ===================================== MÀN HÌNH CHÍNH ========================================= */}
                 <div
                     className={isSharing ? "w-full" : "flex justify-center"}
                     style={{
@@ -414,7 +240,7 @@ const Room = () => {
                     >
                         {isVideo ? (
                             <>
-                                <video
+                                {/* <video
                                     ref={videoRef}
                                     className="bg-black/50 rounded-t-xl"
                                     style={{
@@ -429,7 +255,7 @@ const Room = () => {
                                         transform: "rotateY(180deg)",
                                         width: "100%",
                                     }}
-                                ></video>
+                                ></video> */}
                             </>
                         ) : (
                             <div className="bg-black/50 w-0 h-0 rounded-t-xl"></div>
@@ -443,16 +269,17 @@ const Room = () => {
                             <div className="absolute bottom-0 left-2 rounded-0">
                                 Bạn
                             </div>
-                            <span className="absolute bottom-0.5 right-10">
+
+                            <div className="absolute bottom-0.5 right-10">
                                 <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem]">
                                     <i className="fa-solid fa-microphone"></i>
                                 </span>
-                            </span>
-                            <button className="absolute bottom-0.5 right-3">
+                            </div>
+                            <div className="absolute bottom-0.5 right-3">
                                 <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem] ml-4">
                                     <i className="text-sm fa-solid fa-video"></i>
                                 </span>
-                            </button>
+                            </div>
                         </div>
                     </div>
                     {/* USER */}

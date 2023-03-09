@@ -1,37 +1,36 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { IPopupRoomID } from "../../utils/interfaces";
 
-const { CopyToClipboard } = require("react-copy-to-clipboard");
-
 const PopupRoomID = ({ id, isActive, togglePopup }: IPopupRoomID) => {
-    const [isCopied, setIsCopied] = React.useState<boolean>(false);
-    const [roomID, setRoomID] = React.useState<string>(id);
+    const [isCopied, setIsCopied] = React.useState(false);
+    const [inputValue, setInputValue] = React.useState<any>(id);
 
-    const handleCopyClipboard: () => void = () => {
+    const handleInputChange = () => {
+        setInputValue(id | inputValue);
+    };
+
+    const handleCopyClipboard = () => {
         setIsCopied((isCopied) => !isCopied);
     };
 
     return (
         <>
-            {isActive ? (
-                // BACKGROUND
+            {isActive && (
                 <div className="w-full h-full absolute flex flex-col justify-center items-center bg-black/80">
-                    {/* POPUP */}
                     <div className="border border-white w-fit h-fit px-12 py-4 flex flex-col justify-center items-center rounded-xl text-white animate__animated animate__bounceIn">
-                        {/* TITLE */}
                         <span className=" font-bold mb-6">ID room</span>
-
                         <div className="relative">
+                            {/* ID's input */}
                             <input
                                 type="text"
-                                value={id || roomID}
+                                value={id}
                                 className="mr-3 text-black p-2"
-                                onChange={() => {
-                                    setRoomID(id);
-                                }}
+                                onChange={handleInputChange}
+                                maxLength={14}
                             />
+                            {/* If close popup will join room */}
                             <Link to={`/room/${id}`}>
                                 <span
                                     onClick={togglePopup}
@@ -40,8 +39,7 @@ const PopupRoomID = ({ id, isActive, togglePopup }: IPopupRoomID) => {
                                     <i className="fa-solid fa-xmark"></i>
                                 </span>
                             </Link>
-
-                            {/* Copy clipboard */}
+                            {/* Copy ID from input */}
                             {isCopied ? (
                                 <span className="text-white p-2 px-4 rounded-lg animate__animated animate__bounceIn">
                                     <i className="fa-solid fa-check text-lg text-green-500"></i>
@@ -59,8 +57,6 @@ const PopupRoomID = ({ id, isActive, togglePopup }: IPopupRoomID) => {
                         </div>
                     </div>
                 </div>
-            ) : (
-                <></>
             )}
         </>
     );

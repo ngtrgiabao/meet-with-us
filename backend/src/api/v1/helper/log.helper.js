@@ -5,7 +5,7 @@ const { format } = require("date-fns");
 const filename = path.join(__dirname, "../logs", "log.log");
 
 const logEvents = async (msg) => {
-    const dateTime = `${format(new Date(), "dd-MM-YYYY\tHH:mm:ss")}`;
+    const dateTime = `${format(new Date(), "dd-MM-yyyy\tHH:mm:ss")}`;
     const contentLog = `${dateTime} ------- ${msg}\n`;
 
     try {

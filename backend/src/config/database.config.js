@@ -17,4 +17,8 @@ module.exports = {
             appId: process.env.APP_ID,
         },
     },
+    room: {
+        apiKey: process.env.ROOM_API_KEY,
+        secretKey: process.env.ROOM_SECRET_KEY,
+    },
 };

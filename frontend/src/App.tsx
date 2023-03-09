@@ -24,8 +24,8 @@ function App() {
                         path="/user-overview/:roomID"
                         element={<UserOverview />}
                     />
-                    {/* <Route path="/room/:roomID" element={<Room />} /> */}
-                    <Route path="/room/:roomID" element={<Test />} />
+                    <Route path="/room/:roomID" element={<Room />} />
+                    <Route path="/test" element={<Test />} />
                 </>
                 <>
                     <Route path="/register" element={<Register />} />

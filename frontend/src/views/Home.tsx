@@ -2,6 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import Peer from "peerjs";
+import {
+    MeetingProvider,
+    MeetingConsumer,
+    useMeeting,
+    useParticipant,
+} from "@videosdk.live/react-sdk";
+import { v4 as uuid } from "uuid";
 
 import "../styles/index.css";
 
@@ -9,8 +16,9 @@ import Navbar from "../layouts/Navbar";
 import { RoomContext } from "../context/room/RoomProvider";
 import PopupRoomID from "../components/popup/PopupRoomID";
 
-import BannerVideo from "../layouts/BannerVideo";
+import { authToken, createMeeting } from "../api/api.service";
 
+import BannerVideo from "../layouts/BannerVideo";
 const bgImg = require("../assets/background/home.mp4");
 
 const { CopyToClipboard } = require("react-copy-to-clipboard");
@@ -19,6 +27,7 @@ const Home = () => {
     const [inputValue, setInputValue] = React.useState<string>("");
     const [isCopied, setIsCopied] = React.useState<boolean>(false);
     const [isActive, setIsActive] = React.useState<boolean>(false);
+    const [meetingID, setMeetingID] = React.useState<string | any>("");
 
     const roomID = React.useContext(RoomContext);
 
@@ -37,6 +46,11 @@ const Home = () => {
 
     const handleActive: () => void = () => {
         setIsActive((isActive) => !isActive);
+    };
+
+    const handleGetMeetingAndToken = async () => {
+        const meetingId = await createMeeting({ token: authToken });
+        setMeetingID(meetingId);
     };
 
     const mouse = React.useRef<ReturnType<typeof Object>>({
@@ -88,7 +102,7 @@ const Home = () => {
                         });
                     }}
                 >
-                    {inputValue ? (
+                    {inputValue && inputValue.length === 14 ? (
                         <Link
                             to={`/user-overview/${
                                 inputValue ? inputValue : roomID
@@ -102,6 +116,7 @@ const Home = () => {
                             className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn"
                             onClick={() => {
                                 handleActive();
+                                handleGetMeetingAndToken();
                             }}
                         >
                             Tạo phòng
@@ -113,6 +128,8 @@ const Home = () => {
                         type="text"
                         placeholder="enter your link room here"
                         className="text-lg uppercase font-bold outline outline-1 focus:outline-2 p-2 rounded animate__animated animate__fadeIn mx-4 flex-1"
+                        minLength={14}
+                        maxLength={14}
                         onChange={(e) => {
                             handleInput(e);
                         }}
@@ -183,7 +200,7 @@ const Home = () => {
 
                 {/* Popup */}
                 <PopupRoomID
-                    id={roomID}
+                    id={meetingID}
                     isActive={isActive}
                     togglePopup={handleActive}
                 />
