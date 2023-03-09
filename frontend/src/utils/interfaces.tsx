@@ -58,7 +58,7 @@ export interface IPopupConfirm {
 }
 
 export interface IPopupRoomID {
-    id: string;
+    id: string | any;
     isActive: boolean;
     togglePopup: () => void;
 }

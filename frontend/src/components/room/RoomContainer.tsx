@@ -7,27 +7,29 @@ import RoomVideoComponent from "./RoomVideoComponents";
 
 import { IContainer } from "../../utils/interfaces";
 
-const RoomContainer = (props: IContainer) => {
-    const { meetingID } = props;
-
-    const [joined, setJoined] = React.useState<boolean>(false);
+const RoomContainer = ({ meetingID }: IContainer) => {
+    const [joined, setJoined] = React.useState<string | null>(null);
     const { join } = useMeeting();
-    const { participants } = useMeeting();
+    const { participants } = useMeeting({
+        onMeetingJoined: () => {
+            setJoined("JOINED");
+        },
+    });
     const joinMeeting = () => {
-        setJoined(true);
+        setJoined("JOINED");
         join();
     };
 
     return (
         <div className="container h-screen text-white">
             <h3>Meeting Id: {meetingID}</h3>
-            {joined ? (
-                <div>
+            {joined && joined == "JOINED" ? (
+                <div className="container min-h-screen text-white">
                     <RoomControls />
                     {[...participants.keys()].map((participantID) => (
                         <RoomVideoComponent
                             participantID={participantID}
-                            key={uuid()}
+                            key={participantID}
                         />
                     ))}
                 </div>

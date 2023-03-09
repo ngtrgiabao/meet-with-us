@@ -6,6 +6,7 @@ const {
     doc,
     deleteDoc,
 } = require("firebase/firestore");
+const jwt = require("jsonwebtoken");
 
 const { firebaseDB } = require("../../../config/firebase");
 const ApiError = require("../../../api.error");

@@ -29,7 +29,6 @@ const RoomJoinScreen = ({ getMeetingAndToken }: IJoinScreen) => {
             </button>
         </div>
     );
-    return <div>JoinScreen</div>;
 };
 
 export default RoomJoinScreen;
