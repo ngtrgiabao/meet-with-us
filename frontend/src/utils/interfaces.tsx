@@ -75,6 +75,10 @@ export interface IVideoComponent {
     participantID: string;
 }
 
+export interface IRoomVideoPlayer {
+    videoStream: MediaStream | undefined;
+}
+
 //GSAP
 export interface ITransitionProps {
     timeline: GSAPTimeline;

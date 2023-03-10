@@ -18,7 +18,7 @@ const PopupRoomID = ({ id, isActive, togglePopup }: IPopupRoomID) => {
     return (
         <>
             {isActive && (
-                <div className="w-full h-full absolute flex flex-col justify-center items-center bg-black/80">
+                <div className="w-full h-screen absolute flex flex-col justify-center items-center bg-black/80 top-0">
                     <div className="border border-white w-fit h-fit px-12 py-4 flex flex-col justify-center items-center rounded-xl text-white animate__animated animate__bounceIn">
                         <span className=" font-bold mb-6">ID room</span>
                         <div className="relative">

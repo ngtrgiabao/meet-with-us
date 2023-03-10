@@ -2,13 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import Peer from "peerjs";
-import {
-    MeetingProvider,
-    MeetingConsumer,
-    useMeeting,
-    useParticipant,
-} from "@videosdk.live/react-sdk";
-import { v4 as uuid } from "uuid";
 
 import "../styles/index.css";
 
