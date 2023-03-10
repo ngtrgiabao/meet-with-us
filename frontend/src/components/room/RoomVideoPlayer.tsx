@@ -1,15 +1,23 @@
-import React from "react";
+import ReactPlayer from "react-player";
 
-const RoomVideoPlayer: React.FC<{ stream: MediaStream }> = ({ stream }) => {
-    const videoRef = React.useRef<HTMLVideoElement>(null);
+import { IRoomVideoPlayer } from "../../utils/interfaces";
 
-    React.useEffect(() => {
-        if (videoRef.current) {
-            videoRef.current.srcObject = stream;
-        }
-    }, [stream]);
-
-    return <video ref={videoRef} />;
+const RoomVideoPlayer = ({ videoStream }: IRoomVideoPlayer) => {
+    return (
+        <ReactPlayer
+            playsinline // very very imp prop
+            pip={false}
+            light={false}
+            controls={false}
+            muted={true}
+            playing={true}
+            url={videoStream}
+            width={"300px"}
+            onError={(err) => {
+                console.log(err, "participant video error");
+            }}
+        />
+    );
 };
 
 export default RoomVideoPlayer;

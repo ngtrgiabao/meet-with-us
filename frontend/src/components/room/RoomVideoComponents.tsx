@@ -1,14 +1,13 @@
 import React from "react";
 import { useParticipant } from "@videosdk.live/react-sdk";
-import ReactPlayer from "react-player";
 
 import { IVideoComponent } from "../../utils/interfaces";
+import RoomVideoPlayer from "./RoomVideoPlayer";
 
 const logo1 = require("../../assets/background/1.jpg");
 const logo2 = require("../../assets/background/2.jpg");
 
 const RoomVideoComponent = ({ participantID }: IVideoComponent) => {
-    const webcamRef = React.useRef<HTMLVideoElement | null>(null);
     const micRef = React.useRef<HTMLAudioElement | null>(null);
     const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName } =
         useParticipant(participantID);
@@ -45,122 +44,42 @@ const RoomVideoComponent = ({ participantID }: IVideoComponent) => {
     }, [micStream, micOn]);
 
     return (
-        <div key={participantID}>
+        <div
+            key={participantID}
+            className="flex justify-center items-center flex-col"
+        >
             {micOn && micRef && <audio ref={micRef} autoPlay muted={isLocal} />}
-            <p>
-                Participant: {displayName} | Webcam: {webcamOn ? "ON" : "OFF"} |
-                Mic: {micOn ? "ON" : "OFF"}
-            </p>
-            {webcamOn ? (
-                <ReactPlayer
-                    //
-                    playsinline // very very imp prop
-                    pip={false}
-                    light={false}
-                    controls={false}
-                    muted={true}
-                    playing={true}
-                    //
-                    url={videoStream}
-                    //
-                    height={"200px"}
-                    width={"300px"}
-                    onError={(err) => {
-                        console.log(err, "participant video error");
-                    }}
-                />
-            ) : null}
-            <div className="col-start-5 col-end-8">
-                <div className="h-[75%] w-[100%] mb-[5%] bg-white rounded-xl overflow-hidden">
-                    <div className="bg-black/50" id="video-grid">
-                        {webcamRef ? (
-                            <>
-                                {/* <video
-                                    ref={videoRef}
-                                    className="bg-black/50 rounded-t-xl"
-                                    style={{
-                                        transform: "rotateY(180deg)",
-                                        width: "100%",
-                                    }}
-                                ></video>
-                                <video
-                                    ref={videoRef2}
-                                    className="bg-black/50 rounded-t-xl"
-                                    style={{
-                                        transform: "rotateY(180deg)",
-                                        width: "100%",
-                                    }}
-                                ></video> */}
-                            </>
-                        ) : (
-                            <div className="bg-black/50 w-0 h-0 rounded-t-xl"></div>
-                        )}
+            {webcamOn ? <RoomVideoPlayer videoStream={videoStream} /> : null}
 
-                        <div className="relative bg-black/50 w-full h-[10px] p-4">
-                            <div className="absolute bottom-0 left-2 rounded-0">
-                                Bạn
-                            </div>
-
-                            <div className="absolute bottom-0.5 right-10">
-                                <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem]">
-                                    <i className="fa-solid fa-microphone"></i>
-                                </span>
-                            </div>
-                            <div className="absolute bottom-0.5 right-3">
-                                <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem] ml-4">
-                                    <i className="text-sm fa-solid fa-video"></i>
-                                </span>
-                            </div>
+            <div className="w-full">
+                {/* USER */}
+                <div className="flex justify-between items-center bg-gray-800/50 p-2 px-4 hover:bg-slate-300/10 border-[2px] rounded-lg border-white w-full">
+                    <div className="flex">
+                        <img
+                            className="rounded-full w-[2.5rem] h-[2.5rem]"
+                            src={logo1}
+                        />
+                        <div className="text-white text-sm ml-2 flex items-center">
+                            <span className="font-bold text-sm mr-1">
+                                User:
+                            </span>
+                            <span className="text-">{displayName}</span>
                         </div>
                     </div>
-                    {/* USER */}
-                    <div className="flex jusstify-center">
-                        <div className="relative bg-gray-800/50 w-full h-[3rem] border-slate-400 hover:bg-slate-300/25">
-                            <div>
-                                <img
-                                    className="absolute top-1 left-2 rounded-full w-[2.5rem] h-[2.5rem]"
-                                    src={logo1}
-                                />
-                            </div>
-                            <div className="absolute top-1 left-[20%] text-white text-sm">
-                                Nguyễn Trần Gia bảo
-                            </div>
-                            <div className="absolute bottom-0.5 left-[20%] text-white text-xs">
-                                (Người tổ chức cuộc họp)
-                            </div>
-                            <span className="absolute bottom-0.5 right-10">
-                                <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem]">
-                                    <i className="fa-solid fa-microphone"></i>
-                                </span>
-                            </span>
-                            <span className="absolute bottom-0.5 right-3">
-                                <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem] ml-4">
-                                    <i className="text-sm fa-solid fa-video"></i>
-                                </span>
-                            </span>
-                        </div>
-                    </div>
-                    {/* USER */}
-                    <div className="relative bg-gray-800/50 w-full h-[3rem] border-slate-400 hover:bg-slate-300/25">
-                        <div>
-                            <img
-                                className="absolute top-1 left-2 rounded-full w-[2.5rem] h-[2.5rem]"
-                                src={logo2}
-                            />
-                        </div>
-                        <div className="absolute top-3 left-[10%] text-white text-sm">
-                            Vương Minh Đăng
-                        </div>
-                        <div className="absolute bottom-0.5 left-16 text-white text-xs"></div>
-                        <span className="absolute bottom-0.5 right-10">
-                            <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem]">
+                    <div>
+                        <span className="font-bold rounded-full">
+                            {micOn ? (
                                 <i className="fa-solid fa-microphone"></i>
-                            </span>
+                            ) : (
+                                <i className="fa-solid fa-microphone-slash"></i>
+                            )}
                         </span>
-                        <span className="absolute bottom-0.5 right-3">
-                            <span className="font-bold rounded-full w-[1.6rem] h-[1.6rem] ml-4">
+                        <span className="font-bold rounded-full ml-2">
+                            {webcamOn ? (
                                 <i className="text-sm fa-solid fa-video"></i>
-                            </span>
+                            ) : (
+                                <i className="fa-solid fa-video-slash"></i>
+                            )}
                         </span>
                     </div>
                 </div>

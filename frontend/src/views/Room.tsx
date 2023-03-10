@@ -133,7 +133,7 @@ const Room = () => {
                     {ROOM_ID.replaceAll('"', "")}
                 </p>
             )}
-            
+
             {/* =================== MAIN SCREEN ====================== */}
             <div
                 className={isSharing ? "grid col-span-4" : ""}
@@ -180,26 +180,8 @@ const Room = () => {
                             >
                                 <i className="fa-solid fa-microphone-slash"></i>
                             </button>
-                        )}
-
-                        {/* VIDEO */}
-                        {/* {isVideo ? (
-                            <button
-                                onClick={handleVideo}
-                                className="bg-blue-500 font-bold rounded-full w-[3rem] h-[3rem] ml-1 btn_action"
-                            >
-                                <i className="fa-solid fa-video"></i>
-                            </button>
-                        ) : (
-                            <button
-                                onClick={handleVideo}
-                                className="text-white font-bold rounded-full w-[3rem] h-[3rem] bg-red-500 ml-1 btn_action-denied"
-                            >
-                                <i className="fa-solid fa-video-slash"></i>
-                            </button>
-                        )} */}
-                        {/* SHARING SCREEN */}
-
+                        )}z
+                        {/* SHARE SCREEN */}
                         <button
                             className={
                                 isSharing

@@ -1,10 +1,5 @@
 import React from "react";
-import {
-    MeetingProvider,
-    MeetingConsumer,
-    useMeeting,
-    useParticipant,
-} from "@videosdk.live/react-sdk";
+import { MeetingProvider, MeetingConsumer } from "@videosdk.live/react-sdk";
 import { v4 as uuid } from "uuid";
 
 import { authToken, createMeeting } from "../api/api.service";
@@ -20,16 +15,16 @@ const Test = () => {
         setMeetingId(meetingId);
     };
 
+    const MeetingProviderConfig = {
+        meetingId: meetingId || "",
+        webcamEnabled: false,
+        micEnabled: false,
+        maxResolution: "hd" as const,
+        name: uuid(),
+    };
+
     return authToken && meetingId ? (
-        <MeetingProvider
-            config={{
-                meetingId,
-                micEnabled: true,
-                webcamEnabled: false,
-                name: uuid(),
-            }}
-            token={authToken}
-        >
+        <MeetingProvider config={MeetingProviderConfig} token={authToken}>
             <MeetingConsumer>
                 {() => <RoomContainer meetingID={meetingId} />}
             </MeetingConsumer>
