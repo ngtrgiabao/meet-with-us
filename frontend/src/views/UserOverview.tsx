@@ -18,7 +18,6 @@ import bg4 from "../assets/background/4.jpg";
 import WebcamOverview from "../components/userOverview/UserOverviewWebcam";
 import Transition from "../components/animation/AnimationTransition";
 import { RoomContext } from "../context/room/RoomProvider";
-import { authToken } from "../api/api.service";
 
 const useroverview = gsap.timeline();
 
