@@ -45,8 +45,6 @@ const Room = () => {
         setIsVideo((isVideo) => !isVideo);
     };
 
-    const videoGridRef = React.useRef<HTMLDivElement>(null);
-
     //  SHARE SCREEN
     const shareScreenRef = React.useRef<HTMLVideoElement | any>(null);
 
