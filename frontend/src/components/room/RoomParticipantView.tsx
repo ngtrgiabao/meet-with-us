@@ -7,7 +7,7 @@ import RoomVideoPlayer from "./RoomVideoPlayer";
 const logo1 = require("../../assets/background/1.jpg");
 const logo2 = require("../../assets/background/2.jpg");
 
-const RoomVideoComponent = ({ participantID }: IVideoComponent) => {
+const RoomParticipantView = ({ participantID }: IVideoComponent) => {
     const micRef = React.useRef<HTMLAudioElement | null>(null);
     const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName } =
         useParticipant(participantID);
@@ -88,4 +88,4 @@ const RoomVideoComponent = ({ participantID }: IVideoComponent) => {
     );
 };
 
-export default RoomVideoComponent;
+export default RoomParticipantView;

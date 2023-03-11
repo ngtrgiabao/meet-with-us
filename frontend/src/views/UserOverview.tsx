@@ -1,6 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
+import {
+    MeetingProvider,
+    MeetingConsumer,
+    useMeeting,
+} from "@videosdk.live/react-sdk";
+import { v4 as uuid } from "uuid";
 
 import MiniAvatar from "../components/userOverview/UserOverviewMiniAvatar";
 
@@ -11,11 +17,24 @@ import bg4 from "../assets/background/4.jpg";
 
 import WebcamOverview from "../components/userOverview/UserOverviewWebcam";
 import Transition from "../components/animation/AnimationTransition";
+import { RoomContext } from "../context/room/RoomProvider";
+import { authToken } from "../api/api.service";
 
 const useroverview = gsap.timeline();
 
 const UserOverview = () => {
     const ROOM_ID = window.location.pathname.split("/").at(2);
+
+    const roomID = React.useContext(RoomContext);
+    const { join } = useMeeting();
+
+    // const handleGetMeetingAndToken = () => {
+    //     getMeetingAndToken(meetingID);
+    // };
+
+    // const handleJoin = () => {
+    //     join();
+    // };
 
     return (
         <>
@@ -37,6 +56,7 @@ const UserOverview = () => {
 
                     <Link
                         to={`/room/${ROOM_ID}`}
+                        onClick={() => join()}
                         className="p-2 flex justify-center rounded-3xl hover:bg-blue-800 border border-dashed hover:border-solid"
                     >
                         Tham gia

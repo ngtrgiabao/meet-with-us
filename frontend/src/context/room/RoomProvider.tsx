@@ -8,14 +8,14 @@ const RoomContext = React.createContext<string>("");
 const RoomProvider = ({ children }: { children: ReactNode }) => {
     const [meetingID, setMeetingID] = React.useState<string | any>("");
 
-    React.useEffect(() => {
-        const getMeetingID = async () => {
-            const meetingId = await createMeeting({ token: authToken });
-            setMeetingID(meetingId);
-        };
-
-        getMeetingID();
+    const getMeetingID = React.useCallback(async () => {
+        const meetingId = await createMeeting({ token: authToken });
+        setMeetingID(meetingId);
     }, []);
+
+    React.useEffect(() => {
+        getMeetingID();
+    }, [getMeetingID]);
 
     return (
         <RoomContext.Provider value={meetingID}>
@@ -23,5 +23,6 @@ const RoomProvider = ({ children }: { children: ReactNode }) => {
         </RoomContext.Provider>
     );
 };
+
 
 export { RoomContext, RoomProvider };

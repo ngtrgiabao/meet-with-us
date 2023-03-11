@@ -2,11 +2,11 @@ import React from "react";
 import { useMeeting } from "@videosdk.live/react-sdk";
 
 import RoomControls from "./RoomControls";
-import RoomVideoComponent from "./RoomVideoComponents";
+import RoomParticipantView from "./RoomParticipantView";
 
 import { IContainer } from "../../utils/interfaces";
 
-const RoomContainer = ({ meetingID }: IContainer) => {
+const RoomContainer = () => {
     const [joined, setJoined] = React.useState<string | null>(null);
     const { join } = useMeeting();
 
@@ -18,11 +18,11 @@ const RoomContainer = ({ meetingID }: IContainer) => {
     const joinMeeting = () => {
         setJoined("JOINED");
         join();
-    };
+    };  
 
     return (
         <div className="h-screen text-white relative">
-            <h3 className="absolute top-4 left-4">Meeting Id: {meetingID}</h3>
+            {/* <h3 className="absolute top-4 left-4">Meeting Id: {meetingID}</h3> */}
 
             {joined && joined == "JOINED" ? (
                 <div className="h-screen text-white pt-10">
@@ -32,7 +32,9 @@ const RoomContainer = ({ meetingID }: IContainer) => {
                             className="max-h-96 overflow-y-auto"
                             key={participantID}
                         >
-                            <RoomVideoComponent participantID={participantID} />
+                            <RoomParticipantView
+                                participantID={participantID}
+                            />
                         </div>
                     ))}
                 </div>
