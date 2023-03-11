@@ -31,9 +31,9 @@ const UserOverview = () => {
     //     getMeetingAndToken(meetingID);
     // };
 
-    // const handleJoin = () => {
-    //     join();
-    // };
+    const handleJoin = () => {
+        join();
+    };
 
     return (
         <>
@@ -55,7 +55,7 @@ const UserOverview = () => {
 
                     <Link
                         to={`/room/${ROOM_ID}`}
-                        onClick={() => join()}
+                        onClick={() => handleJoin}
                         className="p-2 flex justify-center rounded-3xl hover:bg-blue-800 border border-dashed hover:border-solid"
                     >
                         Tham gia

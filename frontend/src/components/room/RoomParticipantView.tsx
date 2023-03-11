@@ -53,7 +53,7 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
 
             <div className="w-full">
                 {/* USER */}
-                <div className="flex justify-between items-center bg-gray-800/50 p-2 px-4 hover:bg-slate-300/10 border-[2px] rounded-lg border-white w-full">
+                <div className="flex justify-between items-center bg-gray-800/50 p-2 px-4 border-2 rounded-lg border-white w-full">
                     <div className="flex">
                         <img
                             className="rounded-full w-[2.5rem] h-[2.5rem]"
