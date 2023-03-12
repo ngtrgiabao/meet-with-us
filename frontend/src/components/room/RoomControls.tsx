@@ -1,5 +1,5 @@
 import React from "react";
-import { useMeeting } from "@videosdk.live/react-sdk";
+import { useMeeting, useParticipant } from "@videosdk.live/react-sdk";
 import { useNavigate } from "react-router-dom";
 
 const RoomControls = () => {
@@ -7,7 +7,6 @@ const RoomControls = () => {
     const navigate = useNavigate();
     const [isMic, setIsMic] = React.useState<boolean>(false);
     const [isWebcam, setIsWebcam] = React.useState<boolean>(false);
-    const shareScreenRef = React.useRef<HTMLVideoElement | any>(null);
 
     const handleMic = () => {
         toggleMic();
@@ -26,7 +25,7 @@ const RoomControls = () => {
 
     return (
         <div className="flex justify-center">
-            <div className="fixed bottom-[8%] bg-white p-2 px-3 rounded-xl text-xl flex justify-between items-center w-[22%]">
+            <div className="fixed bottom-[8%] bg-white p-2 px-2 rounded-xl text-xl flex justify-between w-[20%]">
                 {/* MIC */}
                 {isMic ? (
                     <button
@@ -43,6 +42,7 @@ const RoomControls = () => {
                         <i className="fa-solid fa-microphone-slash"></i>
                     </button>
                 )}
+                {/* WEBCAM */}
                 {isWebcam ? (
                     <button
                         onClick={handleWebcam}
@@ -64,7 +64,6 @@ const RoomControls = () => {
                         // isSharing
                         //     ? "hover:cursor-pointer rounded-full w-[3rem] h-[3rem] bg-blue-500 flex items-center justify-center btn_action"
                         //     :
-
                         "hover:cursor-pointer rounded-full w-[3rem] h-[3rem]  flex items-center justify-center bg-red-600 btn_action-denied"
                     }
                     // onClick={() => room.shareScreen(shareScreenRef, setIsSharing)}
