@@ -61,10 +61,6 @@ export interface IPopupRoomID {
     togglePopup: () => void;
 }
 
-export interface IJoinScreen {
-    getMeetingAndToken: any;
-}
-
 export interface IContainer {
     onMeetingLeave: () => void;
 }

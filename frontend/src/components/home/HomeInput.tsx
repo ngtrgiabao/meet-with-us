@@ -2,8 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import CopyToClipboard from "react-copy-to-clipboard";
 
-import { IJoinScreen } from "../../utils/interfaces";
-
 import { RoomContext } from "../../context/room/RoomProvider";
 
 const HomeInput = () => {
@@ -11,17 +9,15 @@ const HomeInput = () => {
     const [inputValue, setInputValue] = React.useState<string | null | any>(
         null
     );
-    const roomID = React.useContext(RoomContext);
-
     const [isCopied, setIsCopied] = React.useState<boolean>(false);
 
-    const handleCopyClipboard: () => void = () => {
+    const roomID = React.useContext(RoomContext);
+
+    const handleCopyClipboard = () => {
         setIsCopied((isCopied) => !isCopied);
     };
 
-    const handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void = (
-        e
-    ) => {
+    const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setMeetingID(e.target.value);
         setInputValue(meetingID);
     };
@@ -30,15 +26,14 @@ const HomeInput = () => {
         <div className="flex w-full">
             {meetingID && meetingID.length === 14 ? (
                 <Link
-                    to={`/user-overview/` + meetingID}
-                    // onClick={handleGetMeetingAndToken}
+                    to={`/user-overview/${meetingID}`}
                     className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn flex justify-center items-center"
                 >
                     Join room
                 </Link>
             ) : (
                 <Link
-                    to={`/user-overview/` + roomID}
+                    to={`/user-overview/${roomID}`}
                     className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn flex justify-center items-center"
                 >
                     Create room
@@ -51,7 +46,7 @@ const HomeInput = () => {
                 className="text-lg uppercase font-bold outline outline-1 focus:outline-2 p-2 rounded animate__animated animate__fadeIn mx-4 flex-1"
                 minLength={14}
                 maxLength={14}
-                onChange={handleInput}
+                onChange={(e) => handleInput(e)}
             />
 
             {/* Copy clipboard */}
