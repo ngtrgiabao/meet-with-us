@@ -9,8 +9,16 @@ const logo2 = require("../../assets/background/2.jpg");
 
 const RoomParticipantView = ({ participantID }: IVideoComponent) => {
     const micRef = React.useRef<HTMLAudioElement | null>(null);
-    const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName } =
-        useParticipant(participantID);
+    const {
+        webcamStream,
+        micStream,
+        webcamOn,
+        micOn,
+        isLocal,
+        displayName,
+        screenShareOn,
+        screenShareStream,
+    } = useParticipant(participantID);
 
     // Webcam
     const videoStream = React.useMemo(() => {
@@ -20,6 +28,15 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
             return mediaStream;
         }
     }, [webcamStream, webcamOn]);
+
+    //Creating a media stream from the screen share stream
+    const mediaStream = React.useMemo(() => {
+        if (screenShareOn && screenShareStream) {
+            const mediaStream = new MediaStream();
+            mediaStream.addTrack(screenShareStream.track);
+            return mediaStream;
+        }
+    }, [screenShareStream, screenShareOn]);
 
     // MIC
     React.useEffect(() => {
@@ -50,8 +67,11 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
             key={participantID}
             className="flex justify-center items-center flex-col p-1"
         >
-            {micOn && micRef && <audio ref={micRef} autoPlay muted={isLocal} />}
             {webcamOn ? <RoomVideoPlayer videoStream={videoStream} /> : null}
+            {screenShareOn ? (
+                <RoomVideoPlayer videoStream={mediaStream} />
+            ) : null}
+            {micOn && micRef && <audio ref={micRef} autoPlay muted={isLocal} />}
 
             {/* USER */}
             <div className="flex justify-between items-center bg-gray-800/50 p-2 px-4 border-2 rounded-lg border-white w-full">
