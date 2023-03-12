@@ -1,16 +1,11 @@
 import React from "react";
-import {
-    MeetingConsumer,
-    MeetingProvider,
-    useMeeting,
-} from "@videosdk.live/react-sdk";
+import { useMeeting } from "@videosdk.live/react-sdk";
+import { useNavigate } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 
 import "../styles/room/room.css";
 
 import UserService from "../api/user/user.service";
-import RoomContainer from "../components/room/RoomContainer";
-import { authToken, createMeeting } from "../api/api.service";
 import RoomParticipantView from "../components/room/RoomParticipantView";
 import RoomControls from "../components/room/RoomControls";
 
@@ -18,10 +13,9 @@ const logo1 = require("../assets/background/2.jpg");
 const logo2 = require("../assets/background/1.jpg");
 
 const Room = () => {
-    const { participants } = useMeeting();
-
     const ROOM_ID = JSON.stringify(window.location?.pathname?.split("/")[2]);
 
+    const { participants, leave, join } = useMeeting();
     const [isAudio, setIsAudio] = React.useState(true);
     const [isVideo, setIsVideo] = React.useState(true);
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
@@ -45,8 +39,18 @@ const Room = () => {
         setIsVideo((isVideo) => !isVideo);
     };
 
+    const videoGridRef = React.useRef<HTMLDivElement>(null);
+
     //  SHARE SCREEN
     const shareScreenRef = React.useRef<HTMLVideoElement | any>(null);
+
+    const navigate = useNavigate();
+    React.useEffect(() => {
+        window.onload = () => {
+            navigate("/");
+            leave();
+        };
+    }, []);
 
     return (
         <div
@@ -66,6 +70,7 @@ const Room = () => {
                 </p>
             )}
 
+            <button onClick={() => join()}>liiiiii</button>
             {/* =================== MAIN SCREEN ====================== */}
             {/* <div
                 className={isSharing ? "grid col-span-4" : ""}
@@ -89,7 +94,7 @@ const Room = () => {
                 className={
                     isSharing
                         ? "h-full col-span-1 rounded-xl"
-                        : "h-[65%] w-[20%] mt-[2%] bg-white rounded-xl overflow-hidden"
+                        : "h-[65%] w-[22%] mt-[2%] bg-white rounded-xl overflow-hidden"
                 }
             >
                 <RoomControls />

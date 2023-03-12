@@ -1,16 +1,17 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import CopyToClipboard from "react-copy-to-clipboard";
 
-import { IJoinScreen } from "../../utils/interfaces";
 import { RoomContext } from "../../context/room/RoomProvider";
 
 const HomeInput = () => {
-    const [meetingID, setMeetingID] = useState<string | null | any>(null);
-    const [inputValue, setInputValue] = useState<string | null | any>(null);
-    const [isCopied, setIsCopied] = useState<boolean>(false);
+    const [meetingID, setMeetingID] = React.useState<string | null | any>(null);
+    const [inputValue, setInputValue] = React.useState<string | null | any>(
+        null
+    );
+    const [isCopied, setIsCopied] = React.useState<boolean>(false);
 
-    const roomID = useContext(RoomContext);
+    const roomID = React.useContext(RoomContext);
 
     const handleCopyClipboard = () => {
         setIsCopied((isCopied) => !isCopied);
