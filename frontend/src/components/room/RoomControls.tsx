@@ -44,6 +44,10 @@ const RoomControls = () => {
         if (isWebcam) handleGetWebcams();
     }, []);
 
+    const handleRefreshClick = () => {
+        window.location.reload();
+    };
+
     // Loading page
     React.useEffect(() => {
         gsap.to(".loading-spinner", { rotate: 360, repeat: -1, duration: 1 });
@@ -58,6 +62,12 @@ const RoomControls = () => {
                     <div className="text-white">
                         We are creating your meeting, please wait us a second 😀
                     </div>
+                    <button
+                        className="text-red-500 font-bold mt-3 hover:underline"
+                        onClick={handleRefreshClick}
+                    >
+                        Cancel
+                    </button>
                 </div>
             ) : (
                 <div className="fixed bottom-[8%] bg-white p-2 px-2 rounded-xl text-xl flex justify-between w-[20%]">
