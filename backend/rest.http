@@ -12,3 +12,6 @@ GET http://localhost:3000/api/v1/logout
 
 ### REGISTER
 POST http://localhost:3000/api/v1/register
+
+### GET TOKEN VIDEO SDK
+GET http://localhost:9000/auth/token
