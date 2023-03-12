@@ -5,13 +5,15 @@
 }
 
 .btn_action {
+    background: rgba(0, 0, 255, 0.662);
     transform: translate(-1px, -1px);
-    box-shadow: 5px 3px rgba(0, 0, 255, 0.416);
+    box-shadow: 5px 3px rgba(0, 0, 255, 0.192);
 }
 
 .btn_action-denied {
+    background: red;
     transform: translate(-1px, -1px);
-    box-shadow: 5px 3px rgba(255, 0, 0, 0.384);
+    box-shadow: 5px 3px rgba(255, 0, 0, 0.228);
 }
 
 .btn_action-denied:hover {

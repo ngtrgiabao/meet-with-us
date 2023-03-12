@@ -43,7 +43,7 @@ const UserOverviewWebcam = () => {
                         ref={video}
                         className="bg-black w-[40rem] h-[30rem] rounded-2xl"
                         style={{
-                            transform: "rotateY(180deg)",
+                            transform: "scaleX(-1)",
                         }}
                     ></video>
                 ) : (

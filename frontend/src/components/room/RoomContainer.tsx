@@ -16,9 +16,15 @@ const RoomContainer = () => {
         },
     });
     const joinMeeting = () => {
-        setJoined("JOINED");
-        join();
-    };  
+        try {
+            setJoined("JOINED");
+            join();
+        } catch (error) {
+            // Handle error
+            console.error(error);
+            setJoined(null);
+        }
+    };
 
     return (
         <div className="h-screen text-white relative">

@@ -1,15 +1,22 @@
 import React from "react";
 import { useMeeting } from "@videosdk.live/react-sdk";
-import { useNavigate } from "react-router-dom";
 import { gsap } from "gsap";
+import RoomVideoPlayer from "./RoomVideoPlayer";
 
 const RoomControls = () => {
-    const { toggleMic, toggleWebcam, leave, getWebcams, changeWebcam } =
-        useMeeting();
-    const navigate = useNavigate();
+    const {
+        toggleMic,
+        toggleWebcam,
+        leave,
+        getWebcams,
+        changeWebcam,
+        join,
+        toggleScreenShare,
+    } = useMeeting();
 
     const [isMic, setIsMic] = React.useState<boolean>(false);
     const [isWebcam, setIsWebcam] = React.useState<boolean>(false);
+    const [isScreenShare, setIsScreenShare] = React.useState<boolean>(false);
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
     const handleMic = React.useCallback(() => {
@@ -17,42 +24,56 @@ const RoomControls = () => {
         setIsMic((isMic) => !isMic);
     }, [toggleMic]);
 
-    const handleGetWebcams = React.useCallback(async () => {
-        // returns all webcams
-        const webcams = await getWebcams();
-        const { deviceId } = webcams[0];
-        changeWebcam(deviceId);
+    const handleGetWebcams = React.useCallback(() => {
+        getWebcams()
+            .then((webcams) => {
+                if (webcams && webcams.length > 0) {
+                    const { deviceId } = webcams[0];
+                    console.log(deviceId);
+                    // changeWebcam(deviceId);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }, [getWebcams]);
 
-    const handleWebcam = React.useCallback(async () => {
+    const handleWebcam = React.useCallback(() => {
         toggleWebcam();
         setIsWebcam((isWebcam) => !isWebcam);
     }, [toggleWebcam]);
 
-    const handleLeaveMeeting = React.useCallback(() => {
-        navigate("/");
-        leave();
-    }, [navigate, leave]);
-
-    const memoizedHandleMic = React.useMemo(() => handleMic, [handleMic]);
-    const memoizedHandleWebcam = React.useMemo(
-        () => handleWebcam,
-        [handleWebcam]
-    );
-
-    React.useEffect(() => {
-        if (isWebcam) handleGetWebcams();
-    }, []);
+    const handleScreenShare = () => {
+        toggleScreenShare();
+        setIsScreenShare((isScreenShare) => !isScreenShare);
+    };
 
     const handleRefreshClick = () => {
         window.location.reload();
     };
 
+    React.useEffect(() => {
+        if (isWebcam) {
+            handleGetWebcams();
+            // .then(() => {
+            //     console.log("Success");
+            // })
+            // .catch(() => {
+            //     console.log("Error");
+            // });
+        }
+    }, []);
+
+    const handleLeaveMeeting = React.useCallback(() => {
+        handleRefreshClick();
+        leave();
+    }, [leave]);
+
     // Loading page
     React.useEffect(() => {
         gsap.to(".loading-spinner", { rotate: 360, repeat: -1, duration: 1 });
-        setTimeout(() => setIsLoading(false), 7000);
-    }, []);
+        setTimeout(() => setIsLoading(false), 10000);
+    }, [isLoading]);
 
     return (
         <>
@@ -64,19 +85,18 @@ const RoomControls = () => {
                     </div>
                     <button
                         className="text-red-500 font-bold mt-3 hover:underline"
-                        onClick={handleRefreshClick}
+                        onClick={() => handleRefreshClick()}
                     >
                         Cancel
                     </button>
                 </div>
             ) : (
-                <div className="fixed bottom-[8%] bg-white p-2 px-2 rounded-xl text-xl flex justify-between w-[20%]">
+                <div className="fixed bottom-[8%] bg-white p-2 px-2 rounded-xl text-xl flex justify-between w-[21.5%]">
+                    {/* Webcam */}
                     <button
-                        onClick={memoizedHandleWebcam}
+                        onClick={() => handleWebcam()}
                         className={`font-bold rounded-full w-[3rem] h-[3rem] ml-1 btn_action${
-                            isWebcam
-                                ? " bg-blue-500"
-                                : " bg-red-500 btn_action-denied"
+                            isWebcam ? " btn_action" : " btn_action-denied"
                         }`}
                     >
                         <i
@@ -86,12 +106,11 @@ const RoomControls = () => {
                         ></i>
                     </button>
 
+                    {/* Mic */}
                     <button
-                        onClick={memoizedHandleMic}
-                        className={`font-bold rounded-full w-[3rem] h-[3rem] btn_action${
-                            isMic
-                                ? " bg-blue-500"
-                                : " bg-red-500 btn_action-denied"
+                        onClick={() => handleMic()}
+                        className={`font-bold rounded-full w-[3rem] h-[3rem] ${
+                            isMic ? " btn_action" : " btn_action-denied"
                         }`}
                     >
                         <i
@@ -101,6 +120,24 @@ const RoomControls = () => {
                         ></i>
                     </button>
 
+                    <button
+                        onClick={() => join()}
+                        className="hover:cursor-pointer rounded-full w-[3rem] h-[3rem] bg-red-600 flex items-center justify-center btn_action-denied"
+                    >
+                        join
+                    </button>
+
+                    {/* Screen share */}
+                    <button
+                        onClick={() => handleScreenShare()}
+                        className={`hover:cursor-pointer rounded-full w-[3rem] h-[3rem] flex items-center justify-center ${
+                            isScreenShare ? " btn_action" : " btn_action-denied"
+                        }`}
+                    >
+                        <i className="fa-solid fa-display"></i>
+                    </button>
+
+                    {/* Leave meeting */}
                     <button
                         onClick={handleLeaveMeeting}
                         className="hover:cursor-pointer rounded-full w-[3rem] h-[3rem] bg-red-600 flex items-center justify-center btn_action-denied"
