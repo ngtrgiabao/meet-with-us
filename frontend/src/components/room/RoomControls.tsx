@@ -1,7 +1,6 @@
 import React from "react";
 import { useMeeting } from "@videosdk.live/react-sdk";
-import { gsap } from "gsap";
-import RoomVideoPlayer from "./RoomVideoPlayer";
+const bgVideo = require("../../assets/background/loading_screen.mp4");
 
 const RoomControls = () => {
     const {
@@ -9,7 +8,6 @@ const RoomControls = () => {
         toggleWebcam,
         leave,
         getWebcams,
-        changeWebcam,
         join,
         toggleScreenShare,
     } = useMeeting();
@@ -55,12 +53,6 @@ const RoomControls = () => {
     React.useEffect(() => {
         if (isWebcam) {
             handleGetWebcams();
-            // .then(() => {
-            //     console.log("Success");
-            // })
-            // .catch(() => {
-            //     console.log("Error");
-            // });
         }
     }, []);
 
@@ -71,27 +63,34 @@ const RoomControls = () => {
 
     // Loading page
     React.useEffect(() => {
-        gsap.to(".loading-spinner", { rotate: 360, repeat: -1, duration: 1 });
-        setTimeout(() => setIsLoading(false), 10000);
+        setTimeout(() => setIsLoading(false), 7000);
     }, [isLoading]);
 
     return (
         <>
             {isLoading ? (
-                <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center flex-col bg-black z-[9999]">
-                    <div className="loading-spinner rounded-full border-4 border-t-4 border-t-blue-500 border-gray-200 h-12 w-12 mb-2"></div>
-                    <div className="text-white">
-                        We are creating your meeting, please wait us a second 😀
+                <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center flex-col bg-black z-[9999]">
+                    <video
+                        src={bgVideo}
+                        autoPlay
+                        loop
+                        className="object-cover mb-28"
+                    ></video>
+                    <div className="absolute bottom-7 flex flex-col">
+                        <div className="text-white text-sm bg-blue-500 p-2 rounded-lg">
+                            We are creating your meeting, please wait us a few
+                            second 😀
+                        </div>
+                        <button
+                            className="text-red-500 font-bold mt-3 hover:underline"
+                            onClick={() => handleRefreshClick()}
+                        >
+                            Cancel
+                        </button>
                     </div>
-                    <button
-                        className="text-red-500 font-bold mt-3 hover:underline"
-                        onClick={() => handleRefreshClick()}
-                    >
-                        Cancel
-                    </button>
                 </div>
             ) : (
-                <div className="fixed bottom-[8%] bg-white p-2 px-2 rounded-xl text-xl flex justify-between w-[21.5%]">
+                <div className="fixed bottom-[8%] bg-white p-2 px-2 rounded-xl text-xl flex justify-between w-[21.5%] animate__animated animate__bounceInUp">
                     {/* Webcam */}
                     <button
                         onClick={() => handleWebcam()}

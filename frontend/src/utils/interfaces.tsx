@@ -61,10 +61,6 @@ export interface IPopupRoomID {
     togglePopup: () => void;
 }
 
-export interface IContainer {
-    onMeetingLeave: () => void;
-}
-
 export interface IVideoComponent {
     participantID: string;
 }

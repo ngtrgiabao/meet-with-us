@@ -54,17 +54,17 @@ const Room = () => {
             className={
                 isSharing
                     ? "h-screen overflow-hidden p-4 text-white grid grid-cols-5 relative"
-                    : "h-screen w-screen overflow-hidden p-4 text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 relative"
+                    : "h-screen w-screen overflow-hidden text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 relative"
             }
         >
             {/* ID's room */}
             {isSharing ? (
                 <></>
             ) : (
-                <p className="absolute top-3 left-5 bg-white text-black p-1 text-sm z-[999]">
-                    <span className="font-bold">ID ROOM:</span>{" "}
+                <div className="absolute top-5 left-4 bg-white text-black p-1 text-sm z-[999] animate__animated animate__bounce">
+                    <span className="font-bold">ID ROOM: </span>
                     {ROOM_ID.replaceAll('"', "")}
-                </p>
+                </div>
             )}
 
             {/* =================== MAIN SCREEN ====================== */}
@@ -83,9 +83,8 @@ const Room = () => {
                     <video ref={shareScreenRef} autoPlay />
                 </div>
             </div> */}
-
-            {/* =================== PEOPLE ====================== */}
-
+            
+            {/* Create UI of participants join */}
             <div
                 className={
                     isSharing
