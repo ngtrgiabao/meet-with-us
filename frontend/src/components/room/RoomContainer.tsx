@@ -4,8 +4,6 @@ import { useMeeting } from "@videosdk.live/react-sdk";
 import RoomControls from "./RoomControls";
 import RoomParticipantView from "./RoomParticipantView";
 
-import { IContainer } from "../../utils/interfaces";
-
 const RoomContainer = () => {
     const [joined, setJoined] = React.useState<string | null>(null);
     const { join } = useMeeting();

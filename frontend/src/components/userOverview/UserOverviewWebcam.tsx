@@ -18,22 +18,22 @@ const UserOverviewWebcam = () => {
 
     const getUserMedia = navigator.mediaDevices.getUserMedia;
 
-    getUserMedia({
-        video: isVideo,
-        audio: isAudio,
-    })
-        .then(async (stream) => {
-            // Changing the source of video to current stream.
-            if (video.current && isVideo) {
-                video.current.srcObject = stream;
-                video.current.play();
-            }
+    // getUserMedia({
+    //     video: isVideo,
+    //     audio: isAudio,
+    // })
+    //     .then(async (stream) => {
+    //         // Changing the source of video to current stream.
+    //         if (video.current && isVideo) {
+    //             video.current.srcObject = stream;
+    //             video.current.play();
+    //         }
 
-            console.log("Get webcam success :D");
-        })
-        .catch(() => {
-            console.log("Failed to get webcam :<");
-        });
+    //         console.log("Get webcam success :D");
+    //     })
+    //     .catch(() => {
+    //         console.log("Failed to get webcam :<");
+    //     });
 
     return (
         <>
