@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 
 import { IAboutCardProps } from "../../utils/interfaces";
 
-const AboutCard = ({bgImg, name, role}: IAboutCardProps) => {
+const AboutCard = ({ bgImg, name, role }: IAboutCardProps) => {
     const aboutCard = gsap.timeline();
 
     React.useEffect(() => {
@@ -29,7 +29,12 @@ const AboutCard = ({bgImg, name, role}: IAboutCardProps) => {
                 alt="img"
                 className="h-full object-cover before:bg-black before:w-full before:h-full bg-img"
             />
-            <div className="absolute top-[40%] w-full flex justify-center items-center flex-col img-desc text-white font-bold h-[20%]">
+            <div
+                className="absolute top-[50%] w-full flex justify-center items-center flex-col img-desc text-white font-bold h-[100%] bg-black/30 -translate-y-1/2"
+                style={{
+                    transition: "all 0.75s ease",
+                }}
+            >
                 <p className="text-xl">{name}</p>
                 <span className="font-thin">{role}</span>
             </div>

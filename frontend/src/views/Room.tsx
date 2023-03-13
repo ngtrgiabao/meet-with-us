@@ -9,13 +9,10 @@ import UserService from "../api/user/user.service";
 import RoomParticipantView from "../components/room/RoomParticipantView";
 import RoomControls from "../components/room/RoomControls";
 
-const logo1 = require("../assets/background/2.jpg");
-const logo2 = require("../assets/background/1.jpg");
-
 const Room = () => {
     const ROOM_ID = JSON.stringify(window.location?.pathname?.split("/")[2]);
 
-    const { participants, leave, join } = useMeeting();
+    const { participants, leave } = useMeeting();
     const [isAudio, setIsAudio] = React.useState(true);
     const [isVideo, setIsVideo] = React.useState(true);
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
@@ -57,20 +54,19 @@ const Room = () => {
             className={
                 isSharing
                     ? "h-screen overflow-hidden p-4 text-white grid grid-cols-5 relative"
-                    : "h-screen w-screen overflow-hidden p-4 text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 relative"
+                    : "h-screen w-screen overflow-hidden text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 relative"
             }
         >
             {/* ID's room */}
             {isSharing ? (
                 <></>
             ) : (
-                <p className="absolute top-3 left-5 bg-white text-black p-1 text-sm z-[999]">
-                    <span className="font-bold">ID ROOM:</span>{" "}
+                <div className="absolute top-5 left-4 bg-white text-black p-1 text-sm z-[999] animate__animated animate__bounce">
+                    <span className="font-bold">ID ROOM: </span>
                     {ROOM_ID.replaceAll('"', "")}
-                </p>
+                </div>
             )}
 
-            <button onClick={() => join()}>liiiiii</button>
             {/* =================== MAIN SCREEN ====================== */}
             {/* <div
                 className={isSharing ? "grid col-span-4" : ""}
@@ -87,9 +83,8 @@ const Room = () => {
                     <video ref={shareScreenRef} autoPlay />
                 </div>
             </div> */}
-
-            {/* =================== PEOPLE ====================== */}
-
+            
+            {/* Create UI of participants join */}
             <div
                 className={
                     isSharing
