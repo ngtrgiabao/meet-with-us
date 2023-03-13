@@ -9,7 +9,10 @@ import Navbar from "../layouts/Navbar";
 import { RoomContext } from "../context/room/RoomProvider";
 import PopupRoomID from "../components/popup/PopupRoomID";
 
+import { authToken, createMeeting } from "../api/api.service";
+
 import BannerVideo from "../layouts/BannerVideo";
+import HomeInput from "../components/home/HomeInput";
 
 const bgImg = require("../assets/background/home.mp4");
 
@@ -19,6 +22,7 @@ const Home = () => {
     const [inputValue, setInputValue] = React.useState<string>("");
     const [isCopied, setIsCopied] = React.useState<boolean>(false);
     const [isActive, setIsActive] = React.useState<boolean>(false);
+    const [meetingID, setMeetingID] = React.useState<string | any>("");
 
     const roomID = React.useContext(RoomContext);
 
@@ -37,6 +41,11 @@ const Home = () => {
 
     const handleActive: () => void = () => {
         setIsActive((isActive) => !isActive);
+    };
+
+    const handleGetMeetingAndToken = async () => {
+        const meetingId = await createMeeting({ token: authToken });
+        setMeetingID(meetingId);
     };
 
     const mouse = React.useRef<ReturnType<typeof Object>>({
@@ -88,51 +97,7 @@ const Home = () => {
                         });
                     }}
                 >
-                    {inputValue ? (
-                        <Link
-                            to={`/user-overview/${
-                                inputValue ? inputValue : roomID
-                            }`}
-                            className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn"
-                        >
-                            Tham gia phòng
-                        </Link>
-                    ) : (
-                        <button
-                            className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn"
-                            onClick={() => {
-                                handleActive();
-                            }}
-                        >
-                            Tạo phòng
-                        </button>
-                    )}
-
-                    {/* Room input */}
-                    <input
-                        type="text"
-                        placeholder="enter your link room here"
-                        className="text-lg uppercase font-bold outline outline-1 focus:outline-2 p-2 rounded animate__animated animate__fadeIn mx-4 flex-1"
-                        onChange={(e) => {
-                            handleInput(e);
-                        }}
-                    />
-
-                    {/* Copy clipboard */}
-                    {isCopied ? (
-                        <span className="text-white p-2 px-4 rounded-lg animate__animated animate__bounceIn">
-                            <i className="fa-solid fa-check text-xl text-green-500"></i>
-                        </span>
-                    ) : (
-                        <CopyToClipboard
-                            text={inputValue}
-                            onCopy={handleCopyClipboard}
-                        >
-                            <span className="text-white cursor-pointer hover:text-white hover:bg-blue-400 p-2 px-4 rounded-lg animate__animated animate__bounceIn">
-                                <i className="fa-regular fa-clipboard text-xl"></i>
-                            </span>
-                        </CopyToClipboard>
-                    )}
+                    <HomeInput />
                 </div>
 
                 <div className="absolute bottom-4 left-4">
@@ -183,7 +148,7 @@ const Home = () => {
 
                 {/* Popup */}
                 <PopupRoomID
-                    id={roomID}
+                    id={meetingID}
                     isActive={isActive}
                     togglePopup={handleActive}
                 />

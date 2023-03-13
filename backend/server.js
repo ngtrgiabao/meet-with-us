@@ -1,6 +1,5 @@
 const http = require("http");
 const { Server } = require("socket.io");
-const jwt = require("jsonwebtoken");
 
 const app = require("./app");
 const config = require("./src/config/database.config");

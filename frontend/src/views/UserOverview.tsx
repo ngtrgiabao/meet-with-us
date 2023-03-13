@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
+import { useMeeting } from "@videosdk.live/react-sdk";
 
 import MiniAvatar from "../components/userOverview/UserOverviewMiniAvatar";
 
@@ -16,11 +17,12 @@ const useroverview = gsap.timeline();
 
 const UserOverview = () => {
     const ROOM_ID = window.location.pathname.split("/").at(2);
+    const { join } = useMeeting();
 
     return (
         <>
             <Transition timeline={useroverview} duration={2.5} />
-            <div className="h-screen w-full flex justify-between items-center pl-[16rem] pr-[19rem]">
+            <div className="h-screen w-full flex justify-between items-center pl-[16rem] pr-[19rem] bg-gradient-to-r from-cyan-500 to-blue-500">
                 <WebcamOverview />
 
                 <div className="ml-5 text-white flex justify-center flex-col relative">
@@ -37,7 +39,8 @@ const UserOverview = () => {
 
                     <Link
                         to={`/room/${ROOM_ID}`}
-                        className="p-2 flex justify-center rounded-3xl hover:bg-blue-800 border border-dashed hover:border-solid"
+                        onClick={() => join()}
+                        className="p-2 flex justify-center rounded-3xl hover:bg-blue-600 border border-dashed hover:border-solid"
                     >
                         Tham gia
                     </Link>
