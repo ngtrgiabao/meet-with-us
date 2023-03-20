@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import { v4 as uuid } from "uuid";
 
 import { authToken, createMeeting } from "../../api/api.service";
 
@@ -23,6 +22,5 @@ const RoomProvider = ({ children }: { children: ReactNode }) => {
         </RoomContext.Provider>
     );
 };
-
 
 export { RoomContext, RoomProvider };

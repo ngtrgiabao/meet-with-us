@@ -8,11 +8,20 @@ import "../styles/room/room.css";
 import UserService from "../api/user/user.service";
 import RoomParticipantView from "../components/room/RoomParticipantView";
 import RoomControls from "../components/room/RoomControls";
+import RoomLoading from "../components/room/RoomLoading";
 
 const Room = () => {
-    const ROOM_ID = JSON.stringify(window.location?.pathname?.split("/")[2]);
+    const ROOM_ID = JSON.stringify(
+        window.location?.pathname?.split("/")[2]
+    ).trim();
 
-    const { participants, leave } = useMeeting();
+    const [joined, setJoined] = React.useState<string | null>(null);
+
+    const { participants, leave } = useMeeting({
+        onMeetingJoined: () => {
+            setJoined("JOINED");
+        },
+    });
     const [isAudio, setIsAudio] = React.useState(true);
     const [isVideo, setIsVideo] = React.useState(true);
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
@@ -49,6 +58,15 @@ const Room = () => {
         };
     }, []);
 
+    const [isLoading, setIsLoading] = React.useState<boolean>(true);
+    const handleRefreshClick = () => {
+        window.location.reload();
+    };
+    // Loading page
+    React.useEffect(() => {
+        setTimeout(() => setIsLoading(false), 7000);
+    }, [isLoading]);
+
     return (
         <div
             className={
@@ -62,7 +80,7 @@ const Room = () => {
                 <></>
             ) : (
                 <div className="absolute top-5 left-4 bg-white text-black p-1 text-sm z-[999] animate__animated animate__bounce">
-                    <span className="font-bold">ID ROOM: </span>
+                    <span className="font-bold mr-1">ID ROOM:</span>
                     {ROOM_ID.replaceAll('"', "")}
                 </div>
             )}
@@ -83,7 +101,7 @@ const Room = () => {
                     <video ref={shareScreenRef} autoPlay />
                 </div>
             </div> */}
-            
+
             {/* Create UI of participants join */}
             <div
                 className={
@@ -92,19 +110,25 @@ const Room = () => {
                         : "h-[65%] w-[22%] mt-[2%] bg-white rounded-xl overflow-hidden"
                 }
             >
-                <RoomControls />
-                {
-                    <div className="max-h-96 overflow-y-auto">
-                        {participants &&
-                            [...participants.keys()].map((participantID) => (
-                                <div key={participantID}>
-                                    <RoomParticipantView
-                                        participantID={participantID}
-                                    />
-                                </div>
-                            ))}
-                    </div>
-                }
+                {joined && joined === "JOINED" ? (
+                    <>
+                        <RoomControls />
+                        {
+                            <div className="max-h-full overflow-y-auto">
+                                {[...participants.keys()].map(
+                                    (participantID) => (
+                                        <RoomParticipantView
+                                            participantID={participantID}
+                                            key={participantID}
+                                        />
+                                    )
+                                )}
+                            </div>
+                        }
+                    </>
+                ) : (
+                    <RoomLoading />
+                )}
             </div>
         </div>
     );

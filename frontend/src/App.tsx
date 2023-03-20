@@ -9,6 +9,7 @@ import UserOverview from "./views/UserOverview";
 import Room from "./views/Room";
 import Register from "./views/Register";
 import Login from "./views/Login";
+import Test from "./views/Test";
 
 import _404 from "./views/_404";
 
@@ -48,6 +49,7 @@ function App() {
                                     path="/test"
                                     element={<RoomContainer />}
                                 />
+                                <Route path="/t" element={<Test />} />
                             </>
                             <>
                                 <Route

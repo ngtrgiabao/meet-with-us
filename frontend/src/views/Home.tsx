@@ -19,25 +19,11 @@ const bgImg = require("../assets/background/home.mp4");
 const { CopyToClipboard } = require("react-copy-to-clipboard");
 
 const Home = () => {
-    const [inputValue, setInputValue] = React.useState<string>("");
-    const [isCopied, setIsCopied] = React.useState<boolean>(false);
     const [isActive, setIsActive] = React.useState<boolean>(false);
     const [meetingID, setMeetingID] = React.useState<string | any>("");
 
-    const roomID = React.useContext(RoomContext);
-
     const [peerId, setPeerId] = React.useState<string>("");
     const peer = new Peer();
-
-    const handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void = (
-        e
-    ) => {
-        setInputValue(e.target.value);
-    };
-
-    const handleCopyClipboard: () => void = () => {
-        setIsCopied((isCopied) => !isCopied);
-    };
 
     const handleActive: () => void = () => {
         setIsActive((isActive) => !isActive);

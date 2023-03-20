@@ -18,7 +18,6 @@ const RoomContainer = () => {
             setJoined("JOINED");
             join();
         } catch (error) {
-            // Handle error
             console.error(error);
             setJoined(null);
         }
@@ -32,14 +31,10 @@ const RoomContainer = () => {
                 <div className="h-screen text-white pt-10">
                     <RoomControls />
                     {[...participants.keys()].map((participantID) => (
-                        <div
-                            className="max-h-96 overflow-y-auto"
+                        <RoomParticipantView
+                            participantID={participantID}
                             key={participantID}
-                        >
-                            <RoomParticipantView
-                                participantID={participantID}
-                            />
-                        </div>
+                        />
                     ))}
                 </div>
             ) : (

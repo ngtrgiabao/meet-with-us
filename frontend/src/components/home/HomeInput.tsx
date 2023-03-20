@@ -43,7 +43,7 @@ const HomeInput = () => {
             <input
                 type="text"
                 placeholder="enter your link room here"
-                className="text-lg uppercase font-bold outline outline-1 focus:outline-2 p-2 rounded animate__animated animate__fadeIn mx-4 flex-1"
+                className="text-lg font-bold outline outline-1 focus:outline-2 p-2 rounded animate__animated animate__fadeIn mx-4 flex-1"
                 minLength={14}
                 maxLength={14}
                 onChange={(e) => handleInput(e)}
