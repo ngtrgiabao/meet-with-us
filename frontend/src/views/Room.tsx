@@ -1,7 +1,6 @@
 import React from "react";
 import { useMeeting } from "@videosdk.live/react-sdk";
 import { useNavigate } from "react-router-dom";
-import { v4 as uuid } from "uuid";
 
 import "../styles/room/room.css";
 
@@ -9,14 +8,11 @@ import UserService from "../api/user/user.service";
 import RoomParticipantView from "../components/room/RoomParticipantView";
 import RoomControls from "../components/room/RoomControls";
 
-const Room = () => {
-    const ROOM_ID = JSON.stringify(window.location?.pathname?.split("/")[2]);
-
+const Room = ({ meetingID }: { meetingID: string | null }) => {
     const { participants, leave } = useMeeting();
     const [isAudio, setIsAudio] = React.useState(true);
     const [isVideo, setIsVideo] = React.useState(true);
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
-    const [meetingID, setMeetingID] = React.useState<string | null>(null);
 
     // Connect socket server
     // const mySocket = useSocket();
@@ -36,8 +32,6 @@ const Room = () => {
         setIsVideo((isVideo) => !isVideo);
     };
 
-    const videoGridRef = React.useRef<HTMLDivElement>(null);
-
     //  SHARE SCREEN
     const shareScreenRef = React.useRef<HTMLVideoElement | any>(null);
 
@@ -54,7 +48,7 @@ const Room = () => {
             className={
                 isSharing
                     ? "h-screen overflow-hidden p-4 text-white grid grid-cols-5 relative"
-                    : "h-screen w-screen overflow-hidden text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 relative"
+                    : "h-screen w-screen overflow-hidden text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 absolute inset-0"
             }
         >
             {/* ID's room */}
@@ -62,8 +56,8 @@ const Room = () => {
                 <></>
             ) : (
                 <div className="absolute top-5 left-4 bg-white text-black p-1 text-sm z-[999] animate__animated animate__bounce">
-                    <span className="font-bold">ID ROOM: </span>
-                    {ROOM_ID.replaceAll('"', "")}
+                    <span className="font-bold mr-1">ID ROOM:</span>
+                    {meetingID}
                 </div>
             )}
 
@@ -83,7 +77,7 @@ const Room = () => {
                     <video ref={shareScreenRef} autoPlay />
                 </div>
             </div> */}
-            
+
             {/* Create UI of participants join */}
             <div
                 className={
@@ -94,15 +88,13 @@ const Room = () => {
             >
                 <RoomControls />
                 {
-                    <div className="max-h-96 overflow-y-auto">
-                        {participants &&
-                            [...participants.keys()].map((participantID) => (
-                                <div key={participantID}>
-                                    <RoomParticipantView
-                                        participantID={participantID}
-                                    />
-                                </div>
-                            ))}
+                    <div className="max-h-full overflow-y-auto">
+                        {[...participants.keys()].map((participantID) => (
+                            <RoomParticipantView
+                                participantID={participantID}
+                                key={participantID}
+                            />
+                        ))}
                     </div>
                 }
             </div>
