@@ -16,6 +16,9 @@ const RoomVideoPlayer = ({ videoStream }: IRoomVideoPlayer) => {
             onError={(err) => {
                 console.log(err, "participant video error");
             }}
+            style={{
+                transform: "scaleX(-1)",
+            }}
         />
     );
 };

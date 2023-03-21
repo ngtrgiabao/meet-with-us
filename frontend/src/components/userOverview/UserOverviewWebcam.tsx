@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import CameraComponent from "./CameraComponents";
 
 const UserOverviewWebcam = () => {
     const [isAudio, setIsAudio] = React.useState<boolean>(true);
     const [isVideo, setIsVideo] = React.useState<boolean>(true);
+
+    const cameraState =
+        localStorage.getItem("cameraState") ||
+        document.cookie.replace(
+            /(?:(?:^|.*;\s*)cameraState\s*\=\s*([^;]*).*$)|^.*$/,
+            "$1"
+        ) ||
+        "open";
 
     console.log(isAudio, isVideo);
 
@@ -14,26 +23,52 @@ const UserOverviewWebcam = () => {
         setIsVideo((isVideo) => !isVideo);
     };
 
-    const video = React.useRef<HTMLVideoElement>(null);
+    const video = useRef<HTMLVideoElement>(null);
 
-    const getUserMedia = navigator.mediaDevices.getUserMedia;
-
-    getUserMedia({
-        video: isVideo,
-        audio: isAudio,
-    })
-        .then(async (stream) => {
-            // Changing the source of video to current stream.
-            if (video.current && isVideo) {
-                video.current.srcObject = stream;
-                video.current.play();
-            }
-
-            console.log("Get webcam success :D");
+    useEffect(() => {
+        const getUserMedia = navigator.mediaDevices.getUserMedia;
+        getUserMedia({
+            video: isVideo,
+            audio: isAudio,
         })
-        .catch(() => {
-            console.log("Failed to get webcam :<");
-        });
+            .then(async (stream) => {
+                // Changing the source of video to current stream.
+                if (video.current && isVideo) {
+                    video.current.srcObject = stream;
+                    video.current.play();
+                }
+
+                console.log("Get webcam success :D");
+
+                // Update the camera state and save it to local storage or a cookie
+                const newCameraState = isVideo ? "closed" : "open";
+                localStorage.setItem("cameraState", newCameraState);
+                document.cookie = `cameraState=${newCameraState}`;
+            })
+            .catch(() => {
+                console.log("Failed to get webcam :<");
+            });
+    }, [isAudio, isVideo]);
+
+    /*useEffect(() => {
+        const getUserMedia = navigator.mediaDevices.getUserMedia;
+        getUserMedia({
+            video: isVideo,
+            audio: isAudio,
+        })
+            .then(async (stream) => {
+                // Changing the source of video to current stream.
+                if (video.current && isVideo) {
+                    video.current.srcObject = stream;
+                    video.current.play();
+                }
+
+                console.log("Get webcam success :D");
+            })
+            .catch(() => {
+                console.log("Failed to get webcam :<");
+            });
+    }, [isAudio, isVideo]);*/
 
     return (
         <>
@@ -43,7 +78,7 @@ const UserOverviewWebcam = () => {
                         ref={video}
                         className="bg-black w-[40rem] h-[30rem] rounded-2xl"
                         style={{
-                            transform: "rotateY(180deg)",
+                            transform: "scaleX(-1)",
                         }}
                     ></video>
                 ) : (

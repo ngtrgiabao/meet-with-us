@@ -90,9 +90,9 @@ const About = () => {
 
             <div
                 id="About"
-                className="main-page header__subtitle  h-screen w-full  bg-center -z-10"
+                className="main-page header__subtitle h-screen w-full bg-center -z-10"
             >
-                <div className="grid grid-cols-auto-fit-100 h-screen relative">
+                <div className="grid grid-cols-auto-fit-100 h-screen relative bg-[url('../assets/background/about.svg')] animate__animated animate__fadeIn">
                     <Link
                         to="/"
                         className="absolute top-4 z-[9] font-bold text-xl left-4 text-blue-400"

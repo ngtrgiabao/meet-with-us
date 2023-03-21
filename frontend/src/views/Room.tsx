@@ -3,23 +3,60 @@ import { useMeeting } from "@videosdk.live/react-sdk";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 
+//import { UserOverviewWebcam; } from "../components/userOverview/UserOverviewWebcam";
+
+//import CameraState from "../components/userOverview/UserOverviewWebcam";
+
 import "../styles/room/room.css";
 
 import UserService from "../api/user/user.service";
 import RoomParticipantView from "../components/room/RoomParticipantView";
 import RoomControls from "../components/room/RoomControls";
 
-const logo1 = require("../assets/background/2.jpg");
-const logo2 = require("../assets/background/1.jpg");
-
 const Room = () => {
     const ROOM_ID = JSON.stringify(window.location?.pathname?.split("/")[2]);
 
-    const { participants, leave, join } = useMeeting();
+    const { participants, leave } = useMeeting();
     const [isAudio, setIsAudio] = React.useState(true);
     const [isVideo, setIsVideo] = React.useState(true);
+
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
     const [meetingID, setMeetingID] = React.useState<string | null>(null);
+
+    const videoRef = React.useRef<HTMLVideoElement>(null);
+
+    const cameraState =
+        localStorage.getItem("cameraState") ||
+        document.cookie.replace(
+            /(?:(?:^|.*;\s*)cameraState\s*\=\s*([^;]*).*$)|^.*$/,
+            "$1"
+        ) ||
+        "open";
+
+    React.useEffect(() => {
+        //const cameraState = localStorage.getItem("cameraState");
+        const isVideo = cameraState === "open";
+
+        const getUserMedia = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: isVideo,
+                    audio: true,
+                });
+
+                if (videoRef.current && isVideo) {
+                    videoRef.current.srcObject = stream;
+                    videoRef.current.play();
+                    setIsVideo((isVideo) => !isVideo);
+                }
+                console.log("Get webcam success :D");
+                console.log(cameraState);
+            } catch (error) {
+                console.log("Failed to get webcam :<", error);
+            }
+        };
+        getUserMedia();
+    }, []);
 
     // Connect socket server
     // const mySocket = useSocket();
@@ -57,20 +94,19 @@ const Room = () => {
             className={
                 isSharing
                     ? "h-screen overflow-hidden p-4 text-white grid grid-cols-5 relative"
-                    : "h-screen w-screen overflow-hidden p-4 text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 relative"
+                    : "h-screen w-screen overflow-hidden text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 relative"
             }
         >
             {/* ID's room */}
             {isSharing ? (
                 <></>
             ) : (
-                <p className="absolute top-3 left-5 bg-white text-black p-1 text-sm z-[999]">
-                    <span className="font-bold">ID ROOM:</span>{" "}
+                <div className="absolute top-5 left-4 bg-white text-black p-1 text-sm z-[999] animate__animated animate__bounce">
+                    <span className="font-bold">ID ROOM: </span>
                     {ROOM_ID.replaceAll('"', "")}
-                </p>
+                </div>
             )}
 
-            <button onClick={() => join()}>liiiiii</button>
             {/* =================== MAIN SCREEN ====================== */}
             {/* <div
                 className={isSharing ? "grid col-span-4" : ""}
@@ -88,8 +124,7 @@ const Room = () => {
                 </div>
             </div> */}
 
-            {/* =================== PEOPLE ====================== */}
-
+            {/* Create UI of participants join */}
             <div
                 className={
                     isSharing
