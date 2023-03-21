@@ -2,14 +2,8 @@ import React from "react";
 import { useMeeting } from "@videosdk.live/react-sdk";
 
 const RoomControls = () => {
-    const {
-        toggleMic,
-        toggleWebcam,
-        leave,
-        getWebcams,
-        join,
-        toggleScreenShare,
-    } = useMeeting();
+    const { toggleMic, toggleWebcam, leave, getWebcams, toggleScreenShare } =
+        useMeeting();
 
     const [isMic, setIsMic] = React.useState<boolean>(false);
     const [isWebcam, setIsWebcam] = React.useState<boolean>(false);
