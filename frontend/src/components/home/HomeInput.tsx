@@ -4,7 +4,13 @@ const HomeInput = ({ getMeetingAndToken }: any) => {
     const [meetingID, setMeetingID] = React.useState<string | null>(null);
 
     const handleSetRoomID = async () => {
-        await getMeetingAndToken(meetingID);
+        if (meetingID && meetingID.length < 14) {
+            alert("The room ID must be exactly 14 characters in length :<");
+        } else if (!meetingID) {
+            alert("ID room can not be empty :<");
+        } else {
+            await getMeetingAndToken(meetingID);
+        }
     };
 
     const hanldeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +36,7 @@ const HomeInput = ({ getMeetingAndToken }: any) => {
             )}
 
             <input
-                placeholder="enter your link room here"
+                placeholder="Enter your link room here"
                 className="text-lg font-bold outline outline-1 focus:outline-2 p-2 rounded animate__animated animate__fadeIn mx-4 flex-1"
                 minLength={14}
                 maxLength={14}

@@ -1,6 +1,7 @@
 import React from "react";
 import { gsap } from "gsap";
 import { useMeeting } from "@videosdk.live/react-sdk";
+import { Link } from "react-router-dom";
 
 import WebcamOverview from "../components/userOverview/UserOverviewWebcam";
 import Transition from "../components/animation/AnimationTransition";
@@ -24,10 +25,21 @@ const UserOverview = ({ meetingID }: IUserOverview) => {
         join();
     };
 
+    const handleRefresh = () => {
+        window.location.reload();
+    };
+
     const [joined, setJoined] = React.useState<string | null>(null);
 
     return (
         <div className="absolute inset-0 w-full z-[100] overflow-hidden">
+            <span
+                className="absolute top-[2%] right-[2%] hover:cursor-pointer font-bold text-white hover:text-rose-600 text-2xl"
+                onClick={() => handleRefresh()}
+            >
+                <i className="fa-regular fa-circle-xmark"></i>
+            </span>
+
             <Transition timeline={useroverview} duration={2.5} />
 
             <div className="bg-gradient-to-r from-cyan-500 to-blue-500 flex justify-center h-screen py-24">
