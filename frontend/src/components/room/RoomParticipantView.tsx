@@ -65,7 +65,7 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
     return (
         <div
             key={participantID}
-            className="flex justify-center items-center flex-col p-1"
+            className="flex justify-center items-center flex-col p-1 overflow-x-hidden h-full"
         >
             {webcamOn ? <RoomVideoPlayer videoStream={videoStream} /> : null}
             {screenShareOn ? (

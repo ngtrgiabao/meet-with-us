@@ -69,6 +69,10 @@ export interface IRoomVideoPlayer {
     videoStream: MediaStream | undefined;
 }
 
+export interface IUserOverview {
+    meetingID: string | null;
+}
+
 //GSAP
 export interface ITransitionProps {
     timeline: GSAPTimeline;
