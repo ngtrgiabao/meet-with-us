@@ -4,13 +4,7 @@ const HomeInput = ({ getMeetingAndToken }: any) => {
     const [meetingID, setMeetingID] = React.useState<string | null>(null);
 
     const handleSetRoomID = async () => {
-        if (meetingID && meetingID.length < 14) {
-            alert("The room ID must be exactly 14 characters in length :<");
-        } else if (!meetingID) {
-            alert("ID room can not be empty :<");
-        } else {
-            await getMeetingAndToken(meetingID);
-        }
+        await getMeetingAndToken(meetingID);
     };
 
     const hanldeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
