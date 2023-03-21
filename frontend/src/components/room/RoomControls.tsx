@@ -90,13 +90,6 @@ const RoomControls = () => {
                     ></i>
                 </button>
 
-                <button
-                    onClick={() => join()}
-                    className="hover:cursor-pointer rounded-full w-[3rem] h-[3rem] bg-red-600 flex items-center justify-center btn_action-denied"
-                >
-                    join
-                </button>
-
                 {/* Screen share */}
                 <button
                     onClick={() => handleScreenShare()}

@@ -1,24 +1,33 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { useMeeting } from "@videosdk.live/react-sdk";
 
 import WebcamOverview from "../components/userOverview/UserOverviewWebcam";
 import Transition from "../components/animation/AnimationTransition";
+import RoomLoading from "../components/room/RoomLoading";
+import Room from "./Room";
+import { IUserOverview } from "../utils/interfaces";
 
 const useroverview = gsap.timeline();
 
-const UserOverview = () => {
-    const ROOM_ID = window.location.pathname.split("/").at(2);
+const UserOverview = ({ meetingID }: IUserOverview) => {
+    // When user joined will create a room
+    const { join } = useMeeting({
+        onMeetingJoined: () => {
+            setJoined("JOINED");
+        },
+    });
 
-    const { join } = useMeeting();
-
+    // when user joining will show up loading page
     const handleJoinMeeting = () => {
+        setJoined("JOINING");
         join();
     };
 
+    const [joined, setJoined] = React.useState<string | null>(null);
+
     return (
-        <>
+        <div className="absolute inset-0 w-full z-[100] overflow-hidden">
             <Transition timeline={useroverview} duration={2.5} />
 
             <div className="bg-gradient-to-r from-cyan-500 to-blue-500 flex justify-center h-screen py-24">
@@ -30,17 +39,22 @@ const UserOverview = () => {
                             Ready for join meeting?
                         </h3>
 
-                        <Link
-                            to={`/room/${ROOM_ID}`}
+                        <button
                             onClick={() => handleJoinMeeting()}
                             className="p-2 flex justify-center rounded-3xl hover:bg-blue-600 border border-dashed hover:border-solid"
                         >
                             Join now
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </div>
-        </>
+
+            {joined && joined === "JOINED" ? (
+                <Room meetingID={meetingID} />
+            ) : (
+                joined && joined === "JOINING" && <RoomLoading />
+            )}
+        </div>
     );
 };
 
