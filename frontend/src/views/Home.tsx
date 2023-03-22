@@ -1,53 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
-import Peer from "peerjs";
+import { MeetingProvider, MeetingConsumer } from "@videosdk.live/react-sdk";
+import { v4 as uuid } from "uuid";
 
 import "../styles/index.css";
 
 import Navbar from "../layouts/Navbar";
-import { RoomContext } from "../context/room/RoomProvider";
-import PopupRoomID from "../components/popup/PopupRoomID";
 
 import { authToken, createMeeting } from "../api/api.service";
 
 import BannerVideo from "../layouts/BannerVideo";
 import HomeInput from "../components/home/HomeInput";
+import UserOverview from "./UserOverview";
 
 const bgImg = require("../assets/background/home.mp4");
 
-const { CopyToClipboard } = require("react-copy-to-clipboard");
-
 const Home = () => {
-    const [inputValue, setInputValue] = React.useState<string>("");
-    const [isCopied, setIsCopied] = React.useState<boolean>(false);
-    const [isActive, setIsActive] = React.useState<boolean>(false);
-    const [meetingID, setMeetingID] = React.useState<string | any>("");
-
-    const roomID = React.useContext(RoomContext);
-
-    const [peerId, setPeerId] = React.useState<string>("");
-    const peer = new Peer();
-
-    const handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void = (
-        e
-    ) => {
-        setInputValue(e.target.value);
-    };
-
-    const handleCopyClipboard: () => void = () => {
-        setIsCopied((isCopied) => !isCopied);
-    };
-
-    const handleActive: () => void = () => {
-        setIsActive((isActive) => !isActive);
-    };
-
-    const handleGetMeetingAndToken = async () => {
-        const meetingId = await createMeeting({ token: authToken });
-        setMeetingID(meetingId);
-    };
-
     const mouse = React.useRef<ReturnType<typeof Object>>({
         x: 0,
         y: 0,
@@ -55,6 +24,13 @@ const Home = () => {
         height: "2rem",
         mixBlendMode: "",
     });
+
+    const [meetingID, setMeetingID] = React.useState<string | null>(null);
+    const getMeetingAndToken = async (id: string) => {
+        const meetingId =
+            id == null ? await createMeeting({ token: authToken }) : id;
+        setMeetingID(meetingId);
+    };
 
     return (
         <>
@@ -73,7 +49,7 @@ const Home = () => {
                 <BannerVideo bgImg={bgImg} />
 
                 <div
-                    className="mt-[32rem] flex w-1/2 justify-center items-center"
+                    className="mt-[32rem] mr-[10%] flex w-1/2 justify-center items-center"
                     onMouseMove={(e) => {
                         gsap.to(mouse.current, {
                             top: e.clientY - 15,
@@ -97,9 +73,10 @@ const Home = () => {
                         });
                     }}
                 >
-                    <HomeInput />
+                    <HomeInput getMeetingAndToken={getMeetingAndToken} />
                 </div>
 
+                {/* About page */}
                 <div className="absolute bottom-4 left-4">
                     <Link
                         to="/about"
@@ -145,14 +122,25 @@ const Home = () => {
                     ref={mouse}
                     className="rounded-full transition duration-150 overflow-hidden flex justify-center items-center bg-white z-[99]"
                 ></div>
-
-                {/* Popup */}
-                <PopupRoomID
-                    id={meetingID}
-                    isActive={isActive}
-                    togglePopup={handleActive}
-                />
             </div>
+
+            {/* If get auth token and meetingID success will create move to user overview page to join a room */}
+            {authToken && meetingID && (
+                <MeetingProvider
+                    config={{
+                        meetingId: meetingID,
+                        webcamEnabled: false,
+                        micEnabled: false,
+                        maxResolution: "hd" as const,
+                        name: uuid(),
+                    }}
+                    token={authToken}
+                >
+                    <MeetingConsumer>
+                        {() => <UserOverview meetingID={meetingID} />}
+                    </MeetingConsumer>
+                </MeetingProvider>
+            )}
         </>
     );
 };

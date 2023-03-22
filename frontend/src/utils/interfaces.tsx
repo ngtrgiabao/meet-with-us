@@ -67,6 +67,11 @@ export interface IVideoComponent {
 
 export interface IRoomVideoPlayer {
     videoStream: MediaStream | undefined;
+    transform?: string;
+}
+
+export interface IUserOverview {
+    meetingID: string | null;
 }
 
 //GSAP
