@@ -2,7 +2,7 @@ import ReactPlayer from "react-player";
 
 import { IRoomVideoPlayer } from "../../utils/interfaces";
 
-const RoomVideoPlayer = ({ videoStream }: IRoomVideoPlayer) => {
+const RoomVideoPlayer = ({ videoStream, transform }: IRoomVideoPlayer) => {
     return (
         <ReactPlayer
             playsinline // very very imp prop
@@ -17,7 +17,7 @@ const RoomVideoPlayer = ({ videoStream }: IRoomVideoPlayer) => {
                 console.log(err, "participant video error");
             }}
             style={{
-                transform: "scaleX(-1)",
+                transform: transform,
             }}
         />
     );
