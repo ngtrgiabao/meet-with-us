@@ -36,7 +36,7 @@ const Home = () => {
         <>
             <div
                 id="Home"
-                className="h-screen w-screen overflow-hidden relative flex justify-center items-center p-4"
+                className="h-screen  overflow-hidden relative flex justify-center items-center p-4"
                 onMouseMove={(e) => {
                     gsap.to(mouse.current, {
                         top: e.clientY - 15,
@@ -49,7 +49,7 @@ const Home = () => {
                 <BannerVideo bgImg={bgImg} />
 
                 <div
-                    className="mt-[32rem] mr-[10%] flex w-1/2 justify-center items-center"
+                    className="mt-[32rem] w-1/2 flex justify-center items-center"
                     onMouseMove={(e) => {
                         gsap.to(mouse.current, {
                             top: e.clientY - 15,
@@ -104,9 +104,9 @@ const Home = () => {
                             });
                         }}
                     >
-                        Tìm hiểu thêm
+                        Get more information
                     </Link>
-                    <span className="ml-1 text-white">về chúng tôi</span>
+                    <span className="ml-1 text-white">about us</span>
                 </div>
 
                 {/* CURSOR */}

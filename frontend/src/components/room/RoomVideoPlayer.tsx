@@ -12,12 +12,14 @@ const RoomVideoPlayer = ({ videoStream, transform }: IRoomVideoPlayer) => {
             muted={true}
             playing={true}
             url={videoStream}
-            width={"300px"}
+            width={"full"}
+            height={"auto"}
             onError={(err) => {
                 console.log(err, "participant video error");
             }}
             style={{
                 transform: transform,
+                padding: "2px",
             }}
         />
     );
