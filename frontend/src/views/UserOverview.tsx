@@ -32,7 +32,7 @@ const UserOverview = ({ meetingID }: IUserOverview) => {
     const [joined, setJoined] = React.useState<string | null>(null);
 
     return (
-        <div className="absolute inset-0 w-full z-[100] overflow-hidden">
+        <div className="absolute inset-0 w-full h-full z-[100] overflow-hidden">
             <span
                 className="absolute top-[2%] right-[2%] hover:cursor-pointer font-bold text-white hover:text-rose-600 text-2xl"
                 onClick={() => handleRefresh()}
