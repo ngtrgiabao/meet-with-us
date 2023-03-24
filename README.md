@@ -16,49 +16,47 @@
 
 ## 👾 Screenshots
 
-![z4127124183370_be1844ab1f31abde030c704e05c4fc16](https://user-images.githubusercontent.com/95952006/220337248-06062d18-2835-4398-952a-176c3436dbc3.jpg)
-![image](https://user-images.githubusercontent.com/95952006/218128848-a7a28a53-0dc9-4cee-a13f-e4827327cf58.png)
-![image](https://user-images.githubusercontent.com/95952006/218129101-711f2820-1a1c-492b-a1b4-d49d995034d4.png)
+![image](https://user-images.githubusercontent.com/95952006/227425371-c612a21c-215b-4762-a2f4-aa965f4bd2a9.png)
+![image](https://user-images.githubusercontent.com/95952006/227425808-6654c3d0-127a-4599-bc08-4efb466e7186.png)
+![image](https://user-images.githubusercontent.com/95952006/227425465-0688f563-336b-40bb-b79d-9e5c8f158ec9.png)
+![image](https://user-images.githubusercontent.com/95952006/227425573-d552cd19-b563-4d5f-8d61-0601b44c8d4f.png)
+![image](https://user-images.githubusercontent.com/95952006/227425635-ed32cb6e-8304-4d59-820f-b9d296033420.png)
+![image](https://user-images.githubusercontent.com/95952006/227425698-1b7bd83a-11be-4add-85c0-8ec00094c13d.png)
 ![z4127124200811_4df0a3477bdb253dc60be90ccb8c7280](https://user-images.githubusercontent.com/95952006/220337321-5762130e-04dd-4079-bd71-8dc176f86581.jpg)
-![z4127124201381_03406fba34f84d585bf8b65ae137e927](https://user-images.githubusercontent.com/95952006/220337332-f3f11024-e985-4dad-a7e7-52e73cb8dd86.jpg)
+![image](https://user-images.githubusercontent.com/95952006/227425978-f4bf4c33-ca68-49ff-99fa-822e279f9bdf.png)
 
 
 ## 🌳 TREE DIRECTORY FRONTEND
 
 ```
 ├───api
-│   ├───room
-│   ├───user
-│   └───_test_
+│   └───user
 ├───assets
+│   ├───avatar_user
 │   ├───background
 │   ├───slides
 │   └───slogan
 ├───components
-│   └───_test_
-├───context
-│   └───room
+│   ├───about
+│   ├───animation
+│   ├───home
+│   ├───popup
+│   ├───room
+│   └───userOverview
 ├───features
 │   ├───authentication
-│   │   ├───components
 │   │   ├───hooks
 │   │   └───services
-│   │       └───_test_
 │   └───authorization
-│       ├───components
-│       ├───hooks
 │       └───services
-│           └───_test_
 ├───hooks
-│   └───_test_
 ├───layouts
-│   └───_test_
 ├───lib
-│   └───_test_
 ├───styles
-│   └───responsive
-│       ├───mobile
-│       └───tablet
+│   ├───about
+│   ├───navbar
+│   └───room
+├───utils
 └───views
 ```
 
@@ -68,9 +66,9 @@
 ├───api
 │   └───v1
 │       ├───helper
-│       ├───interfaces
 │       ├───logs
 │       ├───room
+│       ├───token
 │       └───user
 └───config
 ```
