@@ -13,10 +13,13 @@ import { authToken, createMeeting } from "../api/api.service";
 import BannerVideo from "../layouts/BannerVideo";
 import HomeInput from "../components/home/HomeInput";
 import UserOverview from "./UserOverview";
+import { DeviceContext } from "../context/useroverview/DeviceContext";
 
 const bgImg = require("../assets/background/home.mp4");
 
 const Home = () => {
+    const { isWebcam, isMic } = React.useContext(DeviceContext);
+
     const mouse = React.useRef<ReturnType<typeof Object>>({
         x: 0,
         y: 0,
@@ -31,6 +34,8 @@ const Home = () => {
             id == null ? await createMeeting({ token: authToken }) : id;
         setMeetingID(meetingId);
     };
+
+    console.log("Webcam: ", isWebcam, "Mic: ", isMic);
 
     return (
         <>
@@ -129,8 +134,8 @@ const Home = () => {
                 <MeetingProvider
                     config={{
                         meetingId: meetingID,
-                        webcamEnabled: false,
-                        micEnabled: false,
+                        webcamEnabled: isWebcam,
+                        micEnabled: isMic,
                         maxResolution: "hd" as const,
                         name: uuid(),
                     }}

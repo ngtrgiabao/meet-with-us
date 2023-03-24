@@ -1,17 +1,19 @@
 import React from "react";
 import { gsap } from "gsap";
 import { useMeeting } from "@videosdk.live/react-sdk";
-import { Link } from "react-router-dom";
 
 import WebcamOverview from "../components/userOverview/UserOverviewWebcam";
 import Transition from "../components/animation/AnimationTransition";
 import RoomLoading from "../components/room/RoomLoading";
 import Room from "./Room";
 import { IUserOverview } from "../utils/interfaces";
+import { DeviceContext } from "../context/useroverview/DeviceContext";
 
 const useroverview = gsap.timeline();
 
 const UserOverview = ({ meetingID }: IUserOverview) => {
+    const [joined, setJoined] = React.useState<string | null>(null);
+
     // When user joined will create a room
     const { join } = useMeeting({
         onMeetingJoined: () => {
@@ -28,8 +30,6 @@ const UserOverview = ({ meetingID }: IUserOverview) => {
     const handleRefresh = () => {
         window.location.reload();
     };
-
-    const [joined, setJoined] = React.useState<string | null>(null);
 
     return (
         <div className="absolute inset-0 w-full h-full z-[100] overflow-hidden">
@@ -51,12 +51,23 @@ const UserOverview = ({ meetingID }: IUserOverview) => {
                             Ready for join meeting?
                         </h3>
 
-                        <button
-                            onClick={() => handleJoinMeeting()}
-                            className="p-2 flex justify-center rounded-3xl hover:bg-blue-600 border border-dashed hover:border-solid"
-                        >
-                            Join now
-                        </button>
+                        <div className="w-full flex flex-col items-center">
+                            <button
+                                onClick={() => handleJoinMeeting()}
+                                className="p-2 rounded-3xl hover:bg-blue-600 border border-dashed hover:border-solid w-full"
+                            >
+                                Join now
+                            </button>
+                            <button
+                                onClick={() => handleRefresh()}
+                                className="mt-2 font-bold text-sm"
+                                style={{
+                                    color: "rgb(255 0 0 / 1)",
+                                }}
+                            >
+                                Cancel ?
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
