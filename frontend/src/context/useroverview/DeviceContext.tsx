@@ -1,11 +1,6 @@
 import React, { ReactNode } from "react";
 
-type TDeviceContext = {
-    isMic: boolean;
-    isWebcam: boolean;
-    toggleMic: () => void;
-    toggleWebcam: () => void;
-};
+import { TDeviceContext } from "../../utils/types";
 
 const DeviceContext = React.createContext<TDeviceContext>({
     isMic: false,
