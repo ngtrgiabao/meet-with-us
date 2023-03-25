@@ -25,25 +25,27 @@ io.on("connection", (socket) => {
     console.log("New client connected");
 
     socket.on("join", (room) => {
-        console.log(`Member ${socket.id} joined room ${room}`);
-
         socket.join(room);
-        socket.to(room).emit("user-connected", { userID: socket.id });
+        console.log(`Member ${socket.id} joined room ${room}`);
+        socket.to(room).emit("user-connected", socket.id);
     });
     socket.on("signal", (data) => {
         console.log(`Member ${socket.id} signaling to ${data.target}`);
 
-        socket
-            .to(data.target)
-            .emit("signal", { sender: socket.id, signal: data.signal });
+        socket.on("signal", (data) => {
+            console.log(`Member ${socket.id} signaling to ${data.target}`);
+            socket
+                .to(data.target)
+                .emit("signal", { sender: socket.id, signal: data.signal });
+        });
+
+        socket.on("disconnect", () => {
+            console.log(`Member ${socket.id} disconnected`);
+            socket.broadcast.emit("user-disconnected", socket.id);
+        });
     });
 
-    socket.on("disconnect", () => {
-        console.log(`Member ${socket.id} disconnected`);
-        socket.broadcast.emit("user-disconnected", socket.id);
+    httpServer.listen(PORT, () => {
+        console.log("server connected");
     });
-});
-
-httpServer.listen(PORT, () => {
-    console.log("server connected");
 });

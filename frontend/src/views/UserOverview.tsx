@@ -1,18 +1,19 @@
-import React from "react";
+import React, { createContext, useState, useContext } from "react";
 import { gsap } from "gsap";
 import { useMeeting } from "@videosdk.live/react-sdk";
 
-import WebcamOverview from "../components/userOverview/UserOverviewWebcam";
 import Transition from "../components/animation/AnimationTransition";
 import RoomLoading from "../components/room/RoomLoading";
 import Room from "./Room";
+import UserOverviewWebcam from "../components/userOverview/UserOverviewWebcam";
+
 import { IUserOverview } from "../utils/interfaces";
-import { DeviceContext } from "../context/useroverview/DeviceContext";
 
 const useroverview = gsap.timeline();
 
 const UserOverview = ({ meetingID }: IUserOverview) => {
     const [joined, setJoined] = React.useState<string | null>(null);
+    const [isVideo, setIsVideo] = React.useState<boolean>(true);
 
     // When user joined will create a room
     const { join } = useMeeting({
@@ -44,7 +45,7 @@ const UserOverview = ({ meetingID }: IUserOverview) => {
 
             <div className="bg-gradient-to-r from-cyan-500 to-blue-500 flex justify-center h-screen py-24">
                 <div className="h-full w-[80%] flex justify-center items-center">
-                    <WebcamOverview />
+                    <UserOverviewWebcam />
 
                     <div className="text-white flex justify-center flex-col relative ml-[5%]">
                         <h3 className="text-2xl font-bold mb-6">
