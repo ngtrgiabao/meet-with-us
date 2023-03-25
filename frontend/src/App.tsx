@@ -5,7 +5,7 @@ import Home from "./views/Home";
 import About from "./views/About";
 import Register from "./views/Register";
 import Login from "./views/Login";
-//
+
 import _404 from "./views/_404";
 
 import "./styles/index.css";
