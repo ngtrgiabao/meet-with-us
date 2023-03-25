@@ -1,74 +1,47 @@
 import React, { useEffect, useRef } from "react";
-import CameraComponent from "./CameraComponents";
+import { useDeviceContext } from "./DeviceContext";
 
 const UserOverviewWebcam = () => {
     const [isAudio, setIsAudio] = React.useState<boolean>(true);
     const [isVideo, setIsVideo] = React.useState<boolean>(true);
 
-    const cameraState =
-        localStorage.getItem("cameraState") ||
-        document.cookie.replace(
-            /(?:(?:^|.*;\s*)cameraState\s*\=\s*([^;]*).*$)|^.*$/,
-            "$1"
-        ) ||
-        "open";
+    const { isCamera, setCamera, isMicro, setMicro } = useDeviceContext();
 
     console.log(isAudio, isVideo);
+    console.log("is camvalue ", isCamera);
+    console.log("ismicro value", isMicro);
 
     const handleAudio = () => {
         setIsAudio((isAudio) => !isAudio);
+        setMicro(!isMicro);
     };
 
     const handleVideo = () => {
         setIsVideo((isVideo) => !isVideo);
+        setCamera(!isCamera);
     };
 
     const video = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
-        const getUserMedia = navigator.mediaDevices.getUserMedia;
-        getUserMedia({
-            video: isVideo,
-            audio: isAudio,
-        })
-            .then(async (stream) => {
-                // Changing the source of video to current stream.
+        const getUserMedia = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: isVideo,
+                    audio: true,
+                });
+
                 if (video.current && isVideo) {
                     video.current.srcObject = stream;
                     video.current.play();
                 }
-
                 console.log("Get webcam success :D");
-
-                // Update the camera state and save it to local storage or a cookie
-                const newCameraState = isVideo ? "closed" : "open";
-                localStorage.setItem("cameraState", newCameraState);
-                document.cookie = `cameraState=${newCameraState}`;
-            })
-            .catch(() => {
-                console.log("Failed to get webcam :<");
-            });
-    }, [isAudio, isVideo]);
-
-    /*useEffect(() => {
-        const getUserMedia = navigator.mediaDevices.getUserMedia;
-        getUserMedia({
-            video: isVideo,
-            audio: isAudio,
-        })
-            .then(async (stream) => {
-                // Changing the source of video to current stream.
-                if (video.current && isVideo) {
-                    video.current.srcObject = stream;
-                    video.current.play();
-                }
-
-                console.log("Get webcam success :D");
-            })
-            .catch(() => {
-                console.log("Failed to get webcam :<");
-            });
-    }, [isAudio, isVideo]);*/
+            } catch (error) {
+                console.log("Failed to get webcam :<", error);
+            }
+        };
+        getUserMedia();
+    }, [isVideo]);
 
     return (
         <>
