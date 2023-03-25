@@ -1,9 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useDeviceContext } from "./DeviceContext";
 
-const UserOverviewWebcam = () => {
-    const [isAudio, setIsAudio] = React.useState<boolean>(true);
-    const [isVideo, setIsVideo] = React.useState<boolean>(true);
+import { DeviceContext } from "../../context/useroverview/DeviceContext";
 
     const { isCamera, setCamera, isMicro, setMicro } = useDeviceContext();
 
@@ -46,7 +44,7 @@ const UserOverviewWebcam = () => {
     return (
         <>
             <div className="flex flex-col relative justify-center">
-                {isVideo ? (
+                {isWebcam ? (
                     <video
                         ref={video}
                         className="bg-black w-[40rem] h-[30rem] rounded-2xl"
@@ -59,37 +57,32 @@ const UserOverviewWebcam = () => {
                 )}
 
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-fit flex justify-center">
-                    {isAudio ? (
-                        <button
-                            onClick={handleAudio}
-                            className="bg-white font-bold rounded-full w-[3rem] h-[3rem]"
-                        >
-                            <i className="fa-solid fa-microphone"></i>
-                        </button>
-                    ) : (
-                        <button
-                            onClick={handleAudio}
-                            className="text-white font-bold rounded-full w-[3rem] h-[3rem] bg-red-500 "
-                        >
-                            <i className="fa-solid fa-microphone-slash"></i>
-                        </button>
-                    )}
-
-                    {isVideo ? (
-                        <button
-                            onClick={handleVideo}
-                            className="bg-white font-bold rounded-full w-[3rem] h-[3rem] ml-6"
-                        >
-                            <i className="fa-solid fa-video"></i>
-                        </button>
-                    ) : (
-                        <button
-                            onClick={handleVideo}
-                            className="text-white font-bold rounded-full w-[3rem] h-[3rem] bg-red-500 ml-6"
-                        >
-                            <i className="fa-solid fa-video-slash"></i>
-                        </button>
-                    )}
+                    {/* Mic */}
+                    <button
+                        onClick={() => handleMic()}
+                        className={`font-bold rounded-full w-[3rem] h-[3rem] text-white ${
+                            isMic ? " btn_action" : " btn_action-denied"
+                        }`}
+                    >
+                        <i
+                            className={`fa-solid ${
+                                isMic ? "fa-microphone" : "fa-microphone-slash"
+                            }`}
+                        ></i>
+                    </button>
+                    {/* Webcam */}
+                    <button
+                        onClick={() => handleWebcam()}
+                        className={`font-bold rounded-full w-[3rem] h-[3rem] text-white ml-6 ${
+                            isWebcam ? " btn_action" : " btn_action-denied"
+                        }`}
+                    >
+                        <i
+                            className={`fa-solid ${
+                                isWebcam ? "fa-video" : "fa-video-slash"
+                            }`}
+                        ></i>
+                    </button>
                 </div>
             </div>
         </>
