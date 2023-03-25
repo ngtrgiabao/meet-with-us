@@ -1,39 +1,46 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { useDeviceContext } from "./DeviceContext";
 
 const UserOverviewWebcam = () => {
     const [isAudio, setIsAudio] = React.useState<boolean>(true);
     const [isVideo, setIsVideo] = React.useState<boolean>(true);
 
-    console.log(isAudio, isVideo);
+    const { isCamera, setCamera, isMicro, setMicro } = useDeviceContext();
+
+    console.log("is camvalue ", isCamera);
+    console.log("ismicro value", isMicro);
 
     const handleAudio = () => {
         setIsAudio((isAudio) => !isAudio);
+        setMicro(!isMicro);
     };
 
     const handleVideo = () => {
         setIsVideo((isVideo) => !isVideo);
+        setCamera(!isCamera);
     };
 
-    const video = React.useRef<HTMLVideoElement>(null);
+    const video = useRef<HTMLVideoElement>(null);
 
-    const getUserMedia = navigator.mediaDevices.getUserMedia;
+    useEffect(() => {
+        const getUserMedia = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: isVideo,
+                    audio: true,
+                });
 
-    // getUserMedia({
-    //     video: isVideo,
-    //     audio: isAudio,
-    // })
-    //     .then(async (stream) => {
-    //         // Changing the source of video to current stream.
-    //         if (video.current && isVideo) {
-    //             video.current.srcObject = stream;
-    //             video.current.play();
-    //         }
-
-    //         console.log("Get webcam success :D");
-    //     })
-    //     .catch(() => {
-    //         console.log("Failed to get webcam :<");
-    //     });
+                if (video.current && isVideo) {
+                    video.current.srcObject = stream;
+                    video.current.play();
+                }
+                console.log("Get webcam success :D");
+            } catch (error) {
+                console.log("Failed to get webcam :<", error);
+            }
+        };
+        getUserMedia();
+    }, [isVideo]);
 
     return (
         <>

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 import "../styles/room/room.css";
 
-import UserService from "../api/user/user.service";
 import RoomParticipantView from "../components/room/RoomParticipantView";
 import RoomControls from "../components/room/RoomControls";
 
@@ -12,17 +11,30 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
     const { participants, leave } = useMeeting();
     const [isAudio, setIsAudio] = React.useState(true);
     const [isVideo, setIsVideo] = React.useState(true);
+
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
 
-    // Connect socket server
-    // const mySocket = useSocket();
-    // React.useMemo(() => {
-    //     mySocket.connectClientToServer();
-    //     mySocket.messageServerConnectSuccess(ROOM_ID);
+    const videoRef = React.useRef<HTMLVideoElement>(null);
 
-    //     mySocket.messageMemberJoinSuccess();
-    //     mySocket.disconnectServer();
-    // }, [ROOM_ID]);
+    React.useEffect(() => {
+        const getUserMedia = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: isVideo,
+                    audio: true,
+                });
+
+                if (videoRef.current && isVideo) {
+                    videoRef.current.srcObject = stream;
+                    videoRef.current.play();
+                }
+                console.log("Get webcam success :D");
+            } catch (error) {
+                console.log("Failed to get webcam :<", error);
+            }
+        };
+        getUserMedia();
+    }, []);
 
     const handleAudio = () => {
         setIsAudio((isAudio) => !isAudio);
@@ -61,29 +73,12 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
                 </div>
             )}
 
-            {/* =================== MAIN SCREEN ====================== */}
-            {/* <div
-                className={isSharing ? "grid col-span-4" : ""}
-                style={{
-                    gridTemplateRows: "repeat(auto-fit, minmax(3rem, 1fr))",
-                }}
-            >
-                <div
-                    className={isSharing ? "w-full" : "flex justify-center"}
-                    style={{
-                        gridRow: "span 8",
-                    }}
-                >
-                    <video ref={shareScreenRef} autoPlay />
-                </div>
-            </div> */}
-
             {/* Create UI of participants join */}
             <div
                 className={
                     isSharing
                         ? "h-full col-span-1 rounded-xl"
-                        : "h-[65%] w-[22%] mt-[2%] bg-white rounded-xl overflow-hidden"
+                        : "h-[65%] w-[22%] mt-[4%] bg-white rounded-xl overflow-hidden"
                 }
             >
                 <RoomControls />

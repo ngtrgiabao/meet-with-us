@@ -4,8 +4,7 @@ import { useParticipant } from "@videosdk.live/react-sdk";
 import { IVideoComponent } from "../../utils/interfaces";
 import RoomVideoPlayer from "./RoomVideoPlayer";
 
-const logo1 = require("../../assets/background/1.jpg");
-const logo2 = require("../../assets/background/2.jpg");
+const avatarUser = require("../../assets/avatar_user/01c751482ef7c4f5e93f3539efd27f6f.jpg");
 
 const RoomParticipantView = ({ participantID }: IVideoComponent) => {
     const micRef = React.useRef<HTMLAudioElement | null>(null);
@@ -67,36 +66,42 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
             key={participantID}
             className="flex justify-center items-center flex-col p-1 overflow-x-hidden h-full"
         >
-            {webcamOn ? <RoomVideoPlayer videoStream={videoStream} /> : null}
+            {webcamOn ? (
+                <RoomVideoPlayer
+                    transform="scaleX(-1)"
+                    videoStream={videoStream}
+                />
+            ) : null}
             {screenShareOn ? (
                 <RoomVideoPlayer videoStream={mediaStream} />
             ) : null}
             {micOn && micRef && <audio ref={micRef} autoPlay muted={isLocal} />}
 
             {/* USER */}
-            <div className="flex justify-between items-center bg-gray-800/50 p-2 px-4 border-2 rounded-lg border-white w-full">
+            <div className="flex justify-between items-center bg-gray-800/50 p-2 px-2 border-2 rounded-lg border-white w-full">
                 <img
-                    className="rounded-full w-[2.5rem] h-[2.5rem]"
-                    src={logo1}
+                    className="rounded-full w-[2.8rem] h-[2.5rem]"
+                    src={avatarUser}
                 />
-                <div className="text-white text-sm ml-2 flex items-center">
-                    <span className="font-bold text-sm mr-1">User:</span>
-                    <span className="text-">{displayName}</span>
+                <div className="text-white text-sm text-center">
+                    <span className="line-clamp-1">{displayName}</span>
                 </div>
-                <span className="font-bold rounded-full text-sm">
-                    {micOn ? (
-                        <i className="fa-solid fa-microphone"></i>
-                    ) : (
-                        <i className="fa-solid fa-microphone-slash"></i>
-                    )}
-                </span>
-                <span className="font-bold rounded-full ml-2 text-sm">
-                    {webcamOn ? (
-                        <i className="text-sm fa-solid fa-video"></i>
-                    ) : (
-                        <i className="fa-solid fa-video-slash"></i>
-                    )}
-                </span>
+                <div className="flex">
+                    <span className="font-bold rounded-full text-sm">
+                        {micOn ? (
+                            <i className="fa-solid fa-microphone"></i>
+                        ) : (
+                            <i className="fa-solid fa-microphone-slash"></i>
+                        )}
+                    </span>
+                    <span className="font-bold rounded-full ml-2 text-sm">
+                        {webcamOn ? (
+                            <i className="text-sm fa-solid fa-video"></i>
+                        ) : (
+                            <i className="fa-solid fa-video-slash"></i>
+                        )}
+                    </span>
+                </div>
             </div>
         </div>
     );
