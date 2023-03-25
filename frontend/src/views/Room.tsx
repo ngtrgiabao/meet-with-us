@@ -2,13 +2,8 @@ import React from "react";
 import { useMeeting } from "@videosdk.live/react-sdk";
 import { useNavigate } from "react-router-dom";
 
-//import { UserOverviewWebcam; } from "../components/userOverview/UserOverviewWebcam";
-
-//import CameraState from "../components/userOverview/UserOverviewWebcam";
-
 import "../styles/room/room.css";
 
-import UserService from "../api/user/user.service";
 import RoomParticipantView from "../components/room/RoomParticipantView";
 import RoomControls from "../components/room/RoomControls";
 
@@ -21,18 +16,12 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
 
     const videoRef = React.useRef<HTMLVideoElement>(null);
 
-    const cameraState =
-        localStorage.getItem("cameraState") ||
-        document.cookie.replace(
-            /(?:(?:^|.*;\s*)cameraState\s*\=\s*([^;]*).*$)|^.*$/,
-            "$1"
-        ) ||
-        "open";
+    const handleVideoStateChange = (newVideoState: boolean) => {
+        console.log("newVideoState pass in room:", newVideoState);
+        setIsVideo(newVideoState);
+    };
 
     React.useEffect(() => {
-        //const cameraState = localStorage.getItem("cameraState");
-        const isVideo = cameraState === "open";
-
         const getUserMedia = async () => {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({
@@ -43,26 +32,14 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
                 if (videoRef.current && isVideo) {
                     videoRef.current.srcObject = stream;
                     videoRef.current.play();
-                    setIsVideo((isVideo) => !isVideo);
                 }
                 console.log("Get webcam success :D");
-                console.log(cameraState);
             } catch (error) {
                 console.log("Failed to get webcam :<", error);
             }
         };
         getUserMedia();
     }, []);
-
-    // Connect socket server
-    // const mySocket = useSocket();
-    // React.useMemo(() => {
-    //     mySocket.connectClientToServer();
-    //     mySocket.messageServerConnectSuccess(ROOM_ID);
-
-    //     mySocket.messageMemberJoinSuccess();
-    //     mySocket.disconnectServer();
-    // }, [ROOM_ID]);
 
     const handleAudio = () => {
         setIsAudio((isAudio) => !isAudio);
@@ -101,29 +78,12 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
                 </div>
             )}
 
-            {/* =================== MAIN SCREEN ====================== */}
-            {/* <div
-                className={isSharing ? "grid col-span-4" : ""}
-                style={{
-                    gridTemplateRows: "repeat(auto-fit, minmax(3rem, 1fr))",
-                }}
-            >
-                <div
-                    className={isSharing ? "w-full" : "flex justify-center"}
-                    style={{
-                        gridRow: "span 8",
-                    }}
-                >
-                    <video ref={shareScreenRef} autoPlay />
-                </div>
-            </div> */}
-
             {/* Create UI of participants join */}
             <div
                 className={
                     isSharing
                         ? "h-full col-span-1 rounded-xl"
-                        : "h-[65%] w-[22%] mt-[2%] bg-white rounded-xl overflow-hidden"
+                        : "h-[65%] w-[22%] mt-[4%] bg-white rounded-xl overflow-hidden"
                 }
             >
                 <RoomControls />

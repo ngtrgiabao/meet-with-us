@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useMeeting } from "@videosdk.live/react-sdk";
+import { useDeviceContext } from "../userOverview/DeviceContext";
 
 const RoomControls = () => {
     const { toggleMic, toggleWebcam, leave, getWebcams, toggleScreenShare } =
@@ -8,6 +9,10 @@ const RoomControls = () => {
     const [isMic, setIsMic] = React.useState<boolean>(false);
     const [isWebcam, setIsWebcam] = React.useState<boolean>(false);
     const [isScreenShare, setIsScreenShare] = React.useState<boolean>(false);
+
+    const { isCamera, setCamera, isMicro, setMicro } = useDeviceContext();
+
+    console.log("is camvalue in room", isCamera);
 
     const handleMic = React.useCallback(() => {
         toggleMic();
@@ -43,8 +48,17 @@ const RoomControls = () => {
     };
 
     React.useEffect(() => {
-        if (isWebcam) {
-            handleGetWebcams();
+        if (isCamera && isMicro) {
+            toggleWebcam();
+            setIsWebcam((isWebcam) => !isWebcam);
+            toggleMic();
+            setIsMic((isMic) => !isMic);
+        } else if (isCamera && !isMicro) {
+            toggleWebcam();
+            setIsWebcam((isWebcam) => !isWebcam);
+        } else if (!isCamera && isMicro) {
+            toggleMic();
+            setIsMic((isMic) => !isMic);
         }
     }, []);
 
@@ -55,7 +69,7 @@ const RoomControls = () => {
 
     return (
         <>
-            <div className="fixed bottom-[8%] bg-white p-2 px-2 rounded-xl text-xl flex justify-between w-[21.5%] animate__animated animate__bounceInUp">
+            <div className="fixed bottom-[6%] bg-white p-2 px-2 rounded-xl text-xl flex justify-between w-[22%] animate__animated animate__bounceInUp">
                 {/* Webcam */}
                 <button
                     onClick={() => handleWebcam()}
