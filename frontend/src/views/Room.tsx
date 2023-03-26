@@ -9,8 +9,6 @@ import RoomControls from "../components/room/RoomControls";
 
 const Room = ({ meetingID }: { meetingID: string | null }) => {
     const { participants, leave } = useMeeting();
-    const [isAudio, setIsAudio] = React.useState(true);
-    const [isVideo, setIsVideo] = React.useState(true);
 
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
 
@@ -20,11 +18,11 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
         const getUserMedia = async () => {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({
-                    video: isVideo,
-                    audio: true,
+                    video: true,
+                    audio: false,
                 });
 
-                if (videoRef.current && isVideo) {
+                if (videoRef.current) {
                     videoRef.current.srcObject = stream;
                     videoRef.current.play();
                 }
@@ -35,17 +33,6 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
         };
         getUserMedia();
     }, []);
-
-    const handleAudio = () => {
-        setIsAudio((isAudio) => !isAudio);
-    };
-
-    const handleVideo = () => {
-        setIsVideo((isVideo) => !isVideo);
-    };
-
-    //  SHARE SCREEN
-    const shareScreenRef = React.useRef<HTMLVideoElement | any>(null);
 
     const navigate = useNavigate();
     React.useEffect(() => {
