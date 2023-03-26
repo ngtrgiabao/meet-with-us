@@ -74,6 +74,13 @@ export interface IUserOverview {
     meetingID: string | null;
 }
 
+export interface IDeviceContext {
+    isCamera: boolean;
+    isMicro: boolean;
+    setCamera: (isVideo: boolean) => void;
+    setMicro: (isMicro: boolean) => void;
+}
+
 //GSAP
 export interface ITransitionProps {
     timeline: GSAPTimeline;

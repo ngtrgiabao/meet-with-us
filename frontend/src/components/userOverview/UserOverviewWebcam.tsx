@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useDeviceContext } from "./DeviceContext";
+import { useDeviceContext } from "../../hooks/useDeviceContext";
 
 const UserOverviewWebcam = () => {
     const { isCamera, setCamera, isMicro, setMicro } = useDeviceContext();
@@ -28,7 +28,7 @@ const UserOverviewWebcam = () => {
                 }
                 console.log("Get webcam success :D");
             } catch (error) {
-                console.log("Failed to get webcam :<", error);
+                console.log("Failed to get webcam :<");
             }
         };
         getUserMedia();

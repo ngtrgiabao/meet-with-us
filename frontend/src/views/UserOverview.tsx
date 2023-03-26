@@ -13,7 +13,6 @@ const useroverview = gsap.timeline();
 
 const UserOverview = ({ meetingID }: IUserOverview) => {
     const [joined, setJoined] = React.useState<string | null>(null);
-    const [isVideo, setIsVideo] = React.useState<boolean>(true);
 
     // When user joined will create a room
     const { join } = useMeeting({

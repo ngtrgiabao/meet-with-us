@@ -1,13 +1,8 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useState, useMemo, ReactNode } from "react";
 
-interface DeviceContextType {
-    isCamera: boolean;
-    isMicro: boolean;
-    setCamera: (isVideo: boolean) => void;
-    setMicro: (isMicro: boolean) => void;
-}
+import { IDeviceContext } from "../../utils/interfaces";
 
-export const DeviceContext = createContext<DeviceContextType>({
+export const DeviceContext = createContext<IDeviceContext>({
     isCamera: true,
     isMicro: true,
     setCamera: () => {},
@@ -18,20 +13,22 @@ export const DeviceProvider = ({ children }: { children: ReactNode }) => {
     const [isCamera, setCamera] = useState<boolean>(true);
     const [isMicro, setMicro] = useState<boolean>(true);
 
-    const updateIsVideo = (newIsVideo: boolean) => {
-        setCamera(newIsVideo);
+    const updateIsVideo = (isVideo: boolean) => {
+        setCamera(isVideo);
     };
 
-    const updateIsMic = (newIsMic: boolean) => {
-        setMicro(newIsMic);
+    const updateIsMic = (isMic: boolean) => {
+        setMicro(isMic);
     };
 
-    const contextValue: DeviceContextType = {
-        isCamera,
-        isMicro,
-        setCamera: updateIsVideo,
-        setMicro: updateIsMic,
-    };
+    const contextValue: IDeviceContext = useMemo(() => {
+        return {
+            isCamera,
+            isMicro,
+            setCamera: updateIsVideo,
+            setMicro: updateIsMic,
+        };
+    }, [isCamera, isMicro]);
 
     return (
         <DeviceContext.Provider value={contextValue}>
@@ -39,4 +36,3 @@ export const DeviceProvider = ({ children }: { children: ReactNode }) => {
         </DeviceContext.Provider>
     );
 };
-export const useDeviceContext = () => useContext(DeviceContext);

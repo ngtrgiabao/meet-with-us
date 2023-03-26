@@ -35,8 +35,6 @@ const Home = () => {
         setMeetingID(meetingId);
     };
 
-    console.log("Webcam: ", isWebcam, "Mic: ", isMic);
-
     return (
         <>
             <div
