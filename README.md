@@ -83,7 +83,6 @@
 ## 🤖 Tech stacks
 
 ### Back-end
-
 -   Node.js (Express)
 -   Firebase
 -   Socket.io
@@ -91,7 +90,7 @@
 ### Front-end
 
 -   React
+-   TypeScript
 -   CSS
--   Socket.io
 
 🌐 Link website: https://meet-with-us.netlify.app
