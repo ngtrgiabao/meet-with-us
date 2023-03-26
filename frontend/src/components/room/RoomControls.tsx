@@ -1,6 +1,6 @@
 import React from "react";
 import { useMeeting } from "@videosdk.live/react-sdk";
-import { useDeviceContext } from "../userOverview/DeviceContext";
+import { useDeviceContext } from "../../hooks/useDeviceContext";
 
 const RoomControls = () => {
     const { toggleMic, toggleWebcam, leave, getWebcams, toggleScreenShare } =
@@ -12,13 +12,7 @@ const RoomControls = () => {
 
     const { isCamera, isMicro } = useDeviceContext();
 
-    console.log("is camvalue in room", isCamera);
-
-    const handleMic = React.useCallback(() => {
-        toggleMic();
-        setIsMic((isMic) => !isMic);
-    }, [toggleMic]);
-
+    // Change webcam on device
     const handleGetWebcams = React.useCallback(() => {
         getWebcams()
             .then((webcams) => {
@@ -38,6 +32,11 @@ const RoomControls = () => {
         setIsWebcam((isWebcam) => !isWebcam);
     }, [toggleWebcam]);
 
+    const handleMic = React.useCallback(() => {
+        toggleMic();
+        setIsMic((isMic) => !isMic);
+    }, [toggleMic]);
+
     const handleScreenShare = () => {
         toggleScreenShare();
         setIsScreenShare((isScreenShare) => !isScreenShare);
@@ -49,16 +48,12 @@ const RoomControls = () => {
 
     React.useEffect(() => {
         if (isCamera && isMicro) {
-            toggleWebcam();
-            setIsWebcam((isWebcam) => !isWebcam);
-            toggleMic();
-            setIsMic((isMic) => !isMic);
+            handleWebcam();
+            handleMic();
         } else if (isCamera && !isMicro) {
-            toggleWebcam();
-            setIsWebcam((isWebcam) => !isWebcam);
+            handleWebcam();
         } else if (!isCamera && isMicro) {
-            toggleMic();
-            setIsMic((isMic) => !isMic);
+            handleMic();
         }
     }, []);
 

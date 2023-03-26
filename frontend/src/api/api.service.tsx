@@ -10,7 +10,7 @@ const commonConfig = {
     },
 };
 
-export default (baseURL) => {
+export default (baseURL: string) => {
     return axios.create({
         baseURL,
         ...commonConfig,
@@ -18,7 +18,11 @@ export default (baseURL) => {
 };
 
 // API call to create meeting
-export const createMeeting = async ({ token }) => {
+export const createMeeting = async ({
+    token,
+}: {
+    token: string | undefined;
+}) => {
     const res = await fetch(`https://api.videosdk.live/v2/rooms`, {
         method: "POST",
         headers: {
