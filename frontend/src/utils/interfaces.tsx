@@ -12,7 +12,6 @@ export interface IBreadCrumbs {
     onClick?: () => void;
 }
 
-//   /* Defining the type of the object that will be passed to the component. */
 export interface IMeetingType {
     docId?: string;
     createdBy: string;
@@ -25,7 +24,6 @@ export interface IMeetingType {
     status: boolean;
 }
 
-/* Defining the type of the object that will be passed to the component. */
 export interface IUserType {
     email: string;
     name: string;
@@ -57,10 +55,30 @@ export interface IPopupConfirm {
     togglePopup: () => void;
 }
 
-export interface IPopupRoomId {
-    id: string;
+export interface IPopupRoomID {
+    id: string | any;
     isActive: boolean;
     togglePopup: () => void;
+}
+
+export interface IVideoComponent {
+    participantID: string;
+}
+
+export interface IRoomVideoPlayer {
+    videoStream: MediaStream | undefined;
+    transform?: string;
+}
+
+export interface IUserOverview {
+    meetingID: string | null;
+}
+
+export interface IDeviceContext {
+    isCamera: boolean;
+    isMicro: boolean;
+    setCamera: (isVideo: boolean) => void;
+    setMicro: (isMicro: boolean) => void;
 }
 
 //GSAP

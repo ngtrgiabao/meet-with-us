@@ -1,48 +1,84 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { gsap } from "gsap";
+import { useMeeting } from "@videosdk.live/react-sdk";
 
-import MiniAvatar from "../components/MiniAvatar";
+import Transition from "../components/animation/AnimationTransition";
+import RoomLoading from "../components/room/RoomLoading";
+import Room from "./Room";
+import UserOverviewWebcam from "../components/userOverview/UserOverviewWebcam";
 
-import bg1 from "../assets/background/1.jpg";
-import bg2 from "../assets/background/2.jpg";
-import bg3 from "../assets/background/3.jpg";
-import bg4 from "../assets/background/4.jpg";
-
-import WebcamOverview from "../components/WebcamOverview";
-import Transition from "../components/Transition";
+import { IUserOverview } from "../utils/interfaces";
 
 const useroverview = gsap.timeline();
 
-const UserOverview = () => {
-  const ROOM_ID = window.location.pathname.split("/").at(2);
+const UserOverview = ({ meetingID }: IUserOverview) => {
+    const [joined, setJoined] = React.useState<string | null>(null);
 
-  return (
-    <>
-      <Transition timeline={useroverview} duration={2.5} />
-      <div className="h-screen w-full flex justify-between items-center pl-[16rem] pr-[19rem]">
-        <WebcamOverview />
+    // When user joined will create a room
+    const { join } = useMeeting({
+        onMeetingJoined: () => {
+            setJoined("JOINED");
+        },
+    });
 
-        <div className="ml-5 text-white flex justify-center flex-col relative">
-          <h3 className="text-2xl font-bold mb-[5rem]">Sẵn sàng tham gia?</h3>
+    // when user joining will show up loading page
+    const handleJoinMeeting = () => {
+        setJoined("JOINING");
+        join();
+    };
 
-          <div className="grid grid-cols-4 absolute top-12 left-14 place-items-center">
-            <MiniAvatar avatar={bg1} />
-            <MiniAvatar avatar={bg2} />
-            <MiniAvatar avatar={bg3} />
-            <MiniAvatar avatar={bg4} />
-          </div>
+    const handleRefresh = () => {
+        window.location.reload();
+    };
 
-          <Link
-            to={`/room/${ROOM_ID}`}
-            className="p-2 flex justify-center rounded-3xl hover:bg-blue-800 border border-dashed hover:border-solid"
-          >
-            Tham gia
-          </Link>
+    return (
+        <div className="absolute inset-0 w-full h-full z-[100] overflow-hidden">
+            <span
+                className="absolute top-[2%] right-[2%] hover:cursor-pointer font-bold text-white hover:text-rose-600 text-2xl"
+                onClick={() => handleRefresh()}
+            >
+                <i className="fa-regular fa-circle-xmark"></i>
+            </span>
+
+            <Transition timeline={useroverview} duration={2.5} />
+
+            <div className="bg-gradient-to-r from-cyan-500 to-blue-500 flex justify-center h-screen py-24">
+                <div className="h-full w-[80%] flex justify-center items-center">
+                    <UserOverviewWebcam />
+
+                    <div className="text-white flex justify-center flex-col relative ml-[5%]">
+                        <h3 className="text-2xl font-bold mb-6">
+                            Ready for join meeting?
+                        </h3>
+
+                        <div className="w-full flex flex-col items-center">
+                            <button
+                                onClick={() => handleJoinMeeting()}
+                                className="p-2 rounded-3xl hover:bg-blue-600 border border-dashed hover:border-solid w-full"
+                            >
+                                Join now
+                            </button>
+                            <button
+                                onClick={() => handleRefresh()}
+                                className="mt-2 font-bold text-sm"
+                                style={{
+                                    color: "rgb(255 0 0 / 1)",
+                                }}
+                            >
+                                Cancel ?
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {joined && joined === "JOINED" ? (
+                <Room meetingID={meetingID} />
+            ) : (
+                joined && joined === "JOINING" && <RoomLoading />
+            )}
         </div>
-      </div>
-    </>
-  );
+    );
 };
 
 export default UserOverview;

@@ -1,15 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import "../styles/navbar/navbar.css";
+
 import useDate from "../hooks/useDate";
 
-import "../styles/Navbar.css";
-
-type NavbarProps = {
-    logo: string;
-};
-
-function Navbar(props: NavbarProps) {
+function Navbar() {
     const { date, time, wish } = useDate();
 
     return (

@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const app = express();
+const jwt = require("jsonwebtoken");
 
 const route = require("./src");
 const logEvents = require("./src/api/v1/helper/log.helper");
@@ -16,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //Routes
 app.use("/api/v1/user", route.userRoute);
 app.use("/api/v1/room", route.roomRoute);
-app.use("/api/v1", route.userRoute.get("/"));
+app.use("/api/v1/token", route.tokenRoute);
 
 //_404
 app.use((req, res, next) => {

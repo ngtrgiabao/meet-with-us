@@ -2,15 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap/all";
 
-import AboutCard from "../components/AboutCard";
-import Transition from "../components/Transition";
+import "../styles/about/about.css";
 
-import bg1 from "../assets/background/baoBg.svg";
+import AboutCard from "../components/about/AboutCard";
+import Transition from "../components/animation/AnimationTransition";
+
+import bg1 from "../assets/avatar_user/01c751482ef7c4f5e93f3539efd27f6f.jpg";
 import bg2 from "../assets/background/2.jpg";
 import bg3 from "../assets/background/crocodile.svg";
 import bg4 from "../assets/background/4.jpg";
-
-import "../styles/About.css";
 
 const About = () => {
     const about = gsap.timeline();
@@ -78,21 +78,21 @@ const About = () => {
                     duration: 0.2,
                 }
             );
-    }, []);
+    }, [about]);
 
     return (
         <>
             <div className="flex justify-center items-center flex-col absolute w-full h-screen top-0 left-0">
-                <p className="text text-5xl font-bold">🍍 MY TEAM 🍍</p>
+                <p className="text text-5xl font-bold">🍍 MEET WITH US TEAM 🍍</p>
             </div>
 
             <Transition timeline={about} duration={2.5} />
 
             <div
                 id="About"
-                className="main-page header__subtitle  h-screen w-full  bg-center -z-10"
+                className="main-page header__subtitle h-screen w-full bg-center -z-10"
             >
-                <div className="grid grid-cols-auto-fit-100 h-screen relative">
+                <div className="grid grid-cols-auto-fit-100 h-screen relative bg-[url('../assets/background/about.svg')] animate__animated animate__fadeIn">
                     <Link
                         to="/"
                         className="absolute top-4 z-[9] font-bold text-xl left-4 text-blue-400"
@@ -102,7 +102,7 @@ const About = () => {
 
                     {/* Cards */}
                     <span className="border-x-[1px] cursor-pointer overflow-hidden relative pic-1">
-                        <AboutCard name="GIA BẢO" role="Leader" bgImg={bg1} />
+                        <AboutCard name="GIA BẢO" role="Team Leader" bgImg={bg1} />
                     </span>
                     <span className="border-x-[1px] cursor-pointer overflow-hidden relative pic-2">
                         <AboutCard name="MINH ĐĂNG" role="Member" bgImg={bg2} />

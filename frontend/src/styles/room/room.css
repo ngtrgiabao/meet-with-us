@@ -1,0 +1,23 @@
+.btn_action:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 25px slateblue;
+    transition: all 0.15s ease;
+}
+
+.btn_action {
+    background: rgba(0, 0, 255, 0.662);
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 3px rgba(0, 0, 255, 0.192);
+}
+
+.btn_action-denied {
+    background: red;
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 3px rgba(255, 0, 0, 0.228);
+}
+
+.btn_action-denied:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 25px red;
+    transition: all 0.15s linear;
+}
