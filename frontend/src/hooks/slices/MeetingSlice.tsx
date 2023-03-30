@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ToastType } from "../../utils/types";
+import { IToast } from "../../utils/interfaces";
 
 interface meetingInitialState {
-  toasts: Array<ToastType>;
+  toasts: Array<IToast>;
 }
 
 const initialState: meetingInitialState = {

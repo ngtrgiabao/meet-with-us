@@ -1,9 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
+import { getAuth,createUserWithEmailAndPassword } from "firebase/auth";
 import sideImg from "../assets/background/register-cover.gif";
+import { doc, setDoc } from "firebase/firestore";
+import { firebaseDB } from "../utils/firebaseconfig";
+
 
 const Register = () => {
+    const [err,setErr] = useState(false)
+    const handleSubmid = async (e: any) =>{   
+        e.preventDefault();
+        const displayName = e.target[0].value;
+        const email = e.target[1].value;
+        const password = e.target[2].value;
+        
+    const auth = getAuth();
+    try{
+
+        const res = await createUserWithEmailAndPassword(auth, email, password)
+
+        await setDoc(doc(firebaseDB, "users", res.user.uid), {
+            uid: res.user.uid,
+            email,
+            password,
+            name:displayName
+         }); 
+        
+
+    }catch(err){
+        setErr(true);
+    }
+     
+    }
     return (
         <div className="w-full h-screen flex items-center bg-white overflow-hidden">
             {/* Side img */}
@@ -21,7 +49,7 @@ const Register = () => {
                         <i className="fa-solid fa-house"></i>
                     </Link>
 
-                    <form
+                    <form onSubmit={handleSubmid}
                         action=""
                         id="register-form"
                         className="w-full h-full flex flex-col items-center justify-center"
@@ -67,6 +95,7 @@ const Register = () => {
                             value="Register"
                             className="w-full text-xl font-bold text-white bg-[#060606] font-sembold rounded-md p-4 text-center flex items-center justify-center flex-col my-4 hover:cursor-pointer hover:bg-blue-500 mt-10"
                         />
+                        {err && <span>Something went wrong</span>}
                     </form>
                 </div>
 

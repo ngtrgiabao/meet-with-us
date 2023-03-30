@@ -58,6 +58,7 @@ const Room = () => {
                     gridTemplateRows: "repeat(auto-fit, minmax(3rem, 1fr))",
                 }}
             >
+               
                 {/* ===================================== MÀN HÌNH CHÍNH ========================================= */}
                 <div
                     className={isSharing ? "w-full" : "flex justify-center"}

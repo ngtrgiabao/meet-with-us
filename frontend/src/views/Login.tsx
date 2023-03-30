@@ -1,27 +1,47 @@
-import React from "react";
-import { Link } from "react-router-dom";
-// import { getAuth,createUserWithEmailAndPassword } from "firebase/auth";
+
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { getAuth, GoogleAuthProvider, ProviderId, signInWithEmailAndPassword, signInWithPopup, updateCurrentUser, updateProfile } from "firebase/auth";
+import { addDoc, collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { firebaseAuth, firebaseDB } from "../utils/firebaseconfig";
+import { current } from "@reduxjs/toolkit";
+
+
 const sideVideo = require("../assets/background/login-video.mp4");
 
 const Login = () => {
-    // const handleSubmid = (e: any) =>{   
-    //         e.preventDefault();
-    //         const email = e.target[0].value;
-    //         const password = e.target[1].value;
+    
+   
+    const [err,setErr] = useState(false);
+    const navigate = useNavigate();
+    const handleSubmid = async (e: any) =>{   
+        e.preventDefault();
+        const email = e.target[0].value;
+        const password = e.target[1].value;
         
-    //     const auth = getAuth();
-    //     createUserWithEmailAndPassword(auth, email, password)
-    //       .then((userCredential) => {
-    //         // Signed in 
-    //         const user = userCredential.user;
-    //         // ...
-    //       })
-    //       .catch((error) => {
-    //         const errorCode = error.code;
-    //         const errorMessage = error.message;
-    //         // ..
-    //       });
-    //     }
+    const auth = getAuth();
+    try{
+
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+     const userRef = collection(firebaseDB, 'users');
+     const userDoc = {
+      uid: currentUser.uid,
+      displayName: currentUser.displayName,
+      email: currentUser.email,
+      photoURL: currentUser.photoURL,
+      createdAt: new Date(),
+    };
+    await addDoc(userRef, userDoc);
+    }
+    await signInWithEmailAndPassword(auth,email,password)
+    navigate("/");
+    }catch(err){
+        setErr(true);
+    }
+    
+}
+
     return (
         <div className="w-full h-screen flex items-center bg-white overflow-hidden">
             {/* Side img */}
@@ -49,7 +69,7 @@ const Login = () => {
                         <i className="fa-solid fa-house"></i>
                     </Link>
 
-                    <form 
+                    <form onSubmit={handleSubmid}
                         action=""
                         id="register-form"
                         className="w-full h-full flex flex-col items-center justify-center"
@@ -80,12 +100,14 @@ const Login = () => {
                             value="Login"
                             className="w-full text-xl font-bold text-white bg-[#060606] font-sembold rounded-md p-4 text-center flex items-center justify-center flex-col my-4 hover:cursor-pointer hover:bg-blue-500 mt-10"
                         />
+                        {err && <span>Something went wrong</span>}
+
                     </form>
                 </div>
 
                 <div className="w-full flex items-center justify-center">
                     <p className="text-sm font-normal text-[#060606]">
-                        Not have account yet ?
+                        Not have account yet ? 
                     </p>
                     <div>
                         <Link

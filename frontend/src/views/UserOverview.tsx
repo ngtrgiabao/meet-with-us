@@ -32,7 +32,7 @@ const UserOverview = () => {
             <MiniAvatar avatar={bg3} />
             <MiniAvatar avatar={bg4} />
           </div>
-
+          
           <Link
             to={`/room/${ROOM_ID}`}
             className="p-2 flex justify-center rounded-3xl hover:bg-blue-800 border border-dashed hover:border-solid"

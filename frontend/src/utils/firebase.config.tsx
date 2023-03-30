@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 
 import { getAuth } from "firebase/auth";
 import { collection, Firestore, getFirestore } from "firebase/firestore";
-
+import { getStorage } from "firebase/storage";
 require("dotenv").config();
 
 const firebaseConfig = {
@@ -23,3 +23,4 @@ export const firebaseAuth = getAuth(app);
 export const firebaseDB = getFirestore(app);
 export const usersRef = collection(firebaseDB, "users");
 export const meetingsRef = collection(firebaseDB, "meetings");
+export const storage = getStorage();

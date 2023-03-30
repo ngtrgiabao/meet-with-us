@@ -10,7 +10,7 @@ import Navbar from "../layouts/Navbar";
 import PopupRoomId from "../components/PopupRoomId";
 import { RoomContext } from "../context/room/RoomProvider";
 
-import Logo from "../assets/logo.svg";
+// import Logo from "../assets/logo.svg";
 const bgImg = require("../assets/background/home.mp4");
 
 const { CopyToClipboard } = require("react-copy-to-clipboard");
@@ -59,7 +59,7 @@ const Home = () => {
                     });
                 }}
             >
-                <Navbar logo={Logo} />
+                <Navbar />
 
                 <BannerVideo bgImg={bgImg} />
 
@@ -102,6 +102,7 @@ const Home = () => {
                             className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn"
                             onClick={() => {
                                 handleActive();
+                                
                             }}
                         >
                             Tạo phòng

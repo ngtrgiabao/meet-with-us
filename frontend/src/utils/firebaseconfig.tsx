@@ -8,7 +8,6 @@ import { collection, Firestore, getFirestore } from "firebase/firestore";
 
 
 
-
 const firebaseConfig = {
     apiKey: "AIzaSyBtQgJ4x5r5SaEZMExUQAnzrXF6oQNJjK0",
     authDomain: "meet-with-us-8fdf6.firebaseapp.com",
@@ -28,5 +27,6 @@ const app = initializeApp(firebaseConfig);
 
 export const firebaseAuth = getAuth(app);
 export const firebaseDB = getFirestore(app);
+
 export const usersRef = collection(firebaseDB, "users");
 export const meetingsRef = collection(firebaseDB, "meetings");
