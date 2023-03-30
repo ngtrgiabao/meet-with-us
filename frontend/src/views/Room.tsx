@@ -1,9 +1,7 @@
 import React from "react";
-import { useMeeting } from "@videosdk.live/react-sdk";
+import { useMeeting, useParticipant } from "@videosdk.live/react-sdk";
 import { useNavigate } from "react-router-dom";
-
 import "../styles/room/room.css";
-
 import UserService from "../api/user/user.service";
 import RoomParticipantView from "../components/room/RoomParticipantView";
 import RoomMainScreen from "../components/room/RoomMainScreen";
@@ -11,11 +9,17 @@ import RoomMainScreen from "../components/room/RoomMainScreen";
 import RoomControls from "../components/room/RoomControls";
 import { chiaSe } from "../components/room/RoomControls";
 const Room = ({ meetingID }: { meetingID: string | null }) => {
-  const { participants, leave } = useMeeting();
+  const {
+    participants,
+    localScreenShareOn,
+    localWebcamOn,
+    connections,
+    leave,
+  } = useMeeting();
   const [isAudio, setIsAudio] = React.useState(true);
   const [isVideo, setIsVideo] = React.useState(true);
   const [isSharing, setIsSharing] = React.useState(false);
-  const [screenShareOnMap, setScreenShareOnMap] = React.useState(new Map());
+  //const [id, setId] = React.useState<any>();
 
   const handleAudio = () => {
     setIsAudio((isAudio) => !isAudio);
@@ -39,10 +43,41 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
     video: true,
     audio: true,
   };
+  //XỬ LÍ GIAO DIỆN KHI NGƯỜI DÙNG CHIA SẺ MÀN HÌNH
+  var dangChiaSe;
+  var soNguoiDangChiaSe = 0;
+  participants.forEach((participant) => {
+    if (participant.streams.size == 1 && participant.webcamOn == false)
+      soNguoiDangChiaSe++;
+  });
+  console.log("soNguoiDangChiaSe", soNguoiDangChiaSe);
+  participants.forEach((participant) => {
+    if (
+      participant.streams.size == 2 ||
+      (participant.streams.size == 0 && soNguoiDangChiaSe >= 1) ||
+      (participant.streams.size == 1 && soNguoiDangChiaSe >= 1) ||
+      (participant.streams.size == 1 && localScreenShareOn) ||
+      soNguoiDangChiaSe >= 1
+    ) {
+      dangChiaSe = true;
+    }
+    if (
+      (participant.streams.size == 1 &&
+        participant.webcamOn &&
+        !localScreenShareOn) ||
+      (participant.streams.size == 0 && localWebcamOn && !localScreenShareOn)
+    ) {
+      dangChiaSe = false;
+    }
+    console.log("participant.streams.size", participant.streams.size);
+  });
+  //===========================
+
   return (
     <div
       className={
-        useMeeting().localScreenShareOn
+        // useMeeting().localScreenShareOn && useMeeting().participants
+        useMeeting().participants.size > 1
           ? "h-screen w-screen overflow-hidden text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 absolute inset-0"
           : "h-screen w-screen overflow-hidden text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 absolute inset-0"
       }
@@ -56,15 +91,13 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
           {meetingID}
         </div>
       )}
-
       {[...participants.keys()].map((participantID) => (
         <RoomMainScreen participantID={participantID} key={participantID} />
       ))}
-
       {/* Create UI of participants join */}
       <div
         className={
-          useMeeting().localScreenShareOn
+          dangChiaSe
             ? "fixed bottom-[3%] right-0 h-[94%] w-[22%] mt-[2%] bg-white rounded-xl overflow-hidden"
             : "h-[75%] w-[25%] mt-[2%] bg-white rounded-xl overflow-hidden"
         }

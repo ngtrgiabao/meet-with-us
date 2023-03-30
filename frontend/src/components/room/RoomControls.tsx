@@ -36,6 +36,9 @@ const RoomControls = () => {
   const handleScreenShare = () => {
     toggleScreenShare();
     setIsScreenShare((isScreenShare) => !isScreenShare);
+    if (isScreenShare == false)
+      console.log("Người dùng đã tắt chia sẻ màn hình! ");
+    else console.log("Người dùng đang chia sẻ màn hình! ");
   };
 
   const handleRefreshClick = () => {

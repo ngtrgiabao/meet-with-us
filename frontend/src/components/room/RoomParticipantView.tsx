@@ -3,7 +3,7 @@ import { useParticipant } from "@videosdk.live/react-sdk";
 
 import { IVideoComponent } from "../../utils/interfaces";
 import RoomVideoPlayer from "./RoomVideoPlayer";
-
+import RoomMainScreen from "./RoomMainScreen";
 const logo1 = require("../../assets/background/1.jpg");
 const logo2 = require("../../assets/background/2.jpg");
 
@@ -19,6 +19,7 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
     screenShareOn,
     screenShareStream,
   } = useParticipant(participantID);
+
   // Webcam
   const videoStream = React.useMemo(() => {
     if (webcamOn && webcamStream) {
@@ -57,12 +58,21 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
       }
     }
   }, [micStream, micOn]);
-
+  const mediaStream = React.useMemo(() => {
+    if (screenShareOn && screenShareStream) {
+      const mediaStream = new MediaStream();
+      mediaStream.addTrack(screenShareStream.track);
+      return mediaStream;
+    }
+  }, [screenShareStream, screenShareOn]);
   return (
     <div key={participantID}>
-      {/* <div className="w-full md:w-2/3 lg:w-3/4">
+      <div className="w-full">
         {screenShareOn ? <RoomVideoPlayer videoStream={mediaStream} /> : null}
-      </div> */}
+      </div>
+      {/* {[...participants.keys()].map((participantID) => (
+        <RoomMainScreen participantID={participantID} key={participantID} />
+      ))} */}
       {webcamOn ? <RoomVideoPlayer videoStream={videoStream} /> : null}
       {micOn && micRef && <audio ref={micRef} autoPlay muted={isLocal} />}
 
