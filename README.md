@@ -76,7 +76,6 @@
 ## 🤖 Features
 
 -   Connect with anyone 🌐
--   Chat with friends 💬
 -   Video call 📱
 -   Sharing screen 💻
 
