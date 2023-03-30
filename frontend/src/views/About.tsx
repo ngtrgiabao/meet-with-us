@@ -78,7 +78,7 @@ const About = () => {
                     duration: 0.2,
                 }
             );
-    }, []);
+    }, [about]);
 
     return (
         <>
