@@ -1,5 +1,9 @@
 import React from "react";
-import { useMeeting, useParticipant } from "@videosdk.live/react-sdk";
+import {
+  useMeeting,
+  useParticipant,
+  MeetingConsumer,
+} from "@videosdk.live/react-sdk";
 import { useNavigate } from "react-router-dom";
 import "../styles/room/room.css";
 import UserService from "../api/user/user.service";
@@ -7,15 +11,21 @@ import RoomParticipantView from "../components/room/RoomParticipantView";
 import RoomMainScreen from "../components/room/RoomMainScreen";
 //import { screenShareOn } from "../components/room/RoomParticipantView";
 import RoomControls from "../components/room/RoomControls";
-import { chiaSe } from "../components/room/RoomControls";
+import { StreamState } from "http2";
+import { StreamOptions } from "stream";
+import { ReadStream } from "fs";
+//import { nguoiNayDangChiaSe } from "../components/room/RoomControls";
 const Room = ({ meetingID }: { meetingID: string | null }) => {
-  const {
+  var {
     participants,
     localScreenShareOn,
     localWebcamOn,
     connections,
     leave,
+    isRecording,
+    isLiveStreaming,
   } = useMeeting();
+  const onLiveStreamStarted = MeetingConsumer;
   const [isAudio, setIsAudio] = React.useState(true);
   const [isVideo, setIsVideo] = React.useState(true);
   const [isSharing, setIsSharing] = React.useState(false);
@@ -43,41 +53,32 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
     video: true,
     audio: true,
   };
-  //XỬ LÍ GIAO DIỆN KHI NGƯỜI DÙNG CHIA SẺ MÀN HÌNH
-  var dangChiaSe;
+  //========  XỬ LÍ GIAO DIỆN KHI NGƯỜI DÙNG CHIA SẺ MÀN HÌNH ========
+  var idNguoiDung = "";
+  var dangChiaSe = false;
   var soNguoiDangChiaSe = 0;
+  var soNguoiDungChiaSe = 0;
   participants.forEach((participant) => {
-    if (participant.streams.size == 1 && participant.webcamOn == false)
-      soNguoiDangChiaSe++;
+    participant?.streams?.forEach((stream: MediaStreamTrack) => {
+      console.log("[[[stream:]]] ", stream);
+      if (stream.kind == "share") {
+        // console.log("stream: ", stream.kind);
+        soNguoiDangChiaSe++;
+        dangChiaSe = true;
+      }
+    });
+    console.log("[[[participant]]] ", participant);
   });
-  console.log("soNguoiDangChiaSe", soNguoiDangChiaSe);
-  participants.forEach((participant) => {
-    if (
-      participant.streams.size == 2 ||
-      (participant.streams.size == 0 && soNguoiDangChiaSe >= 1) ||
-      (participant.streams.size == 1 && soNguoiDangChiaSe >= 1) ||
-      (participant.streams.size == 1 && localScreenShareOn) ||
-      soNguoiDangChiaSe >= 1
-    ) {
-      dangChiaSe = true;
-    }
-    if (
-      (participant.streams.size == 1 &&
-        participant.webcamOn &&
-        !localScreenShareOn) ||
-      (participant.streams.size == 0 && localWebcamOn && !localScreenShareOn)
-    ) {
-      dangChiaSe = false;
-    }
-    console.log("participant.streams.size", participant.streams.size);
-  });
+  console.log("isLiveStreaming: ", isLiveStreaming);
+  console.log("--> soNguoiDangChiaSe", soNguoiDangChiaSe);
+  if (soNguoiDangChiaSe == 0) dangChiaSe = false;
   //===========================
 
   return (
     <div
       className={
         // useMeeting().localScreenShareOn && useMeeting().participants
-        useMeeting().participants.size > 1
+        useMeeting().participants.size >= 1
           ? "h-screen w-screen overflow-hidden text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 absolute inset-0"
           : "h-screen w-screen overflow-hidden text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 absolute inset-0"
       }

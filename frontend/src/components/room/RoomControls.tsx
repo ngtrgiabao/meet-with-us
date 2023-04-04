@@ -1,14 +1,20 @@
 import React from "react";
 import { useMeeting } from "@videosdk.live/react-sdk";
-
+var nguoiNayDangChiaSe: boolean = false;
 const RoomControls = () => {
-  const { toggleMic, toggleWebcam, leave, getWebcams, toggleScreenShare } =
-    useMeeting();
+  const {
+    toggleMic,
+    toggleWebcam,
+    leave,
+    getWebcams,
+    toggleScreenShare,
+    disableScreenShare,
+    enableScreenShare,
+  } = useMeeting();
 
   const [isMic, setIsMic] = React.useState<boolean>(false);
   const [isWebcam, setIsWebcam] = React.useState<boolean>(false);
   const [isScreenShare, setIsScreenShare] = React.useState<boolean>(false);
-
   const handleMic = React.useCallback(() => {
     toggleMic();
     setIsMic((isMic) => !isMic);
@@ -36,9 +42,12 @@ const RoomControls = () => {
   const handleScreenShare = () => {
     toggleScreenShare();
     setIsScreenShare((isScreenShare) => !isScreenShare);
-    if (isScreenShare == false)
+    if (isScreenShare == false) {
+      disableScreenShare();
       console.log("Người dùng đã tắt chia sẻ màn hình! ");
-    else console.log("Người dùng đang chia sẻ màn hình! ");
+    } else {
+      console.log("Người dùng đang chia sẻ màn hình! ");
+    }
   };
 
   const handleRefreshClick = () => {
@@ -113,5 +122,5 @@ const RoomControls = () => {
   );
 };
 
-export var chiaSe = false;
+//
 export default RoomControls;

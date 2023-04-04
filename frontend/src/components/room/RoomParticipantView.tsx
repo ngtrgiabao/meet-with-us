@@ -1,14 +1,13 @@
 import React from "react";
-import { useParticipant } from "@videosdk.live/react-sdk";
-
+import { useParticipant, useMeeting } from "@videosdk.live/react-sdk";
 import { IVideoComponent } from "../../utils/interfaces";
 import RoomVideoPlayer from "./RoomVideoPlayer";
 import RoomMainScreen from "./RoomMainScreen";
 const logo1 = require("../../assets/background/1.jpg");
 const logo2 = require("../../assets/background/2.jpg");
-
 const RoomParticipantView = ({ participantID }: IVideoComponent) => {
   const micRef = React.useRef<HTMLAudioElement | null>(null);
+  const { participants } = useMeeting();
   const {
     webcamStream,
     micStream,
@@ -65,10 +64,16 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
       return mediaStream;
     }
   }, [screenShareStream, screenShareOn]);
+
+  let soNguoiDung = participants.size;
+  let duocChiaSe = false;
+  if (screenShareOn && soNguoiDung > 1) {
+    duocChiaSe = true;
+  }
   return (
     <div key={participantID}>
       <div className="w-full">
-        {screenShareOn ? <RoomVideoPlayer videoStream={mediaStream} /> : null}
+        {duocChiaSe ? <RoomVideoPlayer videoStream={mediaStream} /> : null}
       </div>
       {/* {[...participants.keys()].map((participantID) => (
         <RoomMainScreen participantID={participantID} key={participantID} />
