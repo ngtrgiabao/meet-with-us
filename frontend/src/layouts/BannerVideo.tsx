@@ -1,6 +1,7 @@
 import React from "react";
 
 import Logo from "../assets/logo.svg";
+import BgVideo from "../assets/background/photo_2023-04-04_15-33-54.jpg";
 import { TBannerVideo } from "../utils/types";
 
 const BannerVideo = ({ bgImg }: TBannerVideo) => {
@@ -14,6 +15,7 @@ const BannerVideo = ({ bgImg }: TBannerVideo) => {
                     className="rounded"
                     width={500}
                     height={560}
+                    poster={BgVideo}
                 >
                     <source src={bgImg} />
                 </video>
