@@ -81,7 +81,7 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
                 className={
                     isSharing
                         ? "h-full col-span-1 rounded-xl"
-                        : "h-[65%] w-[22%] mt-[4%] bg-white rounded-xl overflow-hidden"
+                        : "h-[65%] w-[22%] mt-[4%] bg-transparent/20 rounded-xl overflow-hidden p-1"
                 }
             >
                 <RoomControls />

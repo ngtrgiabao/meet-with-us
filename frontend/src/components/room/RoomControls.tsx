@@ -64,11 +64,11 @@ const RoomControls = () => {
 
     return (
         <>
-            <div className="fixed bottom-[6%] bg-white p-2 px-2 rounded-xl text-xl flex justify-between w-[22%] animate__animated animate__bounceInUp">
+            <div className="fixed bottom-[6%] bg-transparent/20 p-2 px-3 rounded-xl text-xl flex justify-between w-[22%] animate__animated animate__bounceInUp">
                 {/* Webcam */}
                 <button
                     onClick={() => handleWebcam()}
-                    className={`font-bold rounded-full w-[3rem] h-[3rem] ml-1 btn_action${
+                    className={`font-bold rounded-full w-[3rem] h-[3rem] ml-1 ${
                         isWebcam ? " btn_action" : " btn_action-denied"
                     }`}
                 >
