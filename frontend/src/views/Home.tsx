@@ -39,7 +39,7 @@ const Home = () => {
         <>
             <div
                 id="Home"
-                className="h-screen  overflow-hidden relative flex justify-center items-center p-4"
+                className="h-screen overflow-hidden relative flex justify-center items-center p-4"
                 onMouseMove={(e) => {
                     gsap.to(mouse.current, {
                         top: e.clientY - 15,
