@@ -1,5 +1,5 @@
 import React from "react";
-import { useMeeting } from "@videosdk.live/react-sdk";
+import { useMeeting, useParticipant } from "@videosdk.live/react-sdk";
 import { useNavigate } from "react-router-dom";
 
 import "../styles/room/room.css";
@@ -8,11 +8,32 @@ import RoomParticipantView from "../components/room/RoomParticipantView";
 import RoomControls from "../components/room/RoomControls";
 
 const Room = ({ meetingID }: { meetingID: string | null }) => {
-    const { participants, leave } = useMeeting();
+    const { participants, leave, localParticipant } = useMeeting();
+    const [id, setID] = React.useState<string>("");
+    const { screenShareOn } = useParticipant(id);
 
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
-
     const videoRef = React.useRef<HTMLVideoElement>(null);
+
+    // React.useEffect(() => {
+    //     participants.forEach((participant) => {
+    //         setID(participant.id);
+    //         // console.log("participant", participant);
+
+    //         if (participant.streams.size) {
+    //             console.log("id", participant.displayName);
+    //         } else if (localParticipant.streams.size) {
+    //             console.log("id local", localParticipant.streams.size);
+    //         }
+
+    // if (participant.id) {
+    //     console.table({
+    //         displayName: participant.displayName,
+    //         screenShare: screenShareOn,
+    //     });
+    // }
+    // });
+    // }, [participants, screenShareOn]);
 
     React.useEffect(() => {
         const getUserMedia = async () => {
@@ -45,20 +66,15 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
     return (
         <div
             className={
-                isSharing
-                    ? "h-screen overflow-hidden p-4 text-white grid grid-cols-5 relative"
-                    : "h-screen w-screen overflow-hidden text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 absolute inset-0"
+                "h-screen w-screen overflow-hidden text-white flex justify-center bg-blue-700 absolute inset-0"
             }
         >
             {/* ID's room */}
-            {isSharing ? (
-                <></>
-            ) : (
-                <div className="absolute top-5 left-4 bg-white text-black p-1 text-sm z-[999] animate__animated animate__bounce">
-                    <span className="font-bold mr-1">ID ROOM:</span>
-                    {meetingID}
-                </div>
-            )}
+
+            <div className="absolute top-5 left-4 bg-white text-black p-1 text-sm z-[999] animate__animated animate__bounce">
+                <span className="font-bold mr-1">ID ROOM:</span>
+                {meetingID}
+            </div>
 
             {/* Create UI of participants join */}
             <div

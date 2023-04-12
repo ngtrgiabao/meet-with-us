@@ -24,14 +24,14 @@ const HomeInput = ({ getMeetingAndToken }: any) => {
             <div className="absolute right-[1.4rem] top-1/2 -translate-y-1/2 z-[1]">
                 {meetingID && meetingID.length === 14 ? (
                     <button
-                        className="text-md uppercase font-bold p-2 rounded-lg bg-blue-700 hover:bg-blue-800 text-white hover:opacity-95 animate__animated animate__bounceIn flex justify-center items-center"
+                        className="text-md uppercase font-bold p-2 rounded-lg bg-[#010180]/90 hover:bg-blue-800 text-white hover:opacity-95 animate__animated animate__bounceIn flex justify-center items-center"
                         onClick={() => handleSetRoomID()}
                     >
                         Join Meeting
                     </button>
                 ) : (
                     <button
-                        className="text-md uppercase font-bold p-2 rounded-lg bg-blue-700 hover:bg-blue-800 text-white hover:opacity-95 animate__animated animate__bounceIn flex justify-center items-center"
+                        className="text-md uppercase font-bold p-2 rounded-lg bg-[#010180]/90 hover:bg-blue-800 text-white hover:opacity-95 animate__animated animate__bounceIn flex justify-center items-center"
                         onClick={() => handleSetRoomID()}
                     >
                         Create Meeting

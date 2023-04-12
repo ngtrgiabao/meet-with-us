@@ -12,7 +12,7 @@ import "./styles/index.css";
 
 function App() {
     return (
-        <div className="App  bg-gradient-to-br from-cyan-500 to-blue-500">
+        <div className="App bg-blue-700">
             <Routes>
                 <>
                     <Route path="/" element={<Home />} />
