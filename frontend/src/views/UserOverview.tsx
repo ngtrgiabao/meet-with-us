@@ -34,7 +34,7 @@ const UserOverview = ({ meetingID }: IUserOverview) => {
     return (
         <div className="absolute inset-0 w-full h-full z-[100] overflow-hidden">
             <span
-                className="absolute top-[2%] right-[2%] hover:cursor-pointer font-bold text-white hover:text-rose-600 text-2xl"
+                className="absolute top-[2%] right-[2%] hover:cursor-pointer font-bold text-white hover:text-rose-600 text-3xl"
                 onClick={() => handleRefresh()}
             >
                 <i className="fa-regular fa-circle-xmark"></i>
@@ -42,7 +42,7 @@ const UserOverview = ({ meetingID }: IUserOverview) => {
 
             <Transition timeline={useroverview} duration={2.5} />
 
-            <div className="bg-gradient-to-r from-cyan-500 to-blue-500 flex justify-center h-screen py-24">
+            <div className="bg-blue-700 flex justify-center h-screen py-24">
                 <div className="h-full w-[80%] flex justify-center items-center">
                     <UserOverviewWebcam />
 
@@ -60,10 +60,7 @@ const UserOverview = ({ meetingID }: IUserOverview) => {
                             </button>
                             <button
                                 onClick={() => handleRefresh()}
-                                className="mt-2 font-bold text-sm"
-                                style={{
-                                    color: "rgb(255 0 0 / 1)",
-                                }}
+                                className="mt-2 p-2 rounded-3xl hover:bg-rose-700 hover:border-solid w-full bg-rose-600"
                             >
                                 Cancel ?
                             </button>
