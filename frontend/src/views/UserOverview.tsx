@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React from "react";
 import { gsap } from "gsap";
 import { useMeeting } from "@videosdk.live/react-sdk";
 
@@ -13,6 +13,15 @@ const useroverview = gsap.timeline();
 
 const UserOverview = ({ meetingID }: IUserOverview) => {
     const [joined, setJoined] = React.useState<string | null>(null);
+    const [rotate, setRotate] = React.useState<number | null>(null);
+
+    const handleHover = () => {
+        setRotate(360);
+    };
+
+    const handleLeave = () => {
+        setRotate(0);
+    };
 
     // When user joined will create a room
     const { join } = useMeeting({
@@ -34,15 +43,23 @@ const UserOverview = ({ meetingID }: IUserOverview) => {
     return (
         <div className="absolute inset-0 w-full h-full z-[100] overflow-hidden">
             <span
-                className="absolute top-[2%] right-[2%] hover:cursor-pointer font-bold text-white hover:text-rose-600 text-2xl"
+                className="absolute top-[3%] right-[2%] hover:cursor-pointer font-bold text-white text-3xl"
                 onClick={() => handleRefresh()}
+                onMouseEnter={handleHover}
+                onMouseLeave={handleLeave}
             >
-                <i className="fa-regular fa-circle-xmark"></i>
+                <i
+                    className="fa-regular fa-circle-xmark"
+                    style={{
+                        transform: `rotate(${rotate}deg)`,
+                        transition: "transform 0.22s ease-in-out",
+                    }}
+                ></i>
             </span>
 
             <Transition timeline={useroverview} duration={2.5} />
 
-            <div className="bg-gradient-to-r from-cyan-500 to-blue-500 flex justify-center h-screen py-24">
+            <div className="bg-blue-700 flex justify-center h-screen py-24">
                 <div className="h-full w-[80%] flex justify-center items-center">
                     <UserOverviewWebcam />
 
@@ -54,16 +71,13 @@ const UserOverview = ({ meetingID }: IUserOverview) => {
                         <div className="w-full flex flex-col items-center">
                             <button
                                 onClick={() => handleJoinMeeting()}
-                                className="p-2 rounded-3xl hover:bg-blue-600 border border-dashed hover:border-solid w-full"
+                                className="p-2 rounded-3xl hover:bg-blue-600 border border-dashed hover:border-solid w-full font-bold"
                             >
                                 Join now
                             </button>
                             <button
                                 onClick={() => handleRefresh()}
-                                className="mt-2 font-bold text-sm"
-                                style={{
-                                    color: "rgb(255 0 0 / 1)",
-                                }}
+                                className="mt-2 text-white hover:underline"
                             >
                                 Cancel ?
                             </button>

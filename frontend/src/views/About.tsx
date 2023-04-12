@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { gsap } from "gsap/all";
+import { gsap } from "gsap";
 
 import "../styles/about/about.css";
 
@@ -78,7 +78,7 @@ const About = () => {
                     duration: 0.2,
                 }
             );
-    }, []);
+    }, [about]);
 
     return (
         <>
