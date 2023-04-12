@@ -76,22 +76,21 @@
 ## 🤖 Features
 
 -   Connect with anyone 🌐
--   Chat with friends 💬
 -   Video call 📱
 -   Sharing screen 💻
 
 ## 🤖 Tech stacks
 
 ### Back-end
-
 -   Node.js (Express)
 -   Firebase
--   Socket.io
+-   VideoSDK
 
 ### Front-end
 
 -   React
+-   TypeScript
 -   CSS
--   Socket.io
+-   VideoSDK
 
 🌐 Link website: https://meet-with-us.netlify.app
