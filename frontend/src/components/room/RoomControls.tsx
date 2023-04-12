@@ -64,7 +64,7 @@ const RoomControls = () => {
 
     return (
         <>
-            <div className="fixed bottom-[6%] bg-transparent/20 p-2 px-3 rounded-xl text-xl flex justify-between w-[22%] animate__animated animate__bounceInUp">
+            <div className="fixed bottom-[6%] bg-white p-2 px-3 rounded-xl text-xl flex justify-between w-[22%] animate__animated animate__bounceInUp">
                 {/* Webcam */}
                 <button
                     onClick={() => handleWebcam()}
