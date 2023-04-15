@@ -10,10 +10,9 @@ const jwt = require("jsonwebtoken");
 
 const { firebaseDB } = require("../../../config/firebase");
 const ApiError = require("../../../api.error");
-
 // Create a room
-const create = async (req, res, next) => {
-    if (!req.body?.hostName) {
+const create = async(req, res, next) => {
+    if (!req.body || !req.body.hostName) {
         return next(new ApiError(404, "Hostname can't be empty"));
     }
 
@@ -36,7 +35,7 @@ const create = async (req, res, next) => {
 };
 
 // Find room by host name
-const findAll = async (req, res, next) => {
+const findAll = async(req, res, next) => {
     try {
         let hosts = [];
         const roomCollection = collection(firebaseDB, "rooms");
@@ -69,7 +68,7 @@ const findAll = async (req, res, next) => {
 };
 
 // Find room by ID
-const findOne = async (req, res, next) => {
+const findOne = async(req, res, next) => {
     try {
         let rooms = [];
         const id = req.params.id;
@@ -96,7 +95,7 @@ const findOne = async (req, res, next) => {
 };
 
 // Update a room
-const update = async (req, res, next) => {
+const update = async(req, res, next) => {
     if (Object.keys(req.body).length === 0) {
         return next(new ApiError(404, "Data to update can not be empty"));
     }
@@ -112,8 +111,8 @@ const update = async (req, res, next) => {
             )
             .catch(() =>
                 res
-                    .status(404)
-                    .send({ msg: `Failed to update room: ${id} data` })
+                .status(404)
+                .send({ msg: `Failed to update room: ${id} data` })
             );
     } catch (error) {
         return next(
@@ -123,7 +122,7 @@ const update = async (req, res, next) => {
 };
 
 // Delete a room
-const deleteOne = async (req, res, next) => {
+const deleteOne = async(req, res, next) => {
     try {
         const id = req.params.id;
         // Get a doc
@@ -146,14 +145,14 @@ const deleteOne = async (req, res, next) => {
 };
 
 // Delete all rooms
-const deleteAll = async (req, res, next) => {
+const deleteAll = async(req, res, next) => {
     try {
         // Get collection
         const roomCollection = collection(firebaseDB, "rooms");
         // Get docs
         await getDocs(roomCollection)
             .then((roomDocs) => {
-                roomDocs.forEach(async (document) => {
+                roomDocs.forEach(async(document) => {
                     const docRef = doc(firebaseDB, "rooms", document.id);
                     await deleteDoc(docRef);
                 });

@@ -1,4 +1,3 @@
-const jwt = require("jsonwebtoken");
 const { room } = require("../../../config/database.config");
 
 const getToken = (req, res) => {
