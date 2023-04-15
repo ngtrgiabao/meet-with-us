@@ -112,11 +112,11 @@ function Navbar() {
                 </span>
 
                 <div className="flex items-center">
-                    {username}
+                    {name || username}
 
                     {/* Avatar user */}
                     <div className="border-2 w-[3rem] h-[3rem] rounded-full flex justify-center items-center hover:cursor-pointer hover:bg-white hover:text-black relative avatar-user ml-4">
-                        {username ? (
+                        {name || username ? (
                             <img
                                 src={AvatarUser}
                                 alt="avatar user"
@@ -127,7 +127,7 @@ function Navbar() {
                         )}
 
                         {/* Setting user */}
-                        {username ? (
+                        {name || username ? (
                             <ul className="absolute top-14 -left-[11.2rem] w-[15rem] text-sm text-black font-bold setting-user">
                                 <li
                                     className="flex justify-center items-center p-3 bg-red-500 text-white rounded-lg"
