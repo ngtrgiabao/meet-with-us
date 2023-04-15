@@ -3,8 +3,6 @@ import { Routes, Route } from "react-router-dom";
 
 import Home from "./views/Home";
 import About from "./views/About";
-import UserOverview from "./views/UserOverview";
-import Room from "./views/Room";
 import Register from "./views/Register";
 import Login from "./views/Login";
 
@@ -14,16 +12,11 @@ import "./styles/index.css";
 
 function App() {
     return (
-        <div className="App bg-slate-900">
+        <div className="App  bg-gradient-to-br from-cyan-500 to-blue-500">
             <Routes>
                 <>
                     <Route path="/" element={<Home />} />
                     <Route path="/about" element={<About />} />
-                    <Route
-                        path="/user-overview/:roomID"
-                        element={<UserOverview />}
-                    />
-                    <Route path="/room/:roomID" element={<Room />} />
                 </>
                 <>
                     <Route path="/register" element={<Register />} />

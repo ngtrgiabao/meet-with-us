@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { getAuth,createUserWithEmailAndPassword } from "firebase/auth";
 import sideImg from "../assets/background/register-cover.gif";
 import { doc, setDoc } from "firebase/firestore";
-import { firebaseDB } from "../utils/firebaseconfig";
+import { firebaseAuth, firebaseDB } from "../utils/firebaseconfig";
 
 
 const Register = () => {
@@ -14,10 +14,10 @@ const Register = () => {
         const email = e.target[1].value;
         const password = e.target[2].value;
         
-    const auth = getAuth();
+    // const auth = getAuth();
     try{
 
-        const res = await createUserWithEmailAndPassword(auth, email, password)
+        const res = await createUserWithEmailAndPassword(firebaseAuth, email, password)
 
         await setDoc(doc(firebaseDB, "users", res.user.uid), {
             uid: res.user.uid,
@@ -36,7 +36,7 @@ const Register = () => {
         <div className="w-full h-screen flex items-center bg-white overflow-hidden">
             {/* Side img */}
             <div className="w-1/2 h-screen flex flex-col animate__animated animate__bounceInLeft">
-                <img src={sideImg} className="w-full h-full object-cover" />
+                <img src={sideImg} alt="background" className="w-full h-full object-cover" />
             </div>
 
             {/* Form */}

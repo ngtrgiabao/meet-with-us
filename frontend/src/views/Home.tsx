@@ -1,43 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
-import Peer from "peerjs";
+import { MeetingProvider, MeetingConsumer } from "@videosdk.live/react-sdk";
+import { v4 as uuid } from "uuid";
 
 import "../styles/index.css";
 
-import BannerVideo from "../layouts/BannerVideo";
 import Navbar from "../layouts/Navbar";
-import PopupRoomId from "../components/PopupRoomId";
-import { RoomContext } from "../context/room/RoomProvider";
 
-// import Logo from "../assets/logo.svg";
+import { authToken, createMeeting } from "../api/api.service";
+
+import BannerVideo from "../layouts/BannerVideo";
+import HomeInput from "../components/home/HomeInput";
+import UserOverview from "./UserOverview";
+import { DeviceContext } from "../context/useroverview/DeviceContext";
+import userService from "../api/user/user.service";
 const bgImg = require("../assets/background/home.mp4");
 
-const { CopyToClipboard } = require("react-copy-to-clipboard");
-
 const Home = () => {
-    const [inputValue, setInputValue] = React.useState<string>("");
-    const [isCopied, setIsCopied] = React.useState<boolean>(false);
-    const [isActive, setIsActive] = React.useState<boolean>(false);
-
-    const roomID = React.useContext(RoomContext);
-
-    const [peerId, setPeerId] = React.useState<string>("");
-    const peer = new Peer();
-
-    const handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void = (
-        e
-    ) => {
-        setInputValue(e.target.value);
-    };
-
-    const handleCopyClipboard: () => void = () => {
-        setIsCopied((isCopied) => !isCopied);
-    };
-
-    const handleActive: () => void = () => {
-        setIsActive((isActive) => !isActive);
-    };
+    
+    const { isWebcam, isMic } = React.useContext(DeviceContext);
 
     const mouse = React.useRef<ReturnType<typeof Object>>({
         x: 0,
@@ -47,11 +29,18 @@ const Home = () => {
         mixBlendMode: "",
     });
 
+    const [meetingID, setMeetingID] = React.useState<string | null>(null);
+    const getMeetingAndToken = async (id: string) => {
+        const meetingId =
+            id == null ? await createMeeting({ token: authToken }) : id;
+        setMeetingID(meetingId);
+    };
+
     return (
         <>
             <div
                 id="Home"
-                className="h-screen w-screen overflow-hidden relative flex justify-center items-center p-4"
+                className="h-screen  overflow-hidden relative flex justify-center items-center p-4"
                 onMouseMove={(e) => {
                     gsap.to(mouse.current, {
                         top: e.clientY - 15,
@@ -64,7 +53,7 @@ const Home = () => {
                 <BannerVideo bgImg={bgImg} />
 
                 <div
-                    className="mt-[32rem] flex w-1/2 justify-center items-center"
+                    className="mt-[32rem] w-1/2 flex justify-center items-center"
                     onMouseMove={(e) => {
                         gsap.to(mouse.current, {
                             top: e.clientY - 15,
@@ -88,54 +77,10 @@ const Home = () => {
                         });
                     }}
                 >
-                    {inputValue ? (
-                        <Link
-                            to={`/user-overview/${
-                                inputValue ? inputValue : roomID
-                            }`}
-                            className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn"
-                        >
-                            Tham gia phòng
-                        </Link>
-                    ) : (
-                        <button
-                            className="text-md uppercase font-bold p-2 rounded bg-[#2C2F77] text-white hover:opacity-95 animate__animated animate__bounceIn"
-                            onClick={() => {
-                                handleActive();
-                                
-                            }}
-                        >
-                            Tạo phòng
-                        </button>
-                    )}
-
-                    {/* Room input */}
-                    <input
-                        type="text"
-                        placeholder="enter your link room here"
-                        className="text-lg uppercase font-bold outline outline-1 focus:outline-2 p-2 rounded animate__animated animate__fadeIn mx-4 flex-1"
-                        onChange={(e) => {
-                            handleInput(e);
-                        }}
-                    />
-
-                    {/* Copy clipboard */}
-                    {isCopied ? (
-                        <span className="text-white p-2 px-4 rounded-lg animate__animated animate__bounceIn">
-                            <i className="fa-solid fa-check text-xl text-green-500"></i>
-                        </span>
-                    ) : (
-                        <CopyToClipboard
-                            text={inputValue}
-                            onCopy={handleCopyClipboard}
-                        >
-                            <span className="text-white cursor-pointer hover:text-white hover:bg-blue-400 p-2 px-4 rounded-lg animate__animated animate__bounceIn">
-                                <i className="fa-regular fa-clipboard text-xl"></i>
-                            </span>
-                        </CopyToClipboard>
-                    )}
+                    <HomeInput getMeetingAndToken={getMeetingAndToken} />
                 </div>
 
+                {/* About page */}
                 <div className="absolute bottom-4 left-4">
                     <Link
                         to="/about"
@@ -163,9 +108,9 @@ const Home = () => {
                             });
                         }}
                     >
-                        Tìm hiểu thêm
+                        Get more information
                     </Link>
-                    <span className="ml-1 text-white">về chúng tôi</span>
+                    <span className="ml-1 text-white">about us</span>
                 </div>
 
                 {/* CURSOR */}
@@ -181,14 +126,25 @@ const Home = () => {
                     ref={mouse}
                     className="rounded-full transition duration-150 overflow-hidden flex justify-center items-center bg-white z-[99]"
                 ></div>
-
-                {/* Popup */}
-                <PopupRoomId
-                    id={roomID}
-                    isActive={isActive}
-                    togglePopup={handleActive}
-                />
             </div>
+
+            {/* If get auth token and meetingID success will create move to user overview page to join a room */}
+            {authToken && meetingID && (
+                <MeetingProvider
+                    config={{
+                        meetingId: meetingID,
+                        webcamEnabled: isWebcam,
+                        micEnabled: isMic,
+                        maxResolution: "hd" as const,
+                        name: uuid(),
+                    }}
+                    token={authToken}
+                >
+                    <MeetingConsumer>
+                        {() => <UserOverview meetingID={meetingID} />}
+                    </MeetingConsumer>
+                </MeetingProvider>
+            )}
         </>
     );
 };

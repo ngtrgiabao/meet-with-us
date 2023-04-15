@@ -4,9 +4,6 @@ module.exports = {
     app: {
         port: process.env.PORT || 3002,
     },
-    socket: {
-        port: process.env.SOCKET_PORT || 4001,
-    },
     firebase: {
         config: {
             apiKey: process.env.API_KEY_FIREBASE,
@@ -16,5 +13,9 @@ module.exports = {
             messagingSenderId: process.env.MSG_SENDER_ID,
             appId: process.env.APP_ID,
         },
+    },
+    room: {
+        apiKey: process.env.ROOM_API_KEY,
+        secretKey: process.env.ROOM_SECRET_KEY,
     },
 };
