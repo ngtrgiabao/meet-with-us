@@ -33,18 +33,18 @@ function Navbar() {
         firebaseAuth.signOut();
         window.location.reload();
     };
-    React.useEffect(() => {
-        const unsubcribed = firebaseAuth.onAuthStateChanged((user) => {
-            if (user) {
-                setName(user.displayName);
-                // console.log(user.displayName);
-            }
-        });
-        //clean function
-        return () => {
-            unsubcribed();
-        };
-    }, []);
+    // React.useEffect(() => {
+    //     const unsubcribed = firebaseAuth.onAuthStateChanged((user) => {
+    //         if (user) {
+    //             setName(user.displayName);
+    //             // console.log(user.displayName);
+    //         }
+    //     });
+    //     //clean function
+    //     return () => {
+    //         unsubcribed();
+    //     };
+    // }, []);
     userService.getAll().then((data) => {
         //  console.log(data);
         // useEffect(()=>{
@@ -105,8 +105,8 @@ function Navbar() {
                     {date} | {time} | {wish}
                 </span>
                 <div className="flex items-center">
-                    {name }
-                    {name && (
+                    {name || username }
+                    {name || username && (
                         <button onClick={() => signOut()}>Dang xuat</button>
                     )}
                     <div className="border-2 w-[3rem] h-[3rem] rounded-full flex justify-center items-center hover:cursor-pointer hover:bg-white hover:text-black relative avatar-user ml-4">

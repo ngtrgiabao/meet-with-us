@@ -16,8 +16,9 @@ import {
     serverTimestamp,
     setDoc,
 } from "firebase/firestore";
-import { firebaseAuth, firebaseDB } from "../utils/firebaseconfig";
 import { current } from "@reduxjs/toolkit";
+
+import { firebaseAuth, firebaseDB } from "../utils/firebaseconfig";
 import userService from "../api/user/user.service";
 import { LoginContext } from "../components/login/LoginContext";
 
@@ -28,6 +29,7 @@ const Login = () => {
     const [password, setPassword] = useState<string>("");
     const loginContext = useContext(LoginContext);
     const { updateUser } = loginContext;
+
     // console.log(username + " " + password)
     // const signOut = () => {
     //     firebaseAuth.signOut();
@@ -73,27 +75,21 @@ const Login = () => {
     //         setErr(true);
     //     }
     // };
-    console.log(username, password);
-    const handleSubmid = () => {
-        // navigate("/");
 
+    const handleSubmit = () => {
         userService.getAll().then((data) => {
-            data.data.forEach((element: any) => {
-                // console.log(element.name)
-                if (
-                    element.name === username &&
-                    element.password === password
-                ) {
-                    updateUser(username, password);
-                    console.log("hgilo");
+            data.data.forEach((e: any) => {
+                if (e.name === username && e.password===password) {
+                    updateUser(e.name, e.password);
+                    
+                    navigate("/");
+                } else {
+                    setErr(true);
                 }
-                // console.log("hgilo");
             });
-            // useEffect(()=>{
-            //   setName(data.data[3].name)
-            // })
         });
     };
+
     return (
         <div className="w-full h-screen flex items-center bg-white overflow-hidden">
             {/* Side img */}
@@ -121,9 +117,7 @@ const Login = () => {
                         <i className="fa-solid fa-house"></i>
                     </Link>
 
-                    <form
-                        // onSubmit={()=>handleSubmid()}
-                        // action=""
+                    <div
                         id="register-form"
                         className="w-full h-full flex flex-col items-center justify-center"
                     >
@@ -151,14 +145,18 @@ const Login = () => {
                             className="w-full text-black text-lg by-2 my-5 bg-transparent border-b-2 border-gray-400 outline-none focus:outline-none focus:border-b-4 focus:border-blue-500"
                         />
 
-                        {/* <input
-                            type="submit"
-                            value="Login"
+                        <button
                             className="w-full text-xl font-bold text-white bg-[#060606] font-sembold rounded-md p-4 text-center flex items-center justify-center flex-col my-4 hover:cursor-pointer hover:bg-blue-500 mt-10"
-                        /> */}
-                        {err && <span>Something went wrong</span>}
-                    </form>
-                    <button onClick={() => handleSubmid()}>login</button>
+                            onClick={() => handleSubmit()}
+                        >
+                            Login
+                        </button>
+                        {err && (
+                            <span className="text-red-500">
+                                Your username or password not correct
+                            </span>
+                        )}
+                    </div>
                 </div>
 
                 <div className="w-full flex items-center justify-center">
