@@ -17,6 +17,9 @@ import {
     signOut,
 } from "firebase/auth";
 
+import "../styles/navbar/navbar.css";
+import AvatarUser from "../assets/avatar_user/01c751482ef7c4f5e93f3539efd27f6f.jpg";
+
 // import { createUserWithEmailAndPassword } from "firebase/auth";
 import { firebaseAuth, usersRef, firebaseDB } from "../utils/firebaseconfig";
 import { setUser } from "../hooks/slices/AuthSlice";
@@ -26,9 +29,10 @@ import { LoginContext } from "../components/login/LoginContext";
 
 function Navbar() {
     const [name, setName] = useState<String | null>(null);
-    const loginContext = useContext(LoginContext)
-    const {username,password} = loginContext
-    console.log(username)
+    const loginContext = useContext(LoginContext);
+    const { username, password } = loginContext;
+
+    console.log(username);
     const signOut = () => {
         firebaseAuth.signOut();
         window.location.reload();
@@ -83,7 +87,7 @@ function Navbar() {
             dispatch(
                 setUser({
                     uid,
-                    email: email!,
+                    email: email,
                     name: displayName!,
                     phoneNumber: phoneNumber!,
                 })
@@ -97,6 +101,8 @@ function Navbar() {
     //   name,
     //   photoURL,
     // }} = React.useContext();
+    console.log("name", name, "username", username);
+
     return (
         <>
             <div className="h-[3rem] absolute top-0 w-full flex justify-between items-center p-8 text-white">
@@ -104,46 +110,66 @@ function Navbar() {
                 <span className="flex mr-4 items-center">
                     {date} | {time} | {wish}
                 </span>
+
                 <div className="flex items-center">
-                    {name || username}
-                    {name || username && (
-                        <button onClick={() => signOut()}>Dang xuat</button>
-                    )}
+                    {username}
+
+                    {/* Avatar user */}
                     <div className="border-2 w-[3rem] h-[3rem] rounded-full flex justify-center items-center hover:cursor-pointer hover:bg-white hover:text-black relative avatar-user ml-4">
-                        {/* Avatar user */}
-                        <i className="fa-regular fa-user"></i>
+                        {username ? (
+                            <img
+                                src={AvatarUser}
+                                alt="avatar user"
+                                className="rounded-full"
+                            />
+                        ) : (
+                            <i className="fa-regular fa-user"></i>
+                        )}
 
                         {/* Setting user */}
-                        <ul className="absolute top-14 -left-[11.2rem] border w-[15rem] rounded-md bg-white text-sm  text-black font-bold setting-user">
-                            <li className="flex justify-center items-center p-3 hover:bg-blue-300">
-                                <span className="flex justify-center items-center w-[2rem] h-[2rem] mr-4 rounded-full bg-red-500 text-white">
-                                    <i className="fa-brands fa-google"></i>
-                                </span>
-                                <span
+                        {username ? (
+                            <ul className="absolute top-14 -left-[11.2rem] w-[15rem] text-sm text-black font-bold setting-user">
+                                <li
+                                    className="flex justify-center items-center p-3 bg-red-500 text-white rounded-lg"
                                     onClick={() => {
-                                        loginGG();
+                                        signOut();
                                     }}
                                 >
-                                    Login with Google
-                                </span>
-                            </li>
-                            <li>
-                                <Link
-                                    to="/login"
-                                    className="flex justify-center items-center p-3 border-y-2 text-black hover:bg-blue-300"
-                                >
-                                    Sign in
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    to="/register"
-                                    className="flex justify-center items-center p-3 text-black hover:bg-blue-300"
-                                >
-                                    Sign up
-                                </Link>
-                            </li>
-                        </ul>
+                                    Sign Out
+                                </li>
+                            </ul>
+                        ) : (
+                            <ul className="absolute top-14 -left-[11.2rem] border w-[15rem] rounded-md bg-white text-sm  text-black font-bold setting-user">
+                                <li className="flex justify-center items-center p-3 hover:bg-blue-300">
+                                    <span className="flex justify-center items-center w-[2rem] h-[2rem] mr-4 rounded-full bg-red-500 text-white">
+                                        <i className="fa-brands fa-google"></i>
+                                    </span>
+                                    <span
+                                        onClick={() => {
+                                            loginGG();
+                                        }}
+                                    >
+                                        Login with Google
+                                    </span>
+                                </li>
+                                <li>
+                                    <Link
+                                        to="/login"
+                                        className="flex justify-center items-center p-3 border-y-2 text-black hover:bg-blue-300"
+                                    >
+                                        Sign in
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to="/register"
+                                        className="flex justify-center items-center p-3 text-black hover:bg-blue-300"
+                                    >
+                                        Sign up
+                                    </Link>
+                                </li>
+                            </ul>
+                        )}
                     </div>
                 </div>
             </div>

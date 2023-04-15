@@ -1,42 +1,45 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { getAuth,createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import sideImg from "../assets/background/register-cover.gif";
 import { doc, setDoc } from "firebase/firestore";
 import { firebaseAuth, firebaseDB } from "../utils/firebaseconfig";
 
-
 const Register = () => {
-    const [err,setErr] = useState(false)
-    const handleSubmid = async (e: any) =>{   
+    const [err, setErr] = useState(false);
+    const handleSubmid = async (e: any) => {
         e.preventDefault();
         const displayName = e.target[0].value;
         const email = e.target[1].value;
         const password = e.target[2].value;
-        
-    // const auth = getAuth();
-    try{
 
-        const res = await createUserWithEmailAndPassword(firebaseAuth, email, password)
+        // const auth = getAuth();
+        try {
+            const res = await createUserWithEmailAndPassword(
+                firebaseAuth,
+                email,
+                password
+            );
 
-        await setDoc(doc(firebaseDB, "users", res.user.uid), {
-            uid: res.user.uid,
-            email,
-            password,
-            name:displayName
-         }); 
-        
-
-    }catch(err){
-        setErr(true);
-    }
-     
-    }
+            await setDoc(doc(firebaseDB, "users", res.user.uid), {
+                uid: res.user.uid,
+                email,
+                password,
+                name: displayName,
+            });
+        } catch (err) {
+            setErr(true);
+        }
+    };
     return (
         <div className="w-full h-screen flex items-center bg-white overflow-hidden">
             {/* Side img */}
             <div className="w-1/2 h-screen flex flex-col animate__animated animate__bounceInLeft">
-                <img src={sideImg} alt="background" className="w-full h-full object-cover" />
+                <img
+                    src={sideImg}
+                    alt="background"
+                    className="w-full h-full object-cover"
+                />
             </div>
 
             {/* Form */}
@@ -49,7 +52,8 @@ const Register = () => {
                         <i className="fa-solid fa-house"></i>
                     </Link>
 
-                    <form onSubmit={handleSubmid}
+                    <form
+                        onSubmit={handleSubmid}
                         action=""
                         id="register-form"
                         className="w-full h-full flex flex-col items-center justify-center"
