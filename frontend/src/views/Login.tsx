@@ -1,26 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-    getAuth,
-    GoogleAuthProvider,
-    ProviderId,
-    signInWithEmailAndPassword,
-    signInWithPopup,
-    updateCurrentUser,
-    updateProfile,
-} from "firebase/auth";
-import {
-    addDoc,
-    collection,
-    doc,
-    serverTimestamp,
-    setDoc,
-} from "firebase/firestore";
-import { current } from "@reduxjs/toolkit";
 
-import { firebaseAuth, firebaseDB } from "../utils/firebaseconfig";
 import userService from "../api/user/user.service";
-import { LoginContext } from "../components/login/LoginContext";
+import { LoginContext } from "../context/login/LoginContext";
 
 const sideVideo = require("../assets/background/login-video.mp4");
 
@@ -30,58 +12,15 @@ const Login = () => {
     const loginContext = useContext(LoginContext);
     const { updateUser } = loginContext;
 
-    // console.log(username + " " + password)
-    // const signOut = () => {
-    //     firebaseAuth.signOut();
-    //     window.location.reload();
-    // };
-    // React.useEffect(() => {
-    //     const unsubcribed = firebaseAuth.onAuthStateChanged((user) => {
-    //         if (user) {
-    //             setName(user.displayName);
-    //             // console.log(user.displayName);
-    //         }
-    //     });
-    //     //clean function
-    //     return () => {
-    //         unsubcribed();
-    //     };
-    // }, []);
-
     const [err, setErr] = useState(false);
     const navigate = useNavigate();
-    // const handleSubmid = async (e: any) => {
-    //     e.preventDefault();
-    //     const username = e.target[0].value;
-    //     const password = e.target[1].value;
-
-    //     const auth = getAuth();
-    //     try {
-    //         const currentUser = auth.currentUser;
-    //         if (currentUser) {
-    //             const userRef = collection(firebaseDB, "users");
-    //             const userDoc = {
-    //                 uid: currentUser.uid,
-    //                 // displayName: currentUser.displayName,
-    //                 username: currentUser.displayName,
-    //                 photoURL: currentUser.photoURL,
-    //                 createdAt: new Date(),
-    //             };
-    //             await addDoc(userRef, userDoc);
-    //         }
-    //         await signInWithEmailAndPassword(auth, username, password);
-    //         navigate("/");
-    //     } catch (err) {
-    //         setErr(true);
-    //     }
-    // };
 
     const handleSubmit = () => {
         userService.getAll().then((data) => {
             data.data.forEach((e: any) => {
-                if (e.name === username && e.password===password) {
+                if (e.name === username && e.password === password) {
                     updateUser(e.name, e.password);
-                    
+
                     navigate("/");
                 } else {
                     setErr(true);

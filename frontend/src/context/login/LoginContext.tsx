@@ -15,7 +15,7 @@ export const LoginProvider = ({ children }: { children: ReactNode }) => {
     const updateUser = (username1: string, password1: string) => {
         setUsername(username1);
         setPassword(password1);
-        console.log(username1,password1)
+       
     };
     const contextValue = useMemo(() => {
         return {

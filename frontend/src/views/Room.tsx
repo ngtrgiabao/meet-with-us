@@ -7,9 +7,9 @@ import "../styles/room/room.css";
 import RoomParticipantView from "../components/room/RoomParticipantView";
 import RoomControls from "../components/room/RoomControls";
 
+
 const Room = ({ meetingID }: { meetingID: string | null }) => {
     const { participants, leave } = useMeeting();
-
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
 
     const videoRef = React.useRef<HTMLVideoElement>(null);

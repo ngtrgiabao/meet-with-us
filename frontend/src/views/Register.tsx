@@ -1,17 +1,22 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import sideImg from "../assets/background/register-cover.gif";
 import { doc, setDoc } from "firebase/firestore";
-import { firebaseAuth, firebaseDB } from "../utils/firebaseconfig";
+import { firebaseDB } from "../utils/firebaseconfig";
 
 const Register = () => {
+    const navigate = useNavigate();
     const [err, setErr] = useState(false);
-    const handleSubmid = async (e: any) => {
-        e.preventDefault();
-        const displayName = e.target[0].value;
-        const email = e.target[1].value;
-        const password = e.target[2].value;
+    const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+
+    const handleSubmit = async () => {
+        navigate("/login");
+        // e.preventDefault();
+       
+     
 
         const auth = getAuth();
         try {
@@ -25,7 +30,7 @@ const Register = () => {
                 uid: res.user.uid,
                 email,
                 password,
-                name: displayName,
+                name: username,
             });
         } catch (err) {
             setErr(true);
@@ -53,8 +58,7 @@ const Register = () => {
                     </Link>
 
                     <form
-                        onSubmit={handleSubmid}
-                        action=""
+                        onSubmit={handleSubmit}
                         id="register-form"
                         className="w-full h-full flex flex-col items-center justify-center"
                     >
@@ -67,6 +71,7 @@ const Register = () => {
                         </div>
                         {/* username */}
                         <input
+                            onChange={(e) => setUsername(e.target.value)}
                             required
                             type="text"
                             placeholder="Enter Your Username"
@@ -74,6 +79,7 @@ const Register = () => {
                         />
                         {/* email */}
                         <input
+                            onChange={(e) => setEmail(e.target.value)}
                             required
                             type="Email"
                             placeholder="Enter Email"
@@ -81,6 +87,7 @@ const Register = () => {
                         />
                         {/* password */}
                         <input
+                            onChange={(e) => setPassword(e.target.value)}
                             required
                             type="password"
                             placeholder="Enter Password"
@@ -99,7 +106,11 @@ const Register = () => {
                             value="Register"
                             className="w-full text-xl font-bold text-white bg-[#060606] font-sembold rounded-md p-4 text-center flex items-center justify-center flex-col my-4 hover:cursor-pointer hover:bg-blue-500 mt-10"
                         />
-                        {err && <span>Something went wrong</span>}
+                        {err && (
+                            <span className="text-red-500">
+                                Your username or password not correct
+                            </span>
+                        )}
                     </form>
                 </div>
 

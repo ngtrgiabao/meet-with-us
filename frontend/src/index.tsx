@@ -4,7 +4,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { store } from "./hooks/store";
-import { LoginProvider } from "./components/login/LoginContext";
+import { LoginProvider } from "./context/login/LoginContext";
 
 const { library } = require("@fortawesome/fontawesome-svg-core");
 const { fab } = require("@fortawesome/free-brands-svg-icons");
