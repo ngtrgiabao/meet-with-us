@@ -105,8 +105,8 @@ function Navbar() {
                     {date} | {time} | {wish}
                 </span>
                 <div className="flex items-center">
-                    {name || username}
-                    {name || username && (
+                    {name }
+                    {name && (
                         <button onClick={() => signOut()}>Dang xuat</button>
                     )}
                     <div className="border-2 w-[3rem] h-[3rem] rounded-full flex justify-center items-center hover:cursor-pointer hover:bg-white hover:text-black relative avatar-user ml-4">
