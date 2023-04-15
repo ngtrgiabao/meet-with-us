@@ -22,10 +22,10 @@ import { firebaseAuth } from "../utils/firebaseconfig";
 const bgImg = require("../assets/background/home.mp4");
 
 const Home = () => {
-    const [ggName, setGGName] = useState<string>(""); 
-    const loginContext = useContext(LoginContext);
-    const { username } = loginContext;
-    console.log(ggName)
+    // const [ggName, setGGName] = useState<string>(""); 
+    // const loginContext = useContext(LoginContext);
+    // const { username } = loginContext;
+    // console.log(ggName)
     
     const { isWebcam, isMic } = React.useContext(DeviceContext);
 
@@ -44,17 +44,17 @@ const Home = () => {
         setMeetingID(meetingId);
     };
     
-    const getUsernameGG = async()=>{
-        const provider = new GoogleAuthProvider();
-        const {
-            user: { displayName },
-        } = await signInWithPopup(firebaseAuth, provider);
-        setGGName(displayName||"user")
-    }
+    // const getUsernameGG = async()=>{
+    //     const provider = new GoogleAuthProvider();
+    //     const {
+    //         user: { displayName },
+    //     } = await signInWithPopup(firebaseAuth, provider);
+    //     setGGName(displayName||"user")
+    // }
 
-    useEffect(()=>{
-        getUsernameGG()
-    },[username])
+    // useEffect(()=>{
+    //     getUsernameGG()
+    // },[username])
 
     return (
         <>
@@ -156,7 +156,7 @@ const Home = () => {
                         webcamEnabled: isWebcam,
                         micEnabled: isMic,
                         maxResolution: "hd" as const,
-                        name: username||ggName,
+                        name: "",
                     }}
                     token={authToken}
                 >
