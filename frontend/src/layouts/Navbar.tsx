@@ -27,7 +27,7 @@ import { LoginContext } from "../context/login/LoginContext";
 
 function Navbar() {
     const [name, setName] = useState<String | null>(null);
-    const loginContext = useContext(LoginContext);git 
+    const loginContext = useContext(LoginContext);
     const { username } = loginContext;
 
     const signOut = () => {
