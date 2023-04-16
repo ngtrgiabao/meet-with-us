@@ -7,6 +7,7 @@ const RoomControls = () => {
     toggleWebcam,
     leave,
     getWebcams,
+    disableWebcam,
     toggleScreenShare,
     disableScreenShare,
     enableScreenShare,
@@ -38,16 +39,22 @@ const RoomControls = () => {
     toggleWebcam();
     setIsWebcam((isWebcam) => !isWebcam);
   }, [toggleWebcam]);
+  if (isWebcam == false) {
+    disableWebcam();
+    console.log("Người dùng đã tắt chia sẻ màn hình! ");
+  }
 
   const handleScreenShare = () => {
     toggleScreenShare();
     setIsScreenShare((isScreenShare) => !isScreenShare);
     if (isScreenShare == false) {
       disableScreenShare();
-      console.log("Người dùng đã tắt chia sẻ màn hình! ");
+      //console.log("Người dùng đã tắt chia sẻ màn hình! ");
     } else {
-      console.log("Người dùng đang chia sẻ màn hình! ");
+      //enableScreenShare();
+      //console.log("Người dùng đang chia sẻ màn hình! ");
     }
+    console.log("isScreenShare: ", isScreenShare);
   };
 
   const handleRefreshClick = () => {
@@ -69,9 +76,7 @@ const RoomControls = () => {
     <>
       <div
         className={
-          useMeeting().localScreenShareOn
-            ? "fixed bottom-[8%] left-[25.5%] bg-white p-2 px-2 rounded-xl text-xl flex justify-between w-[25%] animate__animated animate__bounceInUp"
-            : "fixed bottom-[8%] left-[37.5%] bg-white p-2 px-2 rounded-xl text-xl flex justify-between w-[25%] animate__animated animate__bounceInUp"
+          "z-[20] fixed bottom-[8%] left-[25.5%] bg-white p-2 px-2 rounded-xl text-xl flex justify-between w-[25%] animate__animated animate__bounceInUp"
         }
       >
         {/* Webcam */}

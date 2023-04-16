@@ -53,41 +53,43 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
     video: true,
     audio: true,
   };
-  //========  XỬ LÍ GIAO DIỆN KHI NGƯỜI DÙNG CHIA SẺ MÀN HÌNH ========
-  var idNguoiDung = "";
-  var dangChiaSe = false;
+
+  var dangChiaSe;
   var soNguoiDangChiaSe = 0;
-  var soNguoiDungChiaSe = 0;
   participants.forEach((participant) => {
+    console.log(
+      "[ID]: ",
+      participant.id,
+      "[StreamSize]: ",
+      participant.streams.size
+    );
     participant?.streams?.forEach((stream: MediaStreamTrack) => {
-      console.log("[[[stream:]]] ", stream);
       if (stream.kind == "share") {
-        // console.log("stream: ", stream.kind);
         soNguoiDangChiaSe++;
-        dangChiaSe = true;
+        //dangChiaSe = true;
+      } else if (stream.kind == "micro") {
+        soNguoiDangChiaSe--;
+        console.log("stream.kind", stream.kind);
       }
     });
-    console.log("[[[participant]]] ", participant);
   });
-  console.log("isLiveStreaming: ", isLiveStreaming);
-  console.log("--> soNguoiDangChiaSe", soNguoiDangChiaSe);
-  if (soNguoiDangChiaSe == 0) dangChiaSe = false;
-  //===========================
 
+  // participants.forEach((participant) => {
+  //   if (participant.streams.size == 0) soNguoiDangChiaSe--;
+  // });
+  if (soNguoiDangChiaSe == 0) dangChiaSe = false;
+  if (soNguoiDangChiaSe > 0) dangChiaSe = true;
   return (
     <div
       className={
-        // useMeeting().localScreenShareOn && useMeeting().participants
-        useMeeting().participants.size >= 1
-          ? "h-screen w-screen overflow-hidden text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 absolute inset-0"
-          : "h-screen w-screen overflow-hidden text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 absolute inset-0"
+        "h-screen w-screen overflow-hidden text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 absolute inset-0"
       }
     >
       {/* ID's room */}
       {isSharing ? (
         <></>
       ) : (
-        <div className="absolute top-5 left-4 bg-white text-black p-1 text-sm z-[999] animate__animated animate__bounce">
+        <div className="z-10 absolute top-0 left-0 bg-white text-black p-1 text-sm animate__animated animate__bounce">
           <span className="font-bold mr-1">ID ROOM:</span>
           {meetingID}
         </div>
@@ -98,12 +100,25 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
       {/* Create UI of participants join */}
       <div
         className={
-          dangChiaSe
-            ? "fixed bottom-[3%] right-0 h-[94%] w-[22%] mt-[2%] bg-white rounded-xl overflow-hidden"
-            : "h-[75%] w-[25%] mt-[2%] bg-white rounded-xl overflow-hidden"
+          " fixed left-0 absolute w-[78%] h-[94%] mt-[1.5%] bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%"
+        }
+      >
+        <span
+          className={
+            "absolute top-[48%] left-[20%] rounded-xl text-bold text-3xl p-3 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-600"
+          }
+        >
+          Hiện không ai đang chia sẻ màn hình của họ :(
+        </span>
+        <img src="../" alt="" />
+      </div>
+      <div
+        className={
+          "z-[20] fixed bottom-[3%] right-0 h-[94%] w-[22%] mt-[2%] bg-white rounded-xl overflow-hidden"
         }
       >
         <RoomControls />
+
         {
           <div className="max-h-full overflow-y-auto">
             {[...participants.keys()].map((participantID) => (
