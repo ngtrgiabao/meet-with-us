@@ -81,6 +81,10 @@ export interface IDeviceContext {
     setMicro: (isMicro: boolean) => void;
 }
 
+export interface ILoginContext {
+    updateUser: (username: string, password: string) => void;
+}
+
 //GSAP
 export interface ITransitionProps {
     timeline: GSAPTimeline;

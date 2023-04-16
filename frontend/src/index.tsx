@@ -4,20 +4,28 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { DeviceProvider } from "./components/userOverview/DeviceContext";
+import { LoginProvider } from "./context/login/LoginContext";
+import { Provider } from "react-redux";
+import { store } from "./hooks/store";
 
 const { library } = require("@fortawesome/fontawesome-svg-core");
 const { fab } = require("@fortawesome/free-brands-svg-icons");
 const { fas } = require("@fortawesome/free-solid-svg-icons");
 const { far } = require("@fortawesome/free-regular-svg-icons");
 
+
 const root = ReactDOM.createRoot(
     document.getElementById("root") as HTMLElement
 );
 root.render(
     <DeviceProvider>
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
+        <Provider store={store}>
+            <LoginProvider>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </LoginProvider>
+        </Provider>
     </DeviceProvider>
 );
 
