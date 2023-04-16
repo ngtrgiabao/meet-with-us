@@ -18,13 +18,9 @@ const Login = () => {
     const handleSubmit = () => {
         userService.getAll().then((data) => {
             data.data.forEach((e: any) => {
-                if (
-                    (e.name === username && e.password === password) ||
-                    (e.displayname === username && e.password === password)
-                ) {
-                    updateUser(e.displayname, e.password);
+                if (e.name === username && e.password === password) {
+                    updateUser(e.name, e.password);
 
-                    console.log("hello");
                     navigate("/");
                 } else {
                     setErr(true);

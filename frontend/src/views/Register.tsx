@@ -14,8 +14,7 @@ const Register = () => {
     const [email, setEmail] = useState<string>("");
     const [success, setSuccess] = useState<boolean>(false);
 
-    const handleSubmit = async (e: any) => {
-        console.log(e);
+    const handleSubmit = async () => {
         if (password.length > 5) {
             setSuccess(true);
 
@@ -135,7 +134,7 @@ const Register = () => {
                                 />
 
                                 <div
-                                    onClick={(e) => handleSubmit(e)}
+                                    onClick={() => handleSubmit()}
                                     className="w-full text-xl font-bold text-white bg-[#060606] font-sembold rounded-md p-4 text-center flex items-center justify-center flex-col my-4 hover:cursor-pointer hover:bg-blue-500 mt-10"
                                 >
                                     Register
