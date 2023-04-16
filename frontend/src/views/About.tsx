@@ -83,7 +83,7 @@ const About = () => {
     return (
         <>
             <div className="flex justify-center items-center flex-col absolute w-full h-screen top-0 left-0">
-                <p className="text text-5xl font-bold">🍍 MEET WITH US TEAM 🍍</p>
+                <p className="text text-5xl font-bold">🍍 MEET WITH OUR TEAM 🍍</p>
             </div>
 
             <Transition timeline={about} duration={2.5} />

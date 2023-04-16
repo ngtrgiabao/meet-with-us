@@ -52,6 +52,29 @@ export const useRandomName = () => {
         48: "Sư tử 🦁🌞",
         49: "Mèo Kitty 🐱🎀",
         50: "Gà tây 🦃🍁",
+        51: "Trái dứa 🍍",
+        52: "Bánh tráng trộn 😮",
+        53: "Ê 😗",
+        54: "Ngang như cua 🦀",
+        55: "Bug đầy đầu 😥",
+        56: "Full sờ tách 😎",
+        57: "Coder 🫠",
+        58: "Pate 🍔",
+        59: "Cái tên 🫡",
+        60: "Ủa 🤔",
+        61: "U là trời 😩",
+        62: "Bún đậu mắm tôm 🫥",
+        63: "J dị ❓",
+        64: "Tắt mic đê 😠",
+        65: "Bật cam coai 🥶",
+        66: "Bật cam roài 🫡",
+        67: "Hiệp sĩ 🤡",
+        68: "Tokboki",
+        69: "Đi ăn hong 😀",
+        70: "Đói bụng quá 😩",
+        71: "BUG",
+        72: "Xà lơ",
+        73: "Rich kid",
     };
 
     const randomNickname = (number: number) => {
@@ -61,7 +84,7 @@ export const useRandomName = () => {
     const [nickname, setNickname] = React.useState<string>("");
 
     React.useEffect(() => {
-        const randomNumber = Math.floor(Math.random() * 50) + 1;
+        const randomNumber = Math.floor(Math.random() * 73) + 1;
         setNickname(randomNickname(randomNumber));
     }, []);
 
