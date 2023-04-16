@@ -16,7 +16,7 @@ const RoomLoading = () => {
                 className="object-cover mb-28"
             ></video>
             <div className="absolute bottom-7 flex flex-col">
-                <div className="text-white text-sm bg-blue-500 p-2 rounded-lg">
+                <div className="text-white text-sm bg-blue-700 p-2 rounded-lg">
                     We are creating your meeting, please wait us a few second 😀
                 </div>
                 <button
