@@ -1,9 +1,34 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+import userService from "../api/user/user.service";
+import { LoginContext } from "../context/login/LoginContext";
 
 const sideVideo = require("../assets/background/login-video.mp4");
 
 const Login = () => {
+    const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const loginContext = useContext(LoginContext);
+    const { updateUser } = loginContext;
+
+    const [err, setErr] = useState(false);
+    const navigate = useNavigate();
+
+    const handleSubmit = () => {
+        userService.getAll().then((data) => {
+            data.data.forEach((e: any) => {
+                if (e.name === username && e.password === password) {
+                    updateUser(e.name, e.password);
+
+                    navigate("/");
+                } else {
+                    setErr(true);
+                }
+            });
+        });
+    };
+
     return (
         <div className="w-full h-screen flex items-center bg-white overflow-hidden">
             {/* Side img */}
@@ -31,8 +56,7 @@ const Login = () => {
                         <i className="fa-solid fa-house"></i>
                     </Link>
 
-                    <form
-                        action=""
+                    <div
                         id="register-form"
                         className="w-full h-full flex flex-col items-center justify-center"
                     >
@@ -45,6 +69,7 @@ const Login = () => {
                         </div>
                         {/* username */}
                         <input
+                            onChange={(e) => setUsername(e.target.value)}
                             required
                             type="text"
                             placeholder="Enter Your Userame"
@@ -52,17 +77,25 @@ const Login = () => {
                         />
                         {/* password */}
                         <input
+                            onChange={(e) => setPassword(e.target.value)}
                             required
                             type="password"
                             placeholder="Enter Password"
                             className="w-full text-black text-lg by-2 my-5 bg-transparent border-b-2 border-gray-400 outline-none focus:outline-none focus:border-b-4 focus:border-blue-500"
                         />
-                        <input
-                            type="submit"
-                            value="Login"
+
+                        <button
                             className="w-full text-xl font-bold text-white bg-[#060606] font-sembold rounded-md p-4 text-center flex items-center justify-center flex-col my-4 hover:cursor-pointer hover:bg-blue-500 mt-10"
-                        />
-                    </form>
+                            onClick={() => handleSubmit()}
+                        >
+                            Login
+                        </button>
+                        {err && (
+                            <span className="text-red-500">
+                                Your username or password not correct
+                            </span>
+                        )}
+                    </div>
                 </div>
 
                 <div className="w-full flex items-center justify-center">
