@@ -1,46 +1,96 @@
-# Getting Started with Create React App
+# MEET WITH US
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<img src="https://img.shields.io/github/stars/ngtrgiabaoB2012063/meet-with-us"/> <img src="https://img.shields.io/github/issues/ngtrgiabaoB2012063/meet-with-us"/> ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ngtrgiabaoB2012063/meet-with-us) <img src="https://img.shields.io/github/license/ngtrgiabaoB2012063/meet-with-us"/>
 
-## Available Scripts
+## About
 
-In the project directory, you can run:
+-   A software help everyone connecting to everyone in company or classes and more...
 
-### `npm start`
+## Note:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+-   Only available on Desktop Display
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 👾 Logo ( Not familiar at all )
 
-### `npm test`
+<img src="https://user-images.githubusercontent.com/95952006/216500281-d2aaf399-f630-499b-a8a5-7599c3ec227d.svg" width="64px" height="64px" alt="logo"/>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 👾 Screenshots
 
-### `npm run build`
+![image](https://user-images.githubusercontent.com/95952006/232206701-c69d960b-015d-4a39-a2e8-fdea93f1c35b.png)
+![image](https://user-images.githubusercontent.com/95952006/232206735-a190492f-35c9-4470-8878-4b3238f4a305.png)
+![image](https://user-images.githubusercontent.com/95952006/227425465-0688f563-336b-40bb-b79d-9e5c8f158ec9.png)
+![image](https://user-images.githubusercontent.com/95952006/232206762-9e84ce3d-e6cc-45c5-a14d-2b261789e070.png)
+![image](https://user-images.githubusercontent.com/95952006/227425635-ed32cb6e-8304-4d59-820f-b9d296033420.png)
+![image](https://user-images.githubusercontent.com/95952006/232206812-ab529ed6-4c8c-4022-b4d3-4383f39f8360.png)
+![z4127124200811_4df0a3477bdb253dc60be90ccb8c7280](https://user-images.githubusercontent.com/95952006/220337321-5762130e-04dd-4079-bd71-8dc176f86581.jpg)
+![image](https://user-images.githubusercontent.com/95952006/227425978-f4bf4c33-ca68-49ff-99fa-822e279f9bdf.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🌳 TREE DIRECTORY FRONTEND
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+├───api
+│   └───user
+├───assets
+│   ├───avatar_user
+│   ├───background
+│   ├───slides
+│   └───slogan
+├───components
+│   ├───about
+│   ├───animation
+│   ├───home
+│   ├───popup
+│   ├───room
+│   └───userOverview
+├───features
+│   ├───authentication
+│   │   ├───hooks
+│   │   └───services
+│   └───authorization
+│       └───services
+├───hooks
+├───layouts
+├───lib
+├───styles
+│   ├───about
+│   ├───navbar
+│   └───room
+├───utils
+└───views
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🌳 TREE DIRECTORY BACKEND
 
-### `npm run eject`
+```
+├───api
+│   └───v1
+│       ├───helper
+│       ├───logs
+│       ├───room
+│       ├───token
+│       └───user
+└───config
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 🤖 Features
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+-   Connect with anyone 🌐
+-   Video call 📱
+-   Sharing screen 💻
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## 🤖 Tech stacks
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Back-end
 
-## Learn More
+-   Node.js (Express)
+-   Firebase
+-   VideoSDK
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Front-end
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+-   React
+-   TypeScript
+-   CSS
+-   VideoSDK
+
+🌐 Link website: https://meet-with-us.netlify.app
