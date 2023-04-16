@@ -20,6 +20,7 @@ const bgImg = require("../assets/background/home.mp4");
 const Home = () => {
     const { isWebcam, isMic } = React.useContext(DeviceContext);
     const randomName = useRandomName();
+    const username = localStorage.getItem("username");
 
     const mouse = React.useRef<ReturnType<typeof Object>>({
         x: 0,
@@ -136,7 +137,7 @@ const Home = () => {
                         webcamEnabled: isWebcam,
                         micEnabled: isMic,
                         maxResolution: "hd" as const,
-                        name: randomName,
+                        name: username || randomName,
                     }}
                     token={authToken}
                 >

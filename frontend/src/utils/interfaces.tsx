@@ -82,8 +82,6 @@ export interface IDeviceContext {
 }
 
 export interface ILoginContext {
-    username: string;
-    password: string;
     updateUser: (username: string, password: string) => void;
 }
 

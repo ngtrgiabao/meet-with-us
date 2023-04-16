@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useDate from "../hooks/useDate";
 import {
@@ -13,6 +13,7 @@ import {
     GoogleAuthProvider,
     onAuthStateChanged,
     signInWithPopup,
+    signOut,
 } from "firebase/auth";
 
 import "../styles/navbar/navbar.css";
@@ -21,17 +22,18 @@ import AvatarUser from "../assets/avatar_user/01c751482ef7c4f5e93f3539efd27f6f.j
 import { firebaseAuth, usersRef, firebaseDB } from "../utils/firebaseconfig";
 import { setUser } from "../hooks/slices/AuthSlice";
 import { useAppDispatch } from "../hooks/index";
-import { LoginContext } from "../context/login/LoginContext";
 
 function Navbar() {
     const [name, setName] = useState<string | null>(null);
-    const loginContext = useContext(LoginContext);
-    const { username } = loginContext;
+    const username = localStorage.getItem("username");
 
     const signOut = () => {
         firebaseAuth.signOut();
         window.location.reload();
+        localStorage.removeItem("username");
+        localStorage.removeItem("password");
     };
+
     React.useEffect(() => {
         const unsubcribed = firebaseAuth.onAuthStateChanged((user) => {
             if (user) {
@@ -47,7 +49,6 @@ function Navbar() {
     const { date, time, wish } = useDate();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-
     useEffect(() => {
         onAuthStateChanged(firebaseAuth, (currentUser) => {
             if (currentUser) navigate("/");
