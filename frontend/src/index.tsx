@@ -13,7 +13,6 @@ const { fab } = require("@fortawesome/free-brands-svg-icons");
 const { fas } = require("@fortawesome/free-solid-svg-icons");
 const { far } = require("@fortawesome/free-regular-svg-icons");
 
-
 const root = ReactDOM.createRoot(
     document.getElementById("root") as HTMLElement
 );
