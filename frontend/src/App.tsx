@@ -15,9 +15,15 @@ function App() {
     return (
         <>
             {isMobile || isTablet ? (
-                <div className="text-white bg-[url('../assets/background/not-available.webp')] bg-no-repeat bg-center bg-cover h-screen text-2xl flex justify-center items-center px-5">
+                <div className="text-white bg-[url('../assets/background/not-available.webp')] bg-no-repeat bg-center bg-cover h-screen text-[90%] flex justify-center items-center px-[10%] text-center">
                     <div className="bg-black/70 w-fit p-5 rounded-xl">
-                        Meet With Us is not available on mobile or tablet now 🫠
+                        <p className="font-bold">
+                            Meet With Us is not available on mobile or tablet
+                            now 🫠
+                        </p>
+                        <p className="mt-2 font-thin">
+                            We will update in another version soon
+                        </p>
                     </div>
                 </div>
             ) : (
