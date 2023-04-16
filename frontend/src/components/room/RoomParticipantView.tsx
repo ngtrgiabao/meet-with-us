@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useParticipant } from "@videosdk.live/react-sdk";
 
 import { IVideoComponent } from "../../utils/interfaces";
 import RoomVideoPlayer from "./RoomVideoPlayer";
-import { LoginContext } from "../../context/login/LoginContext";
 
 const avatarUser = require("../../assets/avatar_user/01c751482ef7c4f5e93f3539efd27f6f.jpg");
 

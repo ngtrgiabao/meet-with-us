@@ -15,8 +15,6 @@ const Register = () => {
     const handleSubmit = async () => {
         navigate("/login");
         // e.preventDefault();
-       
-     
 
         const auth = getAuth();
         try {

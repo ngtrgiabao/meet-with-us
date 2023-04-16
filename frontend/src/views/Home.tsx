@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { MeetingProvider, MeetingConsumer } from "@videosdk.live/react-sdk";
-import { v4 as uuid } from "uuid";
 
 import "../styles/index.css";
 
@@ -14,20 +13,14 @@ import BannerVideo from "../layouts/BannerVideo";
 import HomeInput from "../components/home/HomeInput";
 import UserOverview from "./UserOverview";
 import { DeviceContext } from "../context/useroverview/DeviceContext";
-import userService from "../api/user/user.service";
-import { LoginContext } from "../context/login/LoginContext";
-import { GoogleAuthProvider, signInWithPopup } from "@firebase/auth";
-import { firebaseAuth } from "../utils/firebaseconfig";
+import { useRandomName } from "../hooks/useRandomName";
 
 const bgImg = require("../assets/background/home.mp4");
 
 const Home = () => {
-    // const [ggName, setGGName] = useState<string>(""); 
-    // const loginContext = useContext(LoginContext);
-    // const { username } = loginContext;
-    // console.log(ggName)
-    
     const { isWebcam, isMic } = React.useContext(DeviceContext);
+    const randomName = useRandomName();
+    const username = localStorage.getItem("username");
 
     const mouse = React.useRef<ReturnType<typeof Object>>({
         x: 0,
@@ -43,18 +36,6 @@ const Home = () => {
             id == null ? await createMeeting({ token: authToken }) : id;
         setMeetingID(meetingId);
     };
-    
-    // const getUsernameGG = async()=>{
-    //     const provider = new GoogleAuthProvider();
-    //     const {
-    //         user: { displayName },
-    //     } = await signInWithPopup(firebaseAuth, provider);
-    //     setGGName(displayName||"user")
-    // }
-
-    // useEffect(()=>{
-    //     getUsernameGG()
-    // },[username])
 
     return (
         <>
@@ -156,7 +137,7 @@ const Home = () => {
                         webcamEnabled: isWebcam,
                         micEnabled: isMic,
                         maxResolution: "hd" as const,
-                        name: "",
+                        name: username || randomName,
                     }}
                     token={authToken}
                 >
