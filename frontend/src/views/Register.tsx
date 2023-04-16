@@ -1,22 +1,24 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
 import sideImg from "../assets/background/register-cover.gif";
 
-import { doc, setDoc } from "firebase/firestore";
 import { firebaseDB } from "../utils/firebaseconfig";
 
 const Register = () => {
     const [err, setErr] = useState(false);
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [rePassword, setRePassword] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [success, setSuccess] = useState<boolean>(false);
 
     const handleSubmit = async () => {
-        if (password.length > 5) {
+        if (password.length > 5 && password === rePassword) {
             setSuccess(true);
+            setErr(false);
 
             const auth = getAuth();
             try {
@@ -33,11 +35,15 @@ const Register = () => {
                     name: username,
                 });
             } catch (err) {
-                setErr(true);
+                console.log(err);
             }
-        } else {
-            setErr(true);
-            setSuccess(false);
+        }
+
+        if (password.length <= 5) {
+            alert("Your password must at least 6 characters");
+        }
+        if (password !== rePassword) {
+            alert("Your password not equal to re-password");
         }
     };
 
@@ -100,6 +106,7 @@ const Register = () => {
                                     onChange={(e) =>
                                         setUsername(e.target.value)
                                     }
+                                    maxLength={50}
                                     required
                                     type="text"
                                     placeholder="Enter Your Username"
@@ -108,6 +115,7 @@ const Register = () => {
                                 {/* email */}
                                 <input
                                     onChange={(e) => setEmail(e.target.value)}
+                                    maxLength={80}
                                     required
                                     type="Email"
                                     placeholder="Enter Email"
@@ -119,6 +127,7 @@ const Register = () => {
                                         setPassword(e.target.value)
                                     }
                                     minLength={6}
+                                    maxLength={50}
                                     required
                                     type="password"
                                     placeholder="Enter Password"
@@ -126,7 +135,11 @@ const Register = () => {
                                 />
                                 {/* re-password */}
                                 <input
+                                    onChange={(e) =>
+                                        setRePassword(e.target.value)
+                                    }
                                     minLength={6}
+                                    maxLength={50}
                                     required
                                     type="password"
                                     placeholder="Enter Password Again"
@@ -139,9 +152,11 @@ const Register = () => {
                                 >
                                     Register
                                 </div>
-                                {err && (
+
+                                {rePassword !== password && (
                                     <span className="text-red-500">
-                                        Your password must at least 6 characters
+                                        Your re-password not correct with your
+                                        password
                                     </span>
                                 )}
                             </div>
