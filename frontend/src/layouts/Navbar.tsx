@@ -125,17 +125,16 @@ function Navbar() {
                             </ul>
                         ) : (
                             <ul className="absolute top-14 -left-[11.2rem] border w-[15rem] rounded-md bg-white text-sm  text-black font-bold setting-user">
-                                <li className="flex justify-center items-center p-3 hover:bg-blue-300">
+                                <li
+                                    className="flex justify-center items-center p-3 hover:bg-blue-300"
+                                    onClick={() => {
+                                        loginGG();
+                                    }}
+                                >
                                     <span className="flex justify-center items-center w-[2rem] h-[2rem] mr-4 rounded-full bg-red-500 text-white">
                                         <i className="fa-brands fa-google"></i>
                                     </span>
-                                    <span
-                                        onClick={() => {
-                                            loginGG();
-                                        }}
-                                    >
-                                        Login with Google
-                                    </span>
+                                    <span>Login with Google</span>
                                 </li>
                                 <li>
                                     <Link

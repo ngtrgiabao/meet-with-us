@@ -5,6 +5,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { store } from "./hooks/store";
 import { LoginProvider } from "./context/login/LoginContext";
+import { DeviceProvider } from "./context/useroverview/DeviceContext";
 
 const { library } = require("@fortawesome/fontawesome-svg-core");
 const { fab } = require("@fortawesome/free-brands-svg-icons");
@@ -15,13 +16,15 @@ const root = ReactDOM.createRoot(
     document.getElementById("root") as HTMLElement
 );
 root.render(
-    <Provider store={store}>
-        <LoginProvider>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
-        </LoginProvider>
-    </Provider>
+    <DeviceProvider>
+        <Provider store={store}>
+            <LoginProvider>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </LoginProvider>
+        </Provider>
+    </DeviceProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

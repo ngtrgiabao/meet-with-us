@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { gsap } from "gsap/all";
+import { gsap } from "gsap";
 
 import "../styles/about/about.css";
 
