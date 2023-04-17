@@ -1,8 +1,8 @@
 import React from "react";
 import {
-  useMeeting,
-  useParticipant,
-  MeetingConsumer,
+    useMeeting,
+    useParticipant,
+    MeetingConsumer,
 } from "@videosdk.live/react-sdk";
 import { useNavigate } from "react-router-dom";
 import "../styles/room/room.css";
@@ -16,122 +16,118 @@ import { StreamOptions } from "stream";
 import { ReadStream } from "fs";
 //import { nguoiNayDangChiaSe } from "../components/room/RoomControls";
 const Room = ({ meetingID }: { meetingID: string | null }) => {
-  var {
-    participants,
-    localScreenShareOn,
-    localWebcamOn,
-    connections,
-    leave,
-    isRecording,
-    isLiveStreaming,
-  } = useMeeting();
-  const onLiveStreamStarted = MeetingConsumer;
-  const [isAudio, setIsAudio] = React.useState(true);
-  const [isVideo, setIsVideo] = React.useState(true);
-  const [isSharing, setIsSharing] = React.useState(false);
-  //const [id, setId] = React.useState<any>();
+    var {
+        participants,
+        localScreenShareOn,
+        localWebcamOn,
+        connections,
+        leave,
+        isRecording,
+        isLiveStreaming,
+    } = useMeeting();
+    const onLiveStreamStarted = MeetingConsumer;
+    const [isAudio, setIsAudio] = React.useState(true);
+    const [isVideo, setIsVideo] = React.useState(true);
+    const [isSharing, setIsSharing] = React.useState(false);
+    //const [id, setId] = React.useState<any>();
 
-  const handleAudio = () => {
-    setIsAudio((isAudio) => !isAudio);
-  };
-
-  const handleVideo = () => {
-    setIsVideo((isVideo) => !isVideo);
-  };
-  //  SHARE SCREEN
-  const shareScreenRef = React.useRef<HTMLVideoElement | any>(null);
-
-  const navigate = useNavigate();
-  React.useEffect(() => {
-    window.onload = () => {
-      navigate("/");
-      leave();
+    const handleAudio = () => {
+        setIsAudio((isAudio) => !isAudio);
     };
-  }, []);
 
-  const displayMediaOptions = {
-    video: true,
-    audio: true,
-  };
+    const handleVideo = () => {
+        setIsVideo((isVideo) => !isVideo);
+    };
+    //  SHARE SCREEN
+    const shareScreenRef = React.useRef<HTMLVideoElement | any>(null);
 
-  var dangChiaSe;
-  var soNguoiDangChiaSe = 0;
-  participants.forEach((participant) => {
-    console.log(
-      "[ID]: ",
-      participant.id,
-      "[StreamSize]: ",
-      participant.streams.size
-    );
-    participant?.streams?.forEach((stream: MediaStreamTrack) => {
-      if (stream.kind == "share") {
-        soNguoiDangChiaSe++;
-        //dangChiaSe = true;
-      } else if (stream.kind == "micro") {
-        soNguoiDangChiaSe--;
-        console.log("stream.kind", stream.kind);
-      }
+    const navigate = useNavigate();
+    React.useEffect(() => {
+        window.onload = () => {
+            navigate("/");
+            leave();
+        };
+    }, []);
+
+    const displayMediaOptions = {
+        video: true,
+        audio: true,
+    };
+
+    var dangChiaSe;
+    var soNguoiDangChiaSe = 0;
+    participants.forEach((participant) => {
+        console.log(
+            "[ID]: ",
+            participant.id,
+            "[StreamSize]: ",
+            participant.streams.size
+        );
+        participant?.streams?.forEach((stream: MediaStreamTrack) => {
+            if (stream.kind == "share") {
+                soNguoiDangChiaSe++;
+                //dangChiaSe = true;
+            } else if (stream.kind == "micro") {
+                soNguoiDangChiaSe--;
+                console.log("stream.kind", stream.kind);
+            }
+        });
     });
-  });
 
-  // participants.forEach((participant) => {
-  //   if (participant.streams.size == 0) soNguoiDangChiaSe--;
-  // });
-  if (soNguoiDangChiaSe == 0) dangChiaSe = false;
-  if (soNguoiDangChiaSe > 0) dangChiaSe = true;
-  return (
-    <div
-      className={
-        "h-screen w-screen overflow-hidden text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 absolute inset-0"
-      }
-    >
-      {/* ID's room */}
-      {isSharing ? (
-        <></>
-      ) : (
-        <div className="z-10 absolute top-0 left-0 bg-white text-black p-1 text-sm animate__animated animate__bounce">
-          <span className="font-bold mr-1">ID ROOM:</span>
-          {meetingID}
-        </div>
-      )}
-      {[...participants.keys()].map((participantID) => (
-        <RoomMainScreen participantID={participantID} key={participantID} />
-      ))}
-      {/* Create UI of participants join */}
-      <div
-        className={
-          " fixed left-0 absolute w-[78%] h-[94%] mt-[1.5%] bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%"
-        }
-      >
-        <span
-          className={
-            "absolute top-[48%] left-[20%] rounded-xl text-bold text-3xl p-3 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-600"
-          }
+    // participants.forEach((participant) => {
+    //   if (participant.streams.size == 0) soNguoiDangChiaSe--;
+    // });
+    if (soNguoiDangChiaSe == 0) dangChiaSe = false;
+    if (soNguoiDangChiaSe > 0) dangChiaSe = true;
+    return (
+        <div
+            className={
+                "h-screen w-screen overflow-hidden text-white flex justify-center bg-gradient-to-r from-cyan-500 to-blue-500 absolute inset-0"
+            }
         >
-          Hiện không ai đang chia sẻ màn hình của họ :(
-        </span>
-        <img src="../" alt="" />
-      </div>
-      <div
-        className={
-          "z-[20] fixed bottom-[3%] right-0 h-[94%] w-[22%] mt-[2%] bg-white rounded-xl overflow-hidden"
-        }
-      >
-        <RoomControls />
+            {/* ID's room */}
+            {isSharing ? (
+                <></>
+            ) : (
+                <div className="z-10 absolute top-0 left-0 bg-white text-black p-1 text-sm animate__animated animate__bounce">
+                    <span className="font-bold mr-1">ID ROOM:</span>
+                    {meetingID}
+                </div>
+            )}
 
-        {
-          <div className="max-h-full overflow-y-auto">
-            {[...participants.keys()].map((participantID) => (
-              <RoomParticipantView
-                participantID={participantID}
-                key={participantID}
-              />
-            ))}
-          </div>
-        }
-      </div>
-    </div>
-  );
+            {/* Create UI of participants join */}
+            <div
+                className={
+                    " fixed left-0 w-[78%] h-[100%] bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%"
+                }
+            >
+                {[...participants.keys()].map((participantID) => (
+                    <RoomMainScreen
+                        participantID={participantID}
+                        key={participantID}
+                    />
+                ))}
+            </div>
+            <div
+                className={
+                    "z-[20] fixed right-0 w-[22%] h-full bg-white overflow-hidden"
+                }
+            >
+                <RoomControls />
+
+                {
+                    <div className="max-h-full overflow-y-auto">
+                        {[...participants.keys()].map((participantID) => (
+                            <RoomParticipantView
+                                participantID={participantID}
+                                key={participantID}
+                            />
+                        ))}
+                    </div>
+                }
+            </div>
+        </div>
+    );
 };
 
 export default Room;
