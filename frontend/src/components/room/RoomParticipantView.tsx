@@ -5,7 +5,7 @@ import { IVideoComponent } from "../../utils/interfaces";
 import RoomVideoPlayer from "./RoomVideoPlayer";
 
 const avatarUser = require("../../assets/avatar_user/01c751482ef7c4f5e93f3539efd27f6f.jpg");
-
+//
 const RoomParticipantView = ({ participantID }: IVideoComponent) => {
     const micRef = React.useRef<HTMLAudioElement | null>(null);
     const {
