@@ -2,7 +2,9 @@ import React from "react";
 import { useParticipant, useMeeting } from "@videosdk.live/react-sdk";
 import { IVideoComponent } from "../../utils/interfaces";
 import RoomVideoPlayer from "./RoomVideoPlayer";
+
 const avatarUser = require("../../assets/avatar_user/avatar_user.jpg");
+
 const RoomParticipantView = ({ participantID }: IVideoComponent) => {
     const micRef = React.useRef<HTMLAudioElement | null>(null);
     const { participants } = useMeeting();
