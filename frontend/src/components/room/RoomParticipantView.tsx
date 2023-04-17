@@ -3,7 +3,6 @@ import { useParticipant, useMeeting } from "@videosdk.live/react-sdk";
 import { IVideoComponent } from "../../utils/interfaces";
 import RoomVideoPlayer from "./RoomVideoPlayer";
 const logo1 = require("../../assets/background/1.jpg");
-const logo2 = require("../../assets/background/2.jpg");
 const RoomParticipantView = ({ participantID }: IVideoComponent) => {
     const micRef = React.useRef<HTMLAudioElement | null>(null);
     const { participants } = useMeeting();
@@ -26,15 +25,6 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
             return mediaStream;
         }
     }, [webcamStream, webcamOn]);
-
-    //Creating a media stream from the screen share stream
-    /*const mediaStream = React.useMemo(() => {
-    if (screenShareOn && screenShareStream) {
-      const mediaStream = new MediaStream();
-      mediaStream.addTrack(screenShareStream.track);
-      return mediaStream;
-    }
-  }, [screenShareStream, screenShareOn]);*/
 
     // MIC
     React.useEffect(() => {
@@ -59,6 +49,7 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
             }
         }
     }, [micStream, micOn]);
+
     const mediaStream = React.useMemo(() => {
         if (screenShareOn && screenShareStream) {
             const mediaStream = new MediaStream();
