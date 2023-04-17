@@ -7,7 +7,7 @@ import "../styles/about/about.css";
 import AboutCard from "../components/about/AboutCard";
 import Transition from "../components/animation/AnimationTransition";
 
-import bg1 from "../assets/avatar_user/01c751482ef7c4f5e93f3539efd27f6f.jpg";
+import bg1 from "../assets/avatar_user/avatar_user.jpg";
 import bg2 from "../assets/background/2.jpg";
 import bg3 from "../assets/background/crocodile.svg";
 import bg4 from "../assets/background/4.jpg";
