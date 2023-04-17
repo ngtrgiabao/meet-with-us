@@ -16,7 +16,7 @@ import { StreamOptions } from "stream";
 import { ReadStream } from "fs";
 //import { nguoiNayDangChiaSe } from "../components/room/RoomControls";
 const Room = ({ meetingID }: { meetingID: string | null }) => {
-    var {
+    const {
         participants,
         localScreenShareOn,
         localWebcamOn,
@@ -24,6 +24,8 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
         leave,
         isRecording,
         isLiveStreaming,
+        localParticipant,
+        presenterId,
     } = useMeeting();
     const onLiveStreamStarted = MeetingConsumer;
     const [isAudio, setIsAudio] = React.useState(true);
@@ -31,13 +33,6 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
     const [isSharing, setIsSharing] = React.useState(false);
     //const [id, setId] = React.useState<any>();
 
-    const handleAudio = () => {
-        setIsAudio((isAudio) => !isAudio);
-    };
-
-    const handleVideo = () => {
-        setIsVideo((isVideo) => !isVideo);
-    };
     //  SHARE SCREEN
     const shareScreenRef = React.useRef<HTMLVideoElement | any>(null);
 
@@ -48,11 +43,6 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
             leave();
         };
     }, []);
-
-    const displayMediaOptions = {
-        video: true,
-        audio: true,
-    };
 
     return (
         <div
@@ -71,11 +61,7 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
             )}
 
             {/* Create UI of participants join */}
-            <div
-                className={
-                    " fixed left-0 w-[78%] h-[100%] bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%"
-                }
-            >
+            <div className={" fixed left-0 w-[78%] h-[100%] bg-blue-700"}>
                 {[...participants.keys()].map((participantID) => (
                     <RoomMainScreen
                         participantID={participantID}

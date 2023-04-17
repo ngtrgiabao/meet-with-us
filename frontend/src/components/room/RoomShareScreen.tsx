@@ -13,7 +13,7 @@ const RoomShareScreen = ({ videoStream }: IRoomVideoPlayer) => {
             playing={true}
             url={videoStream}
             width={"75%"}
-            height={"100%"}
+            height={"auto"}
             onError={(err) => {
                 console.log(err, "participant video error");
             }}

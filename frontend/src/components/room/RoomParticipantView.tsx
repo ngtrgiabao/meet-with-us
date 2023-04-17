@@ -73,10 +73,13 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
     if (screenShareOn && soNguoiDung > 1) {
         duocChiaSe = true;
     }
+
+    const { localScreenShareOn, localParticipant, presenterId } = useMeeting();
+
     return (
         <div key={participantID}>
             <div className="w-full">
-                {duocChiaSe ? (
+                {screenShareOn ? (
                     <RoomVideoPlayer videoStream={mediaStream} />
                 ) : null}
             </div>
