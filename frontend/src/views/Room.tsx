@@ -54,31 +54,6 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
         audio: true,
     };
 
-    var dangChiaSe;
-    var soNguoiDangChiaSe = 0;
-    participants.forEach((participant) => {
-        console.log(
-            "[ID]: ",
-            participant.id,
-            "[StreamSize]: ",
-            participant.streams.size
-        );
-        participant?.streams?.forEach((stream: MediaStreamTrack) => {
-            if (stream.kind == "share") {
-                soNguoiDangChiaSe++;
-                //dangChiaSe = true;
-            } else if (stream.kind == "micro") {
-                soNguoiDangChiaSe--;
-                console.log("stream.kind", stream.kind);
-            }
-        });
-    });
-
-    // participants.forEach((participant) => {
-    //   if (participant.streams.size == 0) soNguoiDangChiaSe--;
-    // });
-    if (soNguoiDangChiaSe == 0) dangChiaSe = false;
-    if (soNguoiDangChiaSe > 0) dangChiaSe = true;
     return (
         <div
             className={

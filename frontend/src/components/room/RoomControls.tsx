@@ -39,22 +39,9 @@ const RoomControls = () => {
         toggleWebcam();
         setIsWebcam((isWebcam) => !isWebcam);
     }, [toggleWebcam]);
-    if (isWebcam == false) {
-        disableWebcam();
-        console.log("Người dùng đã tắt chia sẻ màn hình! ");
-    }
 
     const handleScreenShare = () => {
         toggleScreenShare();
-        setIsScreenShare((isScreenShare) => !isScreenShare);
-        if (isScreenShare === false) {
-            disableScreenShare();
-            //console.log("Người dùng đã tắt chia sẻ màn hình! ");
-        } else {
-            //enableScreenShare();
-            //console.log("Người dùng đang chia sẻ màn hình! ");
-        }
-        console.log("isScreenShare: ", isScreenShare);
     };
 
     const handleRefreshClick = () => {
