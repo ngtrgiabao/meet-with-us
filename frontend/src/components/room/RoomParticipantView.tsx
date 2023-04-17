@@ -2,7 +2,7 @@ import React from "react";
 import { useParticipant, useMeeting } from "@videosdk.live/react-sdk";
 import { IVideoComponent } from "../../utils/interfaces";
 import RoomVideoPlayer from "./RoomVideoPlayer";
-const logo1 = require("../../assets/background/1.jpg");
+const avatarUser = require("../../assets/avatar_user/avatar_user.jpg");
 const RoomParticipantView = ({ participantID }: IVideoComponent) => {
     const micRef = React.useRef<HTMLAudioElement | null>(null);
     const { participants } = useMeeting();
@@ -83,10 +83,9 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
             <div className="flex justify-between items-center bg-gray-800/50 p-2 px-4 border-2 rounded-lg border-white w-full">
                 <img
                     className="rounded-full w-[2.5rem] h-[2.5rem]"
-                    src={logo1}
+                    src={avatarUser}
                 />
                 <div className="text-white text-sm ml-2 flex items-center">
-                    <span className="font-bold text-sm mr-1">User:</span>
                     <span className="text-">{displayName}</span>
                 </div>
                 <div>
