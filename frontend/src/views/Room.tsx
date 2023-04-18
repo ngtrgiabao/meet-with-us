@@ -1,5 +1,5 @@
 import React from "react";
-import { useMeeting, useParticipant } from "@videosdk.live/react-sdk";
+import { useMeeting } from "@videosdk.live/react-sdk";
 import { useNavigate } from "react-router-dom";
 
 import "../styles/room/room.css";
@@ -8,11 +8,7 @@ import RoomParticipantView from "../components/room/RoomParticipantView";
 import RoomControls from "../components/room/RoomControls";
 
 const Room = ({ meetingID }: { meetingID: string | null }) => {
-    const { participants, localScreenShareOn, leave } = useMeeting();
-    const [userID, setUserID] = React.useState<string>("");
-    const [isSharing, setIsSharing] = React.useState<boolean>(false);
-    const { screenShareOn } = useParticipant(userID);
-
+    const { participants, leave } = useMeeting();
     const videoRef = React.useRef<HTMLVideoElement>(null);
 
     React.useEffect(() => {
@@ -41,19 +37,7 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
             navigate("/");
             leave();
         };
-    }, []);
-
-    React.useEffect(() => {
-        [...participants.keys()].forEach((participantID) =>
-            setUserID(participantID)
-        );
-
-        if (localScreenShareOn || screenShareOn) {
-            setIsSharing(true);
-        } else if (!localScreenShareOn || !screenShareOn) {
-            setIsSharing(false);
-        }
-    }, [localScreenShareOn, screenShareOn]);
+    }, [navigate, leave]);
 
     return (
         <div
@@ -70,12 +54,10 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
 
             <div
                 className={
-                    isSharing
-                        ? "h-[70%] w-[60%] mt-[1%] bg-transparent/20 rounded-xl p-2 relative flex justify-center scroll-smooth "
-                        : "h-[65%] w-[22%] mt-[4%] bg-transparent/20 rounded-xl p-2 relative"
+                    "h-[70%] w-[60%] mt-[4%] bg-transparent/20 rounded-xl p-2 relative flex justify-center scroll-smooth"
                 }
             >
-                <div className="max-h-full overflow-y-auto">
+                <div className="max-h-full overflow-y-auto w-full">
                     {[...participants.keys()].map((participantID) => (
                         <RoomParticipantView
                             participantID={participantID}

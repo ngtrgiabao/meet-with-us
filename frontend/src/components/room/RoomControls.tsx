@@ -1,5 +1,5 @@
 import React from "react";
-import { useMeeting, useParticipant } from "@videosdk.live/react-sdk";
+import { useMeeting } from "@videosdk.live/react-sdk";
 import { useDeviceContext } from "../../hooks/useDeviceContext";
 
 const RoomControls = () => {
@@ -8,13 +8,14 @@ const RoomControls = () => {
         toggleWebcam,
         leave,
         getWebcams,
-        toggleScreenShare,
-        localScreenShareOn,
+        enableScreenShare,
+        disableScreenShare,
+        disableWebcam,
     } = useMeeting();
-
     const [isMic, setIsMic] = React.useState<boolean>(false);
     const [isWebcam, setIsWebcam] = React.useState<boolean>(false);
-
+    const [activeShareScreen, setActiveShareScreen] =
+        React.useState<boolean>(false);
     const { isCamera, isMicro } = useDeviceContext();
 
     // Change webcam on device
@@ -42,14 +43,6 @@ const RoomControls = () => {
         setIsMic((isMic) => !isMic);
     }, [toggleMic]);
 
-    const handleScreenShare = () => {
-        toggleScreenShare();
-    };
-
-    const handleRefreshClick = () => {
-        window.location.reload();
-    };
-
     React.useEffect(() => {
         if (isCamera && isMicro) {
             handleWebcam();
@@ -61,36 +54,32 @@ const RoomControls = () => {
         }
     }, []);
 
+    const handleScreenShare = () => {
+        setActiveShareScreen((activeShareScreen) => !activeShareScreen);
+    };
+
+    React.useEffect(() => {
+        if (activeShareScreen) {
+            enableScreenShare();
+        } else {
+            disableScreenShare();
+        }
+    }, [activeShareScreen]);
+
+    const handleRefreshClick = () => {
+        window.location.reload();
+        disableScreenShare();
+        disableWebcam();
+    };
+
     const handleLeaveMeeting = React.useCallback(() => {
         handleRefreshClick();
         leave();
     }, [leave]);
 
-    const [userID, setUserID] = React.useState<string>("");
-    const { screenShareOn } = useParticipant(userID);
-    const [isSharing, setIsSharing] = React.useState<boolean>(false);
-
-    const { participants } = useMeeting();
-
-    React.useEffect(() => {
-        [...participants.keys()].forEach((participantID) =>
-            setUserID(participantID)
-        );
-
-        if (localScreenShareOn || screenShareOn) {
-            setIsSharing(true);
-        } else if (!localScreenShareOn || !screenShareOn) {
-            setIsSharing(false);
-        }
-    }, [localScreenShareOn, screenShareOn]);
-
     return (
         <>
-            <div
-                className={`z-[20] absolute -bottom-[30%] left-0 bg-white p-2 px-2 rounded-xl text-xl flex justify-between animate__animated animate__bounceInUp ${
-                    isSharing ? "w-[40%] left-[30%]" : "w-full"
-                }`}
-            >
+            <div className="z-[20] absolute -bottom-[25%] bg-white p-2 px-2 rounded-xl text-xl flex justify-between animate__animated animate__bounceInUp w-[40%] left-[30%]">
                 {/* Webcam */}
                 <button
                     onClick={() => handleWebcam()}
