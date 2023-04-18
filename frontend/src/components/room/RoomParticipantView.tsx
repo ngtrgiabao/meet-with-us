@@ -1,5 +1,5 @@
 import React from "react";
-import { useParticipant, useMeeting } from "@videosdk.live/react-sdk";
+import { useParticipant } from "@videosdk.live/react-sdk";
 
 import { IVideoComponent } from "../../utils/interfaces";
 import RoomVideoPlayer from "./RoomVideoPlayer";
@@ -52,6 +52,7 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
             }
         }
     }, [micStream, micOn]);
+
     const mediaStream = React.useMemo(() => {
         if (screenShareOn && screenShareStream) {
             const mediaStream = new MediaStream();
