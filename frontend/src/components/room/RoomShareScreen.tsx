@@ -2,7 +2,7 @@ import ReactPlayer from "react-player";
 
 import { IRoomVideoPlayer } from "../../utils/interfaces";
 
-const RoomVideoPlayer = ({ videoStream, transform }: IRoomVideoPlayer) => {
+const RoomShareScreen = ({ videoStream }: IRoomVideoPlayer) => {
     return (
         <ReactPlayer
             playsinline // very very imp prop
@@ -12,16 +12,13 @@ const RoomVideoPlayer = ({ videoStream, transform }: IRoomVideoPlayer) => {
             muted={true}
             playing={true}
             url={videoStream}
+            width={"auto"}
             height={"auto"}
             onError={(err) => {
                 console.log(err, "participant video error");
-            }}
-            style={{
-                transform: transform,
-                padding: "2px",
             }}
         />
     );
 };
 
-export default RoomVideoPlayer;
+export default RoomShareScreen;

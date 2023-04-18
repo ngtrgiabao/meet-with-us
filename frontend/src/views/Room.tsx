@@ -8,32 +8,12 @@ import RoomParticipantView from "../components/room/RoomParticipantView";
 import RoomControls from "../components/room/RoomControls";
 
 const Room = ({ meetingID }: { meetingID: string | null }) => {
-    const { participants, leave, localParticipant } = useMeeting();
-    const [id, setID] = React.useState<string>("");
-    const { screenShareOn } = useParticipant(id);
-
+    const { participants, localScreenShareOn, leave } = useMeeting();
+    const [userID, setUserID] = React.useState<string>("");
     const [isSharing, setIsSharing] = React.useState<boolean>(false);
+    const { screenShareOn } = useParticipant(userID);
+
     const videoRef = React.useRef<HTMLVideoElement>(null);
-
-    // React.useEffect(() => {
-    //     participants.forEach((participant) => {
-    //         setID(participant.id);
-    //         // console.log("participant", participant);
-
-    //         if (participant.streams.size) {
-    //             console.log("id", participant.displayName);
-    //         } else if (localParticipant.streams.size) {
-    //             console.log("id local", localParticipant.streams.size);
-    //         }
-
-    // if (participant.id) {
-    //     console.table({
-    //         displayName: participant.displayName,
-    //         screenShare: screenShareOn,
-    //     });
-    // }
-    // });
-    // }, [participants, screenShareOn]);
 
     React.useEffect(() => {
         const getUserMedia = async () => {
@@ -63,6 +43,18 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
         };
     }, []);
 
+    React.useEffect(() => {
+        [...participants.keys()].forEach((participantID) =>
+            setUserID(participantID)
+        );
+
+        if (localScreenShareOn || screenShareOn) {
+            setIsSharing(true);
+        } else if (!localScreenShareOn || !screenShareOn) {
+            setIsSharing(false);
+        }
+    }, [localScreenShareOn, screenShareOn]);
+
     return (
         <div
             className={
@@ -76,25 +68,22 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
                 {meetingID}
             </div>
 
-            {/* Create UI of participants join */}
             <div
                 className={
                     isSharing
-                        ? "h-full col-span-1 rounded-xl"
-                        : "h-[65%] w-[22%] mt-[4%] bg-transparent/20 rounded-xl overflow-hidden p-1"
+                        ? "h-[70%] w-[60%] mt-[1%] bg-transparent/20 rounded-xl p-2 relative flex justify-center scroll-smooth "
+                        : "h-[65%] w-[22%] mt-[4%] bg-transparent/20 rounded-xl p-2 relative"
                 }
             >
+                <div className="max-h-full overflow-y-auto">
+                    {[...participants.keys()].map((participantID) => (
+                        <RoomParticipantView
+                            participantID={participantID}
+                            key={participantID}
+                        />
+                    ))}
+                </div>
                 <RoomControls />
-                {
-                    <div className="max-h-full overflow-y-auto">
-                        {[...participants.keys()].map((participantID) => (
-                            <RoomParticipantView
-                                participantID={participantID}
-                                key={participantID}
-                            />
-                        ))}
-                    </div>
-                }
             </div>
         </div>
     );

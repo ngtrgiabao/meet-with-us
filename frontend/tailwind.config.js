@@ -9,5 +9,6 @@ module.exports = {
             },
         },
     },
+    plugins: [require("tailwind-scrollbar-hide")],
     plugins: [require("@tailwindcss/line-clamp")],
 };

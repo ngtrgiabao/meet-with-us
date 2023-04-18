@@ -7,7 +7,7 @@ import "../styles/about/about.css";
 import AboutCard from "../components/about/AboutCard";
 import Transition from "../components/animation/AnimationTransition";
 
-import bg1 from "../assets/avatar_user/01c751482ef7c4f5e93f3539efd27f6f.jpg";
+import bg1 from "../assets/avatar_user/avatar_user.jpg";
 import bg2 from "../assets/background/2.jpg";
 import bg3 from "../assets/background/crocodile.svg";
 import bg4 from "../assets/background/4.jpg";
@@ -83,7 +83,9 @@ const About = () => {
     return (
         <>
             <div className="flex justify-center items-center flex-col absolute w-full h-screen top-0 left-0">
-                <p className="text text-5xl font-bold">🍍 MEET WITH OUR TEAM 🍍</p>
+                <p className="text text-5xl font-bold">
+                    🍍 MEET WITH OUR TEAM 🍍
+                </p>
             </div>
 
             <Transition timeline={about} duration={2.5} />
@@ -102,7 +104,11 @@ const About = () => {
 
                     {/* Cards */}
                     <span className="border-x-[1px] cursor-pointer overflow-hidden relative pic-1">
-                        <AboutCard name="GIA BẢO" role="Team Leader" bgImg={bg1} />
+                        <AboutCard
+                            name="GIA BẢO"
+                            role="Team Leader"
+                            bgImg={bg1}
+                        />
                     </span>
                     <span className="border-x-[1px] cursor-pointer overflow-hidden relative pic-2">
                         <AboutCard name="MINH ĐĂNG" role="Member" bgImg={bg2} />

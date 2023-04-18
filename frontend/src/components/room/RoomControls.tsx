@@ -1,14 +1,19 @@
 import React from "react";
-import { useMeeting } from "@videosdk.live/react-sdk";
+import { useMeeting, useParticipant } from "@videosdk.live/react-sdk";
 import { useDeviceContext } from "../../hooks/useDeviceContext";
 
 const RoomControls = () => {
-    const { toggleMic, toggleWebcam, leave, getWebcams, toggleScreenShare } =
-        useMeeting();
+    const {
+        toggleMic,
+        toggleWebcam,
+        leave,
+        getWebcams,
+        toggleScreenShare,
+        localScreenShareOn,
+    } = useMeeting();
 
     const [isMic, setIsMic] = React.useState<boolean>(false);
     const [isWebcam, setIsWebcam] = React.useState<boolean>(false);
-    const [isScreenShare, setIsScreenShare] = React.useState<boolean>(false);
 
     const { isCamera, isMicro } = useDeviceContext();
 
@@ -39,7 +44,6 @@ const RoomControls = () => {
 
     const handleScreenShare = () => {
         toggleScreenShare();
-        setIsScreenShare((isScreenShare) => !isScreenShare);
     };
 
     const handleRefreshClick = () => {
@@ -62,9 +66,31 @@ const RoomControls = () => {
         leave();
     }, [leave]);
 
+    const [userID, setUserID] = React.useState<string>("");
+    const { screenShareOn } = useParticipant(userID);
+    const [isSharing, setIsSharing] = React.useState<boolean>(false);
+
+    const { participants } = useMeeting();
+
+    React.useEffect(() => {
+        [...participants.keys()].forEach((participantID) =>
+            setUserID(participantID)
+        );
+
+        if (localScreenShareOn || screenShareOn) {
+            setIsSharing(true);
+        } else if (!localScreenShareOn || !screenShareOn) {
+            setIsSharing(false);
+        }
+    }, [localScreenShareOn, screenShareOn]);
+
     return (
         <>
-            <div className="fixed bottom-[6%] bg-white p-2 px-3 rounded-xl text-xl flex justify-between w-[22%] animate__animated animate__bounceInUp">
+            <div
+                className={`z-[20] absolute -bottom-[30%] left-0 bg-white p-2 px-2 rounded-xl text-xl flex justify-between animate__animated animate__bounceInUp ${
+                    isSharing ? "w-[40%] left-[30%]" : "w-full"
+                }`}
+            >
                 {/* Webcam */}
                 <button
                     onClick={() => handleWebcam()}
@@ -96,9 +122,7 @@ const RoomControls = () => {
                 {/* Screen share */}
                 <button
                     onClick={() => handleScreenShare()}
-                    className={`hover:cursor-pointer rounded-full w-[3rem] h-[3rem] flex items-center justify-center ${
-                        isScreenShare ? " btn_action" : " btn_action-denied"
-                    }`}
+                    className="hover:cursor-pointer rounded-full w-[3rem] h-[3rem] flex items-center justify-center text-black border-2 border-black"
                 >
                     <i className="fa-solid fa-display"></i>
                 </button>
@@ -115,4 +139,5 @@ const RoomControls = () => {
     );
 };
 
+//
 export default RoomControls;

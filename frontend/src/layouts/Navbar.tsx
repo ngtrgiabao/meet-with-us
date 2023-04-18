@@ -17,7 +17,7 @@ import {
 } from "firebase/auth";
 
 import "../styles/navbar/navbar.css";
-import AvatarUser from "../assets/avatar_user/01c751482ef7c4f5e93f3539efd27f6f.jpg";
+import AvatarUser from "../assets/avatar_user/avatar_user.jpg";
 
 import { firebaseAuth, usersRef, firebaseDB } from "../utils/firebaseconfig";
 import { setUser } from "../hooks/slices/AuthSlice";
