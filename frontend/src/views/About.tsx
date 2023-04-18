@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { gsap } from "gsap/all";
+import { gsap } from "gsap";
 
 import "../styles/about/about.css";
 
 import AboutCard from "../components/about/AboutCard";
 import Transition from "../components/animation/AnimationTransition";
 
-import bg1 from "../assets/background/baoBg.svg";
+import bg1 from "../assets/avatar_user/avatar_user.jpg";
 import bg2 from "../assets/background/2.jpg";
 import bg3 from "../assets/background/crocodile.svg";
 import bg4 from "../assets/background/4.jpg";
@@ -78,12 +78,14 @@ const About = () => {
                     duration: 0.2,
                 }
             );
-    }, []);
+    }, [about]);
 
     return (
         <>
             <div className="flex justify-center items-center flex-col absolute w-full h-screen top-0 left-0">
-                <p className="text text-5xl font-bold">🍍 MY TEAM 🍍</p>
+                <p className="text text-5xl font-bold">
+                    🍍 MEET WITH OUR TEAM 🍍
+                </p>
             </div>
 
             <Transition timeline={about} duration={2.5} />
@@ -102,7 +104,11 @@ const About = () => {
 
                     {/* Cards */}
                     <span className="border-x-[1px] cursor-pointer overflow-hidden relative pic-1">
-                        <AboutCard name="GIA BẢO" role="Leader" bgImg={bg1} />
+                        <AboutCard
+                            name="GIA BẢO"
+                            role="Team Leader"
+                            bgImg={bg1}
+                        />
                     </span>
                     <span className="border-x-[1px] cursor-pointer overflow-hidden relative pic-2">
                         <AboutCard name="MINH ĐĂNG" role="Member" bgImg={bg2} />

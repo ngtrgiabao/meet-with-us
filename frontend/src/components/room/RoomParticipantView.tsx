@@ -4,11 +4,11 @@ import { useParticipant, useMeeting } from "@videosdk.live/react-sdk";
 import { IVideoComponent } from "../../utils/interfaces";
 import RoomVideoPlayer from "./RoomVideoPlayer";
 import RoomShareScreen from "./RoomShareScreen";
-const logo1 = require("../../assets/background/1.jpg");
+
+const avatarUser = require("../../assets/avatar_user/avatar_user.jpg");
 
 const RoomParticipantView = ({ participantID }: IVideoComponent) => {
     const micRef = React.useRef<HTMLAudioElement | null>(null);
-    const { participants } = useMeeting();
     const {
         webcamStream,
         micStream,
@@ -60,14 +60,6 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
         }
     }, [screenShareStream, screenShareOn]);
 
-    let soNguoiDung = participants.size;
-    let duocChiaSe = false;
-    if (screenShareOn && soNguoiDung > 1) {
-        duocChiaSe = true;
-    }
-
-    const { localScreenShareOn, localParticipant, presenterId } = useMeeting();
-
     return (
         <div key={participantID}>
             <div className="w-full flex justify-center">
@@ -75,18 +67,24 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
                     <RoomShareScreen videoStream={mediaStream} />
                 ) : null}
             </div>
-
-            {webcamOn ? <RoomVideoPlayer videoStream={videoStream} /> : null}
+            <div className="flex justify-center">
+                {webcamOn ? (
+                    <RoomVideoPlayer
+                        transform="scaleX(-1)"
+                        videoStream={videoStream}
+                    />
+                ) : null}
+            </div>
             {micOn && micRef && <audio ref={micRef} autoPlay muted={isLocal} />}
 
             {/* USER */}
-            <div className="flex justify-between items-center bg-gray-800/50 p-2 px-4 border-2 rounded-lg border-white w-full">
+            <div className="flex justify-between items-center bg-gray-800/50 p-2 px-2 border-2 rounded-lg border-white w-full">
                 <img
-                    className="rounded-full w-[2.5rem] h-[2.5rem]"
-                    src={logo1}
+                    className="rounded-full w-[2.8rem] h-[2.5rem]"
+                    src={avatarUser}
                 />
-                <div className="text-white text-sm ml-2 flex items-center">
-                    <span className="text-">{displayName}</span>
+                <div className="text-white text-sm text-center">
+                    <span className="line-clamp-1">{displayName}</span>
                 </div>
                 <div className="flex">
                     <span className="font-bold rounded-full text-sm">

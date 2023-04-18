@@ -9,6 +9,31 @@ import RoomControls from "../components/room/RoomControls";
 
 const Room = ({ meetingID }: { meetingID: string | null }) => {
     const { participants, localScreenShareOn, leave } = useMeeting();
+    const [userID, setUserID] = React.useState<string>("");
+    const [isSharing, setIsSharing] = React.useState<boolean>(false);
+    const { screenShareOn } = useParticipant(userID);
+
+    const videoRef = React.useRef<HTMLVideoElement>(null);
+
+    React.useEffect(() => {
+        const getUserMedia = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: false,
+                });
+
+                if (videoRef.current) {
+                    videoRef.current.srcObject = stream;
+                    videoRef.current.play();
+                }
+                console.log("Get webcam success :D");
+            } catch (error) {
+                console.log("Failed to get webcam :<", error);
+            }
+        };
+        getUserMedia();
+    }, []);
 
     const navigate = useNavigate();
     React.useEffect(() => {
@@ -18,10 +43,6 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
         };
     }, []);
 
-    const [userID, setUserID] = React.useState<string>("");
-    const [isSharing, setIsSharing] = React.useState<boolean>(false);
-    const { screenShareOn } = useParticipant(userID);
-
     React.useEffect(() => {
         [...participants.keys()].forEach((participantID) =>
             setUserID(participantID)
@@ -29,6 +50,8 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
 
         if (localScreenShareOn || screenShareOn) {
             setIsSharing(true);
+        } else if (!localScreenShareOn || !screenShareOn) {
+            setIsSharing(false);
         }
     }, [localScreenShareOn, screenShareOn]);
 
@@ -40,7 +63,7 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
         >
             {/* ID's room */}
 
-            <div className="z-10 absolute top-0 left-0 bg-white text-black p-1 text-sm animate__animated animate__bounce">
+            <div className="absolute top-5 left-4 bg-white text-black p-1 text-sm z-[999] animate__animated animate__bounce">
                 <span className="font-bold mr-1">ID ROOM:</span>
                 {meetingID}
             </div>
@@ -48,7 +71,7 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
             <div
                 className={
                     isSharing
-                        ? "h-[65%] w-[60%] mt-[4%] bg-transparent/20 rounded-xl p-2 relative flex justify-center scroll-smooth "
+                        ? "h-[70%] w-[60%] mt-[1%] bg-transparent/20 rounded-xl p-2 relative flex justify-center scroll-smooth "
                         : "h-[65%] w-[22%] mt-[4%] bg-transparent/20 rounded-xl p-2 relative"
                 }
             >

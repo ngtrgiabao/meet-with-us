@@ -1,5 +1,6 @@
 import React from "react";
 import { useMeeting, useParticipant } from "@videosdk.live/react-sdk";
+import { useDeviceContext } from "../../hooks/useDeviceContext";
 
 const RoomControls = () => {
     const {
@@ -14,11 +15,9 @@ const RoomControls = () => {
     const [isMic, setIsMic] = React.useState<boolean>(false);
     const [isWebcam, setIsWebcam] = React.useState<boolean>(false);
 
-    const handleMic = React.useCallback(() => {
-        toggleMic();
-        setIsMic((isMic) => !isMic);
-    }, [toggleMic]);
+    const { isCamera, isMicro } = useDeviceContext();
 
+    // Change webcam on device
     const handleGetWebcams = React.useCallback(() => {
         getWebcams()
             .then((webcams) => {
@@ -38,6 +37,11 @@ const RoomControls = () => {
         setIsWebcam((isWebcam) => !isWebcam);
     }, [toggleWebcam]);
 
+    const handleMic = React.useCallback(() => {
+        toggleMic();
+        setIsMic((isMic) => !isMic);
+    }, [toggleMic]);
+
     const handleScreenShare = () => {
         toggleScreenShare();
     };
@@ -47,8 +51,13 @@ const RoomControls = () => {
     };
 
     React.useEffect(() => {
-        if (isWebcam) {
-            handleGetWebcams();
+        if (isCamera && isMicro) {
+            handleWebcam();
+            handleMic();
+        } else if (isCamera && !isMicro) {
+            handleWebcam();
+        } else if (!isCamera && isMicro) {
+            handleMic();
         }
     }, []);
 
@@ -70,6 +79,8 @@ const RoomControls = () => {
 
         if (localScreenShareOn || screenShareOn) {
             setIsSharing(true);
+        } else if (!localScreenShareOn || !screenShareOn) {
+            setIsSharing(false);
         }
     }, [localScreenShareOn, screenShareOn]);
 
@@ -83,7 +94,7 @@ const RoomControls = () => {
                 {/* Webcam */}
                 <button
                     onClick={() => handleWebcam()}
-                    className={`font-bold rounded-full w-[3rem] h-[3rem] ml-1 btn_action${
+                    className={`font-bold rounded-full w-[3rem] h-[3rem] ml-1 ${
                         isWebcam ? " btn_action" : " btn_action-denied"
                     }`}
                 >

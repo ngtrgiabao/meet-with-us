@@ -4,9 +4,6 @@ module.exports = {
     app: {
         port: process.env.PORT || 3002,
     },
-    socket: {
-        port: process.env.SOCKET_PORT || 4001,
-    },
     firebase: {
         config: {
             apiKey: process.env.API_KEY_FIREBASE,

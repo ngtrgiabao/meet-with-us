@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { MeetingProvider, MeetingConsumer } from "@videosdk.live/react-sdk";
-import { v4 as uuid } from "uuid";
 
 import "../styles/index.css";
 
@@ -13,10 +12,16 @@ import { authToken, createMeeting } from "../api/api.service";
 import BannerVideo from "../layouts/BannerVideo";
 import HomeInput from "../components/home/HomeInput";
 import UserOverview from "./UserOverview";
+import { DeviceContext } from "../context/useroverview/DeviceContext";
+import { useRandomName } from "../hooks/useRandomName";
 
 const bgImg = require("../assets/background/home.mp4");
 
 const Home = () => {
+    const { isWebcam, isMic } = React.useContext(DeviceContext);
+    const randomName = useRandomName();
+    const username = localStorage.getItem("username");
+
     const mouse = React.useRef<ReturnType<typeof Object>>({
         x: 0,
         y: 0,
@@ -36,7 +41,7 @@ const Home = () => {
         <>
             <div
                 id="Home"
-                className="h-screen w-screen overflow-hidden relative flex justify-center items-center p-4"
+                className="h-screen overflow-hidden relative flex justify-center items-center p-4"
                 onMouseMove={(e) => {
                     gsap.to(mouse.current, {
                         top: e.clientY - 15,
@@ -49,7 +54,7 @@ const Home = () => {
                 <BannerVideo bgImg={bgImg} />
 
                 <div
-                    className="mt-[32rem] mr-[10%] flex w-1/2 justify-center items-center"
+                    className="mt-[32rem] w-1/2 flex justify-center items-center"
                     onMouseMove={(e) => {
                         gsap.to(mouse.current, {
                             top: e.clientY - 15,
@@ -104,9 +109,9 @@ const Home = () => {
                             });
                         }}
                     >
-                        Tìm hiểu thêm
+                        Get more information
                     </Link>
-                    <span className="ml-1 text-white">về chúng tôi</span>
+                    <span className="ml-1 text-white">about us</span>
                 </div>
 
                 {/* CURSOR */}
@@ -129,10 +134,10 @@ const Home = () => {
                 <MeetingProvider
                     config={{
                         meetingId: meetingID,
-                        webcamEnabled: false,
-                        micEnabled: false,
+                        webcamEnabled: isWebcam,
+                        micEnabled: isMic,
                         maxResolution: "hd" as const,
-                        name: "user",
+                        name: username || randomName,
                     }}
                     token={authToken}
                 >

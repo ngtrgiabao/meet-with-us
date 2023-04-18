@@ -1,42 +1,43 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { useDeviceContext } from "../../hooks/useDeviceContext";
 
 const UserOverviewWebcam = () => {
-    const [isAudio, setIsAudio] = React.useState<boolean>(true);
-    const [isVideo, setIsVideo] = React.useState<boolean>(true);
+    const { isCamera, setCamera, isMicro, setMicro } = useDeviceContext();
 
     const handleAudio = () => {
-        setIsAudio((isAudio) => !isAudio);
+        setMicro(!isMicro);
     };
 
     const handleVideo = () => {
-        setIsVideo((isVideo) => !isVideo);
+        setCamera(!isCamera);
     };
 
-    const video = React.useRef<HTMLVideoElement>(null);
+    const video = useRef<HTMLVideoElement>(null);
 
-    const getUserMedia = navigator.mediaDevices.getUserMedia;
+    useEffect(() => {
+        const getUserMedia = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: isCamera,
+                    audio: false,
+                });
 
-    // getUserMedia({
-    //     video: isVideo,
-    //     audio: isAudio,
-    // })
-    //     .then(async (stream) => {
-    //         // Changing the source of video to current stream.
-    //         if (video.current && isVideo) {
-    //             video.current.srcObject = stream;
-    //             video.current.play();
-    //         }
-
-    //         console.log("Get webcam success :D");
-    //     })
-    //     .catch(() => {
-    //         console.log("Failed to get webcam :<");
-    //     });
+                if (video.current && isCamera) {
+                    video.current.srcObject = stream;
+                    video.current.play();
+                }
+                console.log("Get webcam success :D");
+            } catch (error) {
+                console.log("Failed to get webcam :<");
+            }
+        };
+        getUserMedia();
+    }, [isCamera]);
 
     return (
         <>
             <div className="flex flex-col relative justify-center">
-                {isVideo ? (
+                {isCamera ? (
                     <video
                         ref={video}
                         className="bg-black w-[40rem] h-[30rem] rounded-2xl"
@@ -49,7 +50,7 @@ const UserOverviewWebcam = () => {
                 )}
 
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-fit flex justify-center">
-                    {isAudio ? (
+                    {isMicro ? (
                         <button
                             onClick={handleAudio}
                             className="bg-white font-bold rounded-full w-[3rem] h-[3rem]"
@@ -65,7 +66,7 @@ const UserOverviewWebcam = () => {
                         </button>
                     )}
 
-                    {isVideo ? (
+                    {isCamera ? (
                         <button
                             onClick={handleVideo}
                             className="bg-white font-bold rounded-full w-[3rem] h-[3rem] ml-6"
