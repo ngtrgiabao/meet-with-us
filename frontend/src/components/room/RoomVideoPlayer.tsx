@@ -18,7 +18,7 @@ const RoomVideoPlayer = ({ videoStream }: IRoomVideoPlayer) => {
         console.log(err, "participant video error");
       }}
       style={{
-        transform: "scaleX(-1) rotateY(180deg)",
+        transform: "scaleX(-1)",
       }}
     />
   );

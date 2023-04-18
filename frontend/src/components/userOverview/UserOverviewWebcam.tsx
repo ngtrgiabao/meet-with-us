@@ -4,8 +4,6 @@ const UserOverviewWebcam = () => {
     const [isAudio, setIsAudio] = React.useState<boolean>(true);
     const [isVideo, setIsVideo] = React.useState<boolean>(true);
 
-    console.log(isAudio, isVideo);
-
     const handleAudio = () => {
         setIsAudio((isAudio) => !isAudio);
     };

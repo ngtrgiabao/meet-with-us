@@ -132,7 +132,7 @@ const Home = () => {
                         webcamEnabled: false,
                         micEnabled: false,
                         maxResolution: "hd" as const,
-                        name: uuid(),
+                        name: "user",
                     }}
                     token={authToken}
                 >

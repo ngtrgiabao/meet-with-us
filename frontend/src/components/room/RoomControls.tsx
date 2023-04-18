@@ -1,21 +1,19 @@
 import React from "react";
-import { useMeeting } from "@videosdk.live/react-sdk";
-var nguoiNayDangChiaSe: boolean = false;
+import { useMeeting, useParticipant } from "@videosdk.live/react-sdk";
+
 const RoomControls = () => {
     const {
         toggleMic,
         toggleWebcam,
         leave,
         getWebcams,
-        disableWebcam,
         toggleScreenShare,
-        disableScreenShare,
-        enableScreenShare,
+        localScreenShareOn,
     } = useMeeting();
 
     const [isMic, setIsMic] = React.useState<boolean>(false);
     const [isWebcam, setIsWebcam] = React.useState<boolean>(false);
-    const [isScreenShare, setIsScreenShare] = React.useState<boolean>(false);
+
     const handleMic = React.useCallback(() => {
         toggleMic();
         setIsMic((isMic) => !isMic);
@@ -59,12 +57,28 @@ const RoomControls = () => {
         leave();
     }, [leave]);
 
+    const [userID, setUserID] = React.useState<string>("");
+    const { screenShareOn } = useParticipant(userID);
+    const [isSharing, setIsSharing] = React.useState<boolean>(false);
+
+    const { participants } = useMeeting();
+
+    React.useEffect(() => {
+        [...participants.keys()].forEach((participantID) =>
+            setUserID(participantID)
+        );
+
+        if (localScreenShareOn || screenShareOn) {
+            setIsSharing(true);
+        }
+    }, [localScreenShareOn, screenShareOn]);
+
     return (
         <>
             <div
-                className={
-                    "z-[20] fixed bottom-[8%] left-[25.5%] bg-white p-2 px-2 rounded-xl text-xl flex justify-between w-[25%] animate__animated animate__bounceInUp"
-                }
+                className={`z-[20] absolute -bottom-[30%] left-0 bg-white p-2 px-2 rounded-xl text-xl flex justify-between animate__animated animate__bounceInUp ${
+                    isSharing ? "w-[40%] left-[30%]" : "w-full"
+                }`}
             >
                 {/* Webcam */}
                 <button

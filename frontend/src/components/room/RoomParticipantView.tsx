@@ -1,10 +1,11 @@
 import React from "react";
 import { useParticipant, useMeeting } from "@videosdk.live/react-sdk";
+
 import { IVideoComponent } from "../../utils/interfaces";
 import RoomVideoPlayer from "./RoomVideoPlayer";
-import RoomMainScreen from "./RoomMainScreen";
+import RoomShareScreen from "./RoomShareScreen";
 const logo1 = require("../../assets/background/1.jpg");
-const logo2 = require("../../assets/background/2.jpg");
+
 const RoomParticipantView = ({ participantID }: IVideoComponent) => {
     const micRef = React.useRef<HTMLAudioElement | null>(null);
     const { participants } = useMeeting();
@@ -27,15 +28,6 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
             return mediaStream;
         }
     }, [webcamStream, webcamOn]);
-
-    //Creating a media stream from the screen share stream
-    /*const mediaStream = React.useMemo(() => {
-    if (screenShareOn && screenShareStream) {
-      const mediaStream = new MediaStream();
-      mediaStream.addTrack(screenShareStream.track);
-      return mediaStream;
-    }
-  }, [screenShareStream, screenShareOn]);*/
 
     // MIC
     React.useEffect(() => {
@@ -78,9 +70,9 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
 
     return (
         <div key={participantID}>
-            <div className="w-full">
+            <div className="w-full flex justify-center">
                 {screenShareOn ? (
-                    <RoomVideoPlayer videoStream={mediaStream} />
+                    <RoomShareScreen videoStream={mediaStream} />
                 ) : null}
             </div>
 
@@ -94,23 +86,24 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
                     src={logo1}
                 />
                 <div className="text-white text-sm ml-2 flex items-center">
-                    <span className="font-bold text-sm mr-1">User:</span>
                     <span className="text-">{displayName}</span>
                 </div>
-                <span className="font-bold rounded-full text-sm">
-                    {micOn ? (
-                        <i className="fa-solid fa-microphone"></i>
-                    ) : (
-                        <i className="fa-solid fa-microphone-slash"></i>
-                    )}
-                </span>
-                <span className="font-bold rounded-full ml-2 text-sm">
-                    {webcamOn ? (
-                        <i className="text-sm fa-solid fa-video"></i>
-                    ) : (
-                        <i className="fa-solid fa-video-slash"></i>
-                    )}
-                </span>
+                <div className="flex">
+                    <span className="font-bold rounded-full text-sm">
+                        {micOn ? (
+                            <i className="fa-solid fa-microphone"></i>
+                        ) : (
+                            <i className="fa-solid fa-microphone-slash"></i>
+                        )}
+                    </span>
+                    <span className="font-bold rounded-full ml-2 text-sm">
+                        {webcamOn ? (
+                            <i className="text-sm fa-solid fa-video"></i>
+                        ) : (
+                            <i className="fa-solid fa-video-slash"></i>
+                        )}
+                    </span>
+                </div>
             </div>
         </div>
     );
