@@ -1,20 +1,18 @@
 import React, { createContext, useState, useContext } from "react";
 import { gsap } from "gsap";
 import { useMeeting } from "@videosdk.live/react-sdk";
-import { Link } from "react-router-dom";
 
-import WebcamOverview from "../components/userOverview/UserOverviewWebcam";
 import Transition from "../components/animation/AnimationTransition";
 import RoomLoading from "../components/room/RoomLoading";
 import Room from "./Room";
 import UserOverviewWebcam from "../components/userOverview/UserOverviewWebcam";
-import RoomControls from "../components/room/RoomControls";
 
 import { IUserOverview } from "../utils/interfaces";
 
 const useroverview = gsap.timeline();
 
 const UserOverview = ({ meetingID }: IUserOverview) => {
+    const [joined, setJoined] = React.useState<string | null>(null);
     const [isVideo, setIsVideo] = React.useState<boolean>(true);
 
     // When user joined will create a room
@@ -39,10 +37,8 @@ const UserOverview = ({ meetingID }: IUserOverview) => {
         window.location.reload();
     };
 
-    const [joined, setJoined] = React.useState<string | null>(null);
-
     return (
-        <div className="absolute inset-0 w-full z-[100] overflow-hidden">
+        <div className="absolute inset-0 w-full h-full z-[100] overflow-hidden">
             <span
                 className="absolute top-[2%] right-[2%] hover:cursor-pointer font-bold text-white hover:text-rose-600 text-2xl"
                 onClick={() => handleRefresh()}
@@ -61,12 +57,23 @@ const UserOverview = ({ meetingID }: IUserOverview) => {
                             Ready for join meeting?
                         </h3>
 
-                        <button
-                            onClick={() => handleJoinMeeting()}
-                            className="p-2 flex justify-center rounded-3xl hover:bg-blue-600 border border-dashed hover:border-solid"
-                        >
-                            Join now
-                        </button>
+                        <div className="w-full flex flex-col items-center">
+                            <button
+                                onClick={() => handleJoinMeeting()}
+                                className="p-2 rounded-3xl hover:bg-blue-600 border border-dashed hover:border-solid w-full"
+                            >
+                                Join now
+                            </button>
+                            <button
+                                onClick={() => handleRefresh()}
+                                className="mt-2 font-bold text-sm"
+                                style={{
+                                    color: "rgb(255 0 0 / 1)",
+                                }}
+                            >
+                                Cancel ?
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

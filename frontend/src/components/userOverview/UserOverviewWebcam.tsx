@@ -7,7 +7,6 @@ const UserOverviewWebcam = () => {
 
     const { isCamera, setCamera, isMicro, setMicro } = useDeviceContext();
 
-    console.log(isAudio, isVideo);
     console.log("is camvalue ", isCamera);
     console.log("ismicro value", isMicro);
 

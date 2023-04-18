@@ -10,7 +10,7 @@ const RoomControls = () => {
     const [isWebcam, setIsWebcam] = React.useState<boolean>(false);
     const [isScreenShare, setIsScreenShare] = React.useState<boolean>(false);
 
-    const { isCamera, setCamera, isMicro, setMicro } = useDeviceContext();
+    const { isCamera, isMicro } = useDeviceContext();
 
     console.log("is camvalue in room", isCamera);
 

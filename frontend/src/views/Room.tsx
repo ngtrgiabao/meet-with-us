@@ -16,11 +16,6 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
 
     const videoRef = React.useRef<HTMLVideoElement>(null);
 
-    const handleVideoStateChange = (newVideoState: boolean) => {
-        console.log("newVideoState pass in room:", newVideoState);
-        setIsVideo(newVideoState);
-    };
-
     React.useEffect(() => {
         const getUserMedia = async () => {
             try {
