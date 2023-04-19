@@ -3,10 +3,10 @@ import { authSlice } from "./slices/AuthSlice";
 import { meetingsSlice } from "./slices/MeetingSlice";
 
 export const store = configureStore({
-  reducer: {
-    auth: authSlice.reducer,
-    meetings: meetingsSlice.reducer,
-  },
+    reducer: {
+        auth: authSlice.reducer,
+        meetings: meetingsSlice.reducer,
+    },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

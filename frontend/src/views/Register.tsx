@@ -16,8 +16,9 @@ const Register = () => {
     const [success, setSuccess] = useState<boolean>(false);
 
     const handleSubmit = async () => {
-        if (password.length > 5) {
+        if (password.length > 5 && password === rePassword) {
             setSuccess(true);
+            setErr(false);
 
             const auth = getAuth();
             try {
@@ -36,8 +37,13 @@ const Register = () => {
             } catch (err) {
                 console.log(err);
             }
-        } else {
-            setErr(true);
+        }
+
+        if (password.length <= 5) {
+            alert("Your password must at least 6 characters");
+        }
+        if (password !== rePassword) {
+            alert("Your password not equal to re-password");
         }
     };
 
@@ -151,11 +157,6 @@ const Register = () => {
                                     <span className="text-red-500">
                                         Your re-password not correct with your
                                         password
-                                    </span>
-                                )}
-                                {err && (
-                                    <span className="text-red-500">
-                                        Your password must at least 6 characters
                                     </span>
                                 )}
                             </div>

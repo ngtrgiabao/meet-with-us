@@ -4,7 +4,7 @@ import { useParticipant } from "@videosdk.live/react-sdk";
 import { IVideoComponent } from "../../utils/interfaces";
 import RoomVideoPlayer from "./RoomVideoPlayer";
 
-const avatarUser = require("../../assets/avatar_user/01c751482ef7c4f5e93f3539efd27f6f.jpg");
+const avatarUser = require("../../assets/avatar_user/avatar_user.jpg");
 
 const RoomParticipantView = ({ participantID }: IVideoComponent) => {
     const micRef = React.useRef<HTMLAudioElement | null>(null);
@@ -28,15 +28,6 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
             return mediaStream;
         }
     }, [webcamStream, webcamOn]);
-
-    //Creating a media stream from the screen share stream
-    const mediaStream = React.useMemo(() => {
-        if (screenShareOn && screenShareStream) {
-            const mediaStream = new MediaStream();
-            mediaStream.addTrack(screenShareStream.track);
-            return mediaStream;
-        }
-    }, [screenShareStream, screenShareOn]);
 
     // MIC
     React.useEffect(() => {
@@ -62,26 +53,40 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
         }
     }, [micStream, micOn]);
 
+    const mediaStream = React.useMemo(() => {
+        if (screenShareOn && screenShareStream) {
+            const mediaStream = new MediaStream();
+            mediaStream.addTrack(screenShareStream.track);
+            return mediaStream;
+        }
+    }, [screenShareStream, screenShareOn]);
+
     return (
-        <div
-            key={participantID}
-            className="flex justify-center items-center flex-col p-1 overflow-x-hidden h-full"
-        >
-            {webcamOn ? (
-                <RoomVideoPlayer
-                    transform="scaleX(-1)"
-                    videoStream={videoStream}
-                />
-            ) : null}
-            {screenShareOn ? (
-                <RoomVideoPlayer videoStream={mediaStream} />
-            ) : null}
+        <div key={participantID}>
+            <div className="w-full flex justify-center">
+                {screenShareOn ? (
+                    <RoomVideoPlayer
+                        width="auto"
+                        height="auto"
+                        videoStream={mediaStream}
+                    />
+                ) : null}
+            </div>
+            <div className="flex justify-center">
+                {webcamOn ? (
+                    <RoomVideoPlayer
+                        height="auto"
+                        transform="scaleX(-1)"
+                        videoStream={videoStream}
+                    />
+                ) : null}
+            </div>
             {micOn && micRef && <audio ref={micRef} autoPlay muted={isLocal} />}
 
             {/* USER */}
-            <div className="flex justify-between items-center bg-gray-800/50 p-2 px-2 border-2 rounded-lg border-white w-full">
+            <div className="flex justify-between items-center bg-black/40 my-1 p-3 border-2 rounded-lg border-white w-full">
                 <img
-                    className="rounded-full w-[2.8rem] h-[2.5rem]"
+                    className="rounded-full w-[2.5rem] h-[2.5rem]"
                     src={avatarUser}
                 />
                 <div className="text-white text-sm text-center">

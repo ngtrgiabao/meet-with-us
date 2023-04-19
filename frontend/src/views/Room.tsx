@@ -1,5 +1,5 @@
 import React from "react";
-import { useMeeting, useParticipant } from "@videosdk.live/react-sdk";
+import { useMeeting } from "@videosdk.live/react-sdk";
 import { useNavigate } from "react-router-dom";
 
 import "../styles/room/room.css";
@@ -8,32 +8,8 @@ import RoomParticipantView from "../components/room/RoomParticipantView";
 import RoomControls from "../components/room/RoomControls";
 
 const Room = ({ meetingID }: { meetingID: string | null }) => {
-    const { participants, leave, localParticipant } = useMeeting();
-    const [id, setID] = React.useState<string>("");
-    const { screenShareOn } = useParticipant(id);
-
-    const [isSharing, setIsSharing] = React.useState<boolean>(false);
+    const { participants, leave } = useMeeting();
     const videoRef = React.useRef<HTMLVideoElement>(null);
-
-    // React.useEffect(() => {
-    //     participants.forEach((participant) => {
-    //         setID(participant.id);
-    //         // console.log("participant", participant);
-
-    //         if (participant.streams.size) {
-    //             console.log("id", participant.displayName);
-    //         } else if (localParticipant.streams.size) {
-    //             console.log("id local", localParticipant.streams.size);
-    //         }
-
-    // if (participant.id) {
-    //     console.table({
-    //         displayName: participant.displayName,
-    //         screenShare: screenShareOn,
-    //     });
-    // }
-    // });
-    // }, [participants, screenShareOn]);
 
     React.useEffect(() => {
         const getUserMedia = async () => {
@@ -61,7 +37,7 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
             navigate("/");
             leave();
         };
-    }, []);
+    }, [navigate, leave]);
 
     return (
         <div
@@ -71,30 +47,25 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
         >
             {/* ID's room */}
 
-            <div className="absolute top-5 left-4 bg-white text-black p-1 text-sm z-[999] animate__animated animate__bounce">
+            <div className="absolute top-5 left-4 bg-white text-black p-1 text-sm z-[999] animate__animated animate__bounce rounded-sm">
                 <span className="font-bold mr-1">ID ROOM:</span>
                 {meetingID}
             </div>
 
-            {/* Create UI of participants join */}
             <div
                 className={
-                    isSharing
-                        ? "h-full col-span-1 rounded-xl"
-                        : "h-[65%] w-[22%] mt-[4%] bg-transparent/20 rounded-xl overflow-hidden p-1"
+                    "h-[70%] w-[60%] mt-[4%] border-2 border-white rounded-xl p-2 relative flex justify-center scroll-smooth snap-center"
                 }
             >
+                <div className="max-h-full overflow-y-auto w-full">
+                    {[...participants.keys()].map((participantID) => (
+                        <RoomParticipantView
+                            participantID={participantID}
+                            key={participantID}
+                        />
+                    ))}
+                </div>
                 <RoomControls />
-                {
-                    <div className="max-h-full overflow-y-auto">
-                        {[...participants.keys()].map((participantID) => (
-                            <RoomParticipantView
-                                participantID={participantID}
-                                key={participantID}
-                            />
-                        ))}
-                    </div>
-                }
             </div>
         </div>
     );

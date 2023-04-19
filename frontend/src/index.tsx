@@ -3,9 +3,9 @@ import { Provider } from "react-redux";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import { store } from "./hooks/store";
+import { DeviceProvider } from "./components/userOverview/DeviceContext";
 import { LoginProvider } from "./context/login/LoginContext";
-import { DeviceProvider } from "./context/useroverview/DeviceContext";
+import { store } from "./hooks/store";
 
 const { library } = require("@fortawesome/fontawesome-svg-core");
 const { fab } = require("@fortawesome/free-brands-svg-icons");

@@ -11,3 +11,29 @@
 26-03-2023	08:45:49 ------- /api/v1/users------GET------Resource not found
 26-03-2023	08:45:49 ------- /api/v1/users------GET------Resource not found
 26-03-2023	08:45:50 ------- /api/v1/users------GET------Resource not found
+19-04-2023	07:19:52 ------- /api/v1/users------GET------Resource not found
+19-04-2023	07:23:06 ------- /api/v1/sigin------POST------Resource not found
+19-04-2023	07:23:07 ------- /api/v1/sigin------POST------Resource not found
+19-04-2023	07:23:07 ------- /api/v1/sigin------POST------Resource not found
+19-04-2023	07:23:07 ------- /api/v1/sigin------POST------Resource not found
+19-04-2023	07:23:08 ------- /api/v1/sigin------POST------Resource not found
+19-04-2023	07:23:08 ------- /api/v1/sigin------POST------Resource not found
+19-04-2023	07:23:08 ------- /api/v1/sigin------POST------Resource not found
+19-04-2023	07:23:08 ------- /api/v1/sigin------POST------Resource not found
+19-04-2023	07:23:08 ------- /api/v1/sigin------POST------Resource not found
+19-04-2023	07:23:08 ------- /api/v1/sigin------POST------Resource not found
+19-04-2023	07:23:08 ------- /api/v1/sigin------POST------Resource not found
+19-04-2023	07:23:11 ------- /api/v1/singin------POST------Resource not found
+19-04-2023	07:23:14 ------- /api/v1/signin------POST------Resource not found
+19-04-2023	07:23:19 ------- /api/v1/login------POST------Resource not found
+19-04-2023	07:23:20 ------- /api/v1/login------POST------Resource not found
+19-04-2023	07:23:20 ------- /api/v1/login------POST------Resource not found
+19-04-2023	07:26:09 ------- /api/v1/room/------POST------Hostname can't be empty
+19-04-2023	07:26:12 ------- /api/v1/room/------POST------Hostname can't be empty
+19-04-2023	07:26:13 ------- /api/v1/room/------POST------Hostname can't be empty
+19-04-2023	07:26:13 ------- /api/v1/room/------POST------Hostname can't be empty
+19-04-2023	07:26:13 ------- /api/v1/room/------POST------Hostname can't be empty
+19-04-2023	07:26:13 ------- /api/v1/room/------POST------Hostname can't be empty
+19-04-2023	07:26:14 ------- /api/v1/room/------POST------Hostname can't be empty
+19-04-2023	07:26:14 ------- /api/v1/room/------POST------Hostname can't be empty
+19-04-2023	13:52:04 ------- /api/v1/signup------POST------Resource not found

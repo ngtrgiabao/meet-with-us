@@ -3,13 +3,19 @@ import { useMeeting } from "@videosdk.live/react-sdk";
 import { useDeviceContext } from "../../hooks/useDeviceContext";
 
 const RoomControls = () => {
-    const { toggleMic, toggleWebcam, leave, getWebcams, toggleScreenShare } =
-        useMeeting();
-
+    const {
+        toggleMic,
+        toggleWebcam,
+        leave,
+        getWebcams,
+        enableScreenShare,
+        disableScreenShare,
+        disableWebcam,
+    } = useMeeting();
     const [isMic, setIsMic] = React.useState<boolean>(false);
     const [isWebcam, setIsWebcam] = React.useState<boolean>(false);
-    const [isScreenShare, setIsScreenShare] = React.useState<boolean>(false);
-
+    const [activeShareScreen, setActiveShareScreen] =
+        React.useState<boolean>(false);
     const { isCamera, isMicro } = useDeviceContext();
 
     // Change webcam on device
@@ -37,15 +43,6 @@ const RoomControls = () => {
         setIsMic((isMic) => !isMic);
     }, [toggleMic]);
 
-    const handleScreenShare = () => {
-        toggleScreenShare();
-        setIsScreenShare((isScreenShare) => !isScreenShare);
-    };
-
-    const handleRefreshClick = () => {
-        window.location.reload();
-    };
-
     React.useEffect(() => {
         if (isCamera && isMicro) {
             handleWebcam();
@@ -57,6 +54,24 @@ const RoomControls = () => {
         }
     }, []);
 
+    const handleScreenShare = () => {
+        setActiveShareScreen((activeShareScreen) => !activeShareScreen);
+    };
+
+    React.useEffect(() => {
+        if (activeShareScreen) {
+            enableScreenShare();
+        } else {
+            disableScreenShare();
+        }
+    }, [activeShareScreen]);
+
+    const handleRefreshClick = () => {
+        window.location.reload();
+        disableScreenShare();
+        disableWebcam();
+    };
+
     const handleLeaveMeeting = React.useCallback(() => {
         handleRefreshClick();
         leave();
@@ -64,7 +79,7 @@ const RoomControls = () => {
 
     return (
         <>
-            <div className="fixed bottom-[6%] bg-white p-2 px-3 rounded-xl text-xl flex justify-between w-[22%] animate__animated animate__bounceInUp">
+            <div className="z-[20] absolute -bottom-[25%] bg-white border-2 border-blue-700 p-2 px-2 rounded-xl text-xl flex justify-between animate__animated animate__bounceInUp w-[40%] left-[30%]">
                 {/* Webcam */}
                 <button
                     onClick={() => handleWebcam()}
@@ -96,9 +111,7 @@ const RoomControls = () => {
                 {/* Screen share */}
                 <button
                     onClick={() => handleScreenShare()}
-                    className={`hover:cursor-pointer rounded-full w-[3rem] h-[3rem] flex items-center justify-center ${
-                        isScreenShare ? " btn_action" : " btn_action-denied"
-                    }`}
+                    className="hover:cursor-pointer rounded-full w-[3rem] h-[3rem] flex items-center justify-center text-white btn_action"
                 >
                     <i className="fa-solid fa-display"></i>
                 </button>
@@ -115,4 +128,5 @@ const RoomControls = () => {
     );
 };
 
+//
 export default RoomControls;

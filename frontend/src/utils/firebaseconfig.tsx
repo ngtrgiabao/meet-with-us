@@ -1,12 +1,7 @@
+import { initializeApp } from "firebase/app";
 
-
-import { initializeApp } from 'firebase/app';
-
-import { getAuth } from "firebase/auth"
+import { getAuth } from "firebase/auth";
 import { collection, Firestore, getFirestore } from "firebase/firestore";
-
-
-
 
 const firebaseConfig = {
     apiKey: "AIzaSyBtQgJ4x5r5SaEZMExUQAnzrXF6oQNJjK0",
@@ -15,13 +10,10 @@ const firebaseConfig = {
     storageBucket: "meet-with-us-8fdf6.appspot.com",
     messagingSenderId: "967185560280",
     appId: "1:967185560280:web:bc7443be39da256cfa5dad",
-    measurementId: "G-MDEW9JWTXV"
+    measurementId: "G-MDEW9JWTXV",
 };
 
-
-
 // Initialize Firebase
-
 
 const app = initializeApp(firebaseConfig);
 
