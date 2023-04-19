@@ -79,7 +79,7 @@ const RoomControls = () => {
 
     return (
         <>
-            <div className="z-[20] absolute -bottom-[25%] bg-white p-2 px-2 rounded-xl text-xl flex justify-between animate__animated animate__bounceInUp w-[40%] left-[30%]">
+            <div className="z-[20] absolute -bottom-[25%] bg-white border-2 border-blue-700 p-2 px-2 rounded-xl text-xl flex justify-between animate__animated animate__bounceInUp w-[40%] left-[30%]">
                 {/* Webcam */}
                 <button
                     onClick={() => handleWebcam()}
@@ -111,7 +111,7 @@ const RoomControls = () => {
                 {/* Screen share */}
                 <button
                     onClick={() => handleScreenShare()}
-                    className="hover:cursor-pointer rounded-full w-[3rem] h-[3rem] flex items-center justify-center text-black border-2 border-black"
+                    className="hover:cursor-pointer rounded-full w-[3rem] h-[3rem] flex items-center justify-center text-white btn_action"
                 >
                     <i className="fa-solid fa-display"></i>
                 </button>
