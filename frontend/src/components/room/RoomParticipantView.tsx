@@ -79,9 +79,9 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
             {micOn && micRef && <audio ref={micRef} autoPlay muted={isLocal} />}
 
             {/* USER */}
-            <div className="flex justify-between items-center bg-blue-700 my-1 p-2 px-2 border-2 rounded-lg border-white w-full">
+            <div className="flex justify-between items-center bg-black/40 my-1 p-3 border-2 rounded-lg border-white w-full">
                 <img
-                    className="rounded-full w-[2.8rem] h-[2.5rem]"
+                    className="rounded-full w-[2.5rem] h-[2.5rem]"
                     src={avatarUser}
                 />
                 <div className="text-white text-sm text-center">

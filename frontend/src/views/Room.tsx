@@ -42,7 +42,7 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
     return (
         <div
             className={
-                "h-screen w-screen overflow-hidden text-white flex justify-center bg-[url('../assets/background/bg_room.webp')] bg-blend-color-burn absolute inset-0"
+                "h-screen w-screen overflow-hidden text-white flex justify-center bg-blue-700 absolute inset-0"
             }
         >
             {/* ID's room */}
@@ -54,7 +54,7 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
 
             <div
                 className={
-                    "h-[70%] w-[60%] mt-[4%] backdrop-blur-md border-2 border-white rounded-xl p-2 relative flex justify-center scroll-smooth snap-center"
+                    "h-[70%] w-[60%] mt-[4%] border-2 border-white rounded-xl p-2 relative flex justify-center scroll-smooth snap-center"
                 }
             >
                 <div className="max-h-full overflow-y-auto w-full">
