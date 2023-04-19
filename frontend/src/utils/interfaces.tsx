@@ -68,6 +68,8 @@ export interface IVideoComponent {
 export interface IRoomVideoPlayer {
     videoStream: MediaStream | undefined;
     transform?: string;
+    width?: string | number;
+    height?: string | number;
 }
 
 export interface IUserOverview {
