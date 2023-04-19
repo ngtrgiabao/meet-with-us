@@ -3,7 +3,6 @@ import { useParticipant } from "@videosdk.live/react-sdk";
 
 import { IVideoComponent } from "../../utils/interfaces";
 import RoomVideoPlayer from "./RoomVideoPlayer";
-import RoomShareScreen from "./RoomShareScreen";
 
 const avatarUser = require("../../assets/avatar_user/avatar_user.jpg");
 
@@ -65,12 +64,17 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
         <div key={participantID}>
             <div className="w-full flex justify-center">
                 {screenShareOn ? (
-                    <RoomShareScreen videoStream={mediaStream} />
+                    <RoomVideoPlayer
+                        width="auto"
+                        height="auto"
+                        videoStream={mediaStream}
+                    />
                 ) : null}
             </div>
             <div className="flex justify-center">
                 {webcamOn ? (
                     <RoomVideoPlayer
+                        height="auto"
                         transform="scaleX(-1)"
                         videoStream={videoStream}
                     />
