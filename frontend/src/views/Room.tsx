@@ -42,19 +42,19 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
     return (
         <div
             className={
-                "h-screen w-screen overflow-hidden text-white flex justify-center bg-blue-700 absolute inset-0"
+                "h-screen w-screen overflow-hidden text-white flex justify-center bg-[url('../assets/background/bg_room.webp')] bg-blend-color-burn absolute inset-0"
             }
         >
             {/* ID's room */}
 
-            <div className="absolute top-5 left-4 bg-white text-black p-1 text-sm z-[999] animate__animated animate__bounce">
+            <div className="absolute top-5 left-4 bg-white text-black p-1 text-sm z-[999] animate__animated animate__bounce rounded-sm">
                 <span className="font-bold mr-1">ID ROOM:</span>
                 {meetingID}
             </div>
 
             <div
                 className={
-                    "h-[70%] w-[60%] mt-[4%] bg-transparent/20 rounded-xl p-2 relative flex justify-center scroll-smooth"
+                    "h-[70%] w-[60%] mt-[4%] backdrop-blur-md border-2 border-white rounded-xl p-2 relative flex justify-center scroll-smooth snap-center"
                 }
             >
                 <div className="max-h-full overflow-y-auto w-full">
