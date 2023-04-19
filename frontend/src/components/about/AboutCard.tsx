@@ -32,7 +32,7 @@ const AboutCard = ({ bgImg, name, role }: IAboutCardProps) => {
             <div
                 className="absolute top-[50%] w-full flex justify-center items-center flex-col img-desc text-white font-bold h-[100%] bg-black/30 -translate-y-1/2"
                 style={{
-                    transition: "all 0.75s ease",
+                    transition: "all 0.35s ease",
                 }}
             >
                 <p className="text-xl">{name}</p>
