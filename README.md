@@ -25,7 +25,6 @@
 ![z4127124200811_4df0a3477bdb253dc60be90ccb8c7280](https://user-images.githubusercontent.com/95952006/220337321-5762130e-04dd-4079-bd71-8dc176f86581.jpg)
 ![image](https://user-images.githubusercontent.com/95952006/227425978-f4bf4c33-ca68-49ff-99fa-822e279f9bdf.png)
 
-
 ## 🌳 TREE DIRECTORY FRONTEND
 
 ```
@@ -43,6 +42,9 @@
 │   ├───popup
 │   ├───room
 │   └───userOverview
+├───context
+│   ├───login
+│   └───useroverview
 ├───features
 │   ├───authentication
 │   │   ├───hooks
@@ -50,8 +52,8 @@
 │   └───authorization
 │       └───services
 ├───hooks
+│   └───slices
 ├───layouts
-├───lib
 ├───styles
 │   ├───about
 │   ├───navbar
@@ -82,6 +84,7 @@
 ## 🤖 Tech stacks
 
 ### Back-end
+
 -   Node.js (Express)
 -   Firebase
 -   VideoSDK
