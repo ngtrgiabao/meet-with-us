@@ -1,49 +1,104 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
+import "../styles/register/register.css";
+
 import sideImg from "../assets/background/register-cover.gif";
 
 import { firebaseDB } from "../utils/firebaseconfig";
+import userService from "../api/user/user.service";
 
 const Register = () => {
-    const [err, setErr] = useState(false);
+    const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
+    const PSW_REGEX = /^[^\s]{6,}$/;
+    const EMAIL_REGEX =
+        /^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$/;
+
+    const [errMsg, setErrMsg] = useState<string>("");
+
+    const [validUsername, setValidUsername] = useState<boolean>(false);
     const [username, setUsername] = useState<string>("");
+
+    const [validPassword, setValidPassword] = useState<boolean>(false);
+    const [checkLengthPwd, setCheckLengthPwd] = useState<boolean>(false);
+    const [validMatch, setValidMatch] = useState<boolean>(false);
     const [password, setPassword] = useState<string>("");
     const [rePassword, setRePassword] = useState<string>("");
+
+    const [validEmail, setValidEmail] = useState<boolean>(false);
     const [email, setEmail] = useState<string>("");
+
+    const [isUsedEmail, setIsUsedEmail] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean>(false);
 
+    // CHeck email
+    useEffect(() => {
+        userService.getAll().then((data) => {
+            const foundEmail = data.data.find((e: any) => e.email === email);
+            setIsUsedEmail(!!foundEmail);
+            console.log(!!foundEmail);
+        });
+
+        const result = EMAIL_REGEX.test(email);
+        setValidEmail(result);
+    }, [email]);
+
+    useEffect(() => {
+        console.log(!validUsername, !validEmail, !validPassword, !validMatch);
+    }, [username, email, password, rePassword]);
+
+    // Check username
+    useEffect(() => {
+        const result = USER_REGEX.test(username);
+        setValidUsername(result);
+    }, [username]);
+
+    // Check password
+    useEffect(() => {
+        const result = PSW_REGEX.test(password);
+        const checkLengthPwd = password.length >= 6;
+        const match = password === rePassword;
+
+        console.log("result", result);
+        setCheckLengthPwd(checkLengthPwd);
+        setValidPassword(result);
+        setValidMatch(match);
+    }, [password, rePassword]);
+
+    useEffect(() => {
+        setErrMsg("");
+    }, [username, email, password, rePassword]);
+
     const handleSubmit = async () => {
-        if (password.length > 5 && password === rePassword) {
+        const v1 = USER_REGEX.test(username);
+        const v2 = PSW_REGEX.test(password);
+        const v3 = PSW_REGEX.test(rePassword);
+        const v4 = EMAIL_REGEX.test(email);
+
+        if (!v1 || !v2 || !v3 || !v4) {
+            return setErrMsg("Invalid Entry");
+        }
+
+        const auth = getAuth();
+        try {
+            const res = await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+            await setDoc(doc(firebaseDB, "users", res.user.uid), {
+                uid: res.user.uid,
+                email,
+                password,
+                name: username,
+            });
+
             setSuccess(true);
-            setErr(false);
-
-            const auth = getAuth();
-            try {
-                const res = await createUserWithEmailAndPassword(
-                    auth,
-                    email,
-                    password
-                );
-
-                await setDoc(doc(firebaseDB, "users", res.user.uid), {
-                    uid: res.user.uid,
-                    email,
-                    password,
-                    name: username,
-                });
-            } catch (err) {
-                console.log(err);
-            }
-        }
-
-        if (password.length <= 5) {
-            alert("Your password must at least 6 characters");
-        }
-        if (password !== rePassword) {
-            alert("Your password not equal to re-password");
+        } catch (err) {
+            console.log(err);
         }
     };
 
@@ -94,6 +149,13 @@ const Register = () => {
                                 id="register-form"
                                 className="w-full h-full flex flex-col items-center justify-center"
                             >
+                                <p
+                                    aria-live="assertive"
+                                    className="text-red-500"
+                                >
+                                    {errMsg}
+                                </p>
+
                                 <div className="w-full flex flex-col max-w-[500px]">
                                     <div className="w-full flex flex-col mb-2">
                                         <h1 className="text-3xl font-bold mb-2 text-center">
@@ -119,7 +181,11 @@ const Register = () => {
                                     required
                                     type="Email"
                                     placeholder="Enter Email"
-                                    className="w-full text-black text-lg by-2 my-5 bg-transparent border-b-2 border-gray-400 outline-none focus:outline-none focus:border-b-4 focus:border-blue-500"
+                                    className={`w-full text-black text-lg by-2 my-5 bg-transparent border-b-2 border-gray-400 outline-none focus:outline-none focus:border-b-4  ${
+                                        isUsedEmail
+                                            ? "border-b-4 border-b-rose-600"
+                                            : "focus:border-blue-500"
+                                    }`}
                                 />
                                 {/* password */}
                                 <input
@@ -146,17 +212,39 @@ const Register = () => {
                                     className="w-full text-black text-lg by-2 my-5 bg-transparent border-b-2 border-gray-400 outline-none focus:outline-none focus:border-b-4 focus:border-blue-500"
                                 />
 
-                                <div
+                                <button
+                                    disabled={
+                                        !validUsername ||
+                                        !validEmail ||
+                                        !validPassword ||
+                                        !validMatch ||
+                                        isUsedEmail
+                                            ? true
+                                            : false
+                                    }
                                     onClick={() => handleSubmit()}
-                                    className="w-full text-xl font-bold text-white bg-[#060606] font-sembold rounded-md p-4 text-center flex items-center justify-center flex-col my-4 hover:cursor-pointer hover:bg-blue-500 mt-10"
+                                    id="register__submit"
                                 >
                                     Register
-                                </div>
+                                </button>
 
-                                {rePassword !== password && (
+                                {!validMatch && (
                                     <span className="text-red-500">
                                         Your re-password not correct with your
                                         password
+                                    </span>
+                                )}
+
+                                {isUsedEmail && !!email && (
+                                    <span className="text-red-500">
+                                        This is email have been used
+                                    </span>
+                                )}
+
+                                {!checkLengthPwd && password.length !== 0 && (
+                                    <span className="text-red-500">
+                                        Your password must greater than 6
+                                        character
                                     </span>
                                 )}
                             </div>
