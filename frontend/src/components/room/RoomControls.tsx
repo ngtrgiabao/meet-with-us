@@ -24,7 +24,7 @@ const RoomControls = () => {
             .then((webcams) => {
                 if (webcams && webcams.length > 0) {
                     const { deviceId } = webcams[0];
-                    console.log(deviceId);
+                    // console.log(deviceId);
                     // changeWebcam(deviceId);
                 }
             })

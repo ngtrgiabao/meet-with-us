@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import userService from "../api/user/user.service";
@@ -17,7 +17,7 @@ const Login = () => {
 
     const handleSubmit = () => {
         userService.getAll().then((data) => {
-            data.data.forEach((e: any) => {
+            data?.data.forEach((e: any) => {
                 if (e.name === username && e.password === password) {
                     updateUser(e.name, e.password);
 

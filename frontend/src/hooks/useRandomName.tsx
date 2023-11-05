@@ -76,6 +76,9 @@ export const useRandomName = () => {
         72: "Xà lơ",
         73: "Rich kid",
         74: "SOS",
+        75: "Chai lăn nách",
+        76: "Vim bồn cầu 🦆",
+        77: "Cô cô nớt 🥥",
     };
 
     const randomNickname = (number: number) => {
