@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useMemo, useState } from "react";
+import { ReactNode, createContext, useMemo } from "react";
 
 import { ILoginContext } from "../../utils/interfaces";
 
