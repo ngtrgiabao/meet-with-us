@@ -13,7 +13,6 @@ import {
     GoogleAuthProvider,
     onAuthStateChanged,
     signInWithPopup,
-    signOut,
 } from "firebase/auth";
 
 import "../styles/navbar/navbar.css";
