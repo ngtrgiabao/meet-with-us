@@ -1,11 +1,11 @@
 # MEET WITH US
 
-<img src="https://img.shields.io/github/stars/ngtrgiabaoB2012063/meet-with-us"/> <img src="https://img.shields.io/github/issues/ngtrgiabaoB2012063/meet-with-us"/> ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ngtrgiabaoB2012063/meet-with-us) <img src="https://img.shields.io/github/license/ngtrgiabaoB2012063/meet-with-us"/>
+<img src="https://img.shields.io/github/stars/ngtrgiabao/meet-with-us"/> <img src="https://img.shields.io/github/issues/ngtrgiabao/meet-with-us"/> ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ngtrgiabao/meet-with-us) <img src="https://img.shields.io/github/license/ngtrgiabao/meet-with-us"/>
 
 ## Many thanks to our contributors
 
 <p>
-<a href="https://github.com/ngtrgiabao/meet-with-us/graphs/contributors"><img src="https://contrib.rocks/image?repo=ngtrgiabao/meet-with-us" /></a>
+<a href="https://github.com/ngtrgiabao/meet-with-us/graphs/contributors"><img src="https://contrib.rocks/image?repo=ngtrgiabao/meet-with-us" alt="contributor"/></a>
 </p>
 
 ## About
