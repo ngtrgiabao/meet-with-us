@@ -17,7 +17,7 @@ const Login = () => {
 
     const handleSubmit = () => {
         userService.getAll().then((data) => {
-            data.data.forEach((e: any) => {
+            data?.data.forEach((e: any) => {
                 if (e.name === username && e.password === password) {
                     updateUser(e.name, e.password);
 

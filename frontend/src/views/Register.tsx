@@ -38,16 +38,16 @@ const Register = () => {
         userService.getAll().then((data) => {
             const foundEmail = data.data.find((e: any) => e.email === email);
             setIsUsedEmail(!!foundEmail);
-            console.log(!!foundEmail);
+            // console.log(!!foundEmail);
         });
 
         const result = EMAIL_REGEX.test(email);
         setValidEmail(result);
     }, [email]);
 
-    useEffect(() => {
-        console.log(!validUsername, !validEmail, !validPassword, !validMatch);
-    }, [username, email, password, rePassword]);
+    // useEffect(() => {
+    //     console.log(!validUsername, !validEmail, !validPassword, !validMatch);
+    // }, [username, email, password, rePassword]);
 
     // Check username
     useEffect(() => {
@@ -61,7 +61,7 @@ const Register = () => {
         const checkLengthPwd = password.length >= 6;
         const match = password === rePassword;
 
-        console.log("result", result);
+        // console.log("result", result);
         setCheckLengthPwd(checkLengthPwd);
         setValidPassword(result);
         setValidMatch(match);

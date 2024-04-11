@@ -138,6 +138,7 @@ const Home = () => {
                         micEnabled: isMic,
                         maxResolution: "hd" as const,
                         name: username || randomName,
+                        debugMode: true,
                     }}
                     token={authToken}
                 >

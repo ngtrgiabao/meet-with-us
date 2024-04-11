@@ -24,7 +24,7 @@ const RoomControls = () => {
             .then((webcams) => {
                 if (webcams && webcams.length > 0) {
                     const { deviceId } = webcams[0];
-                    console.log(deviceId);
+                    // console.log(deviceId);
                     // changeWebcam(deviceId);
                 }
             })
@@ -79,32 +79,28 @@ const RoomControls = () => {
 
     return (
         <>
-            <div className="z-[20] absolute -bottom-[25%] bg-white border-2 border-blue-700 p-2 px-2 rounded-xl text-xl flex justify-between animate__animated animate__bounceInUp w-[40%] left-[30%]">
+            <div className="z-[20] absolute -bottom-[25%] bg-white border-2 border-blue-700 p-2 px-2 rounded-xl text-xl flex justify-between animate__animated animate__bounceInUp w-max gap-6 left-[38%]">
                 {/* Webcam */}
                 <button
                     onClick={() => handleWebcam()}
-                    className={`font-bold rounded-full w-[3rem] h-[3rem] ml-1 ${
-                        isWebcam ? " btn_action" : " btn_action-denied"
-                    }`}
+                    className={`font-bold rounded-full w-[3rem] h-[3rem] ml-1 ${isWebcam ? " btn_action" : " btn_action-denied"
+                        }`}
                 >
                     <i
-                        className={`fa-solid ${
-                            isWebcam ? "fa-video" : "fa-video-slash"
-                        }`}
+                        className={`fa-solid ${isWebcam ? "fa-video" : "fa-video-slash"
+                            }`}
                     ></i>
                 </button>
 
                 {/* Mic */}
                 <button
                     onClick={() => handleMic()}
-                    className={`font-bold rounded-full w-[3rem] h-[3rem] ${
-                        isMic ? " btn_action" : " btn_action-denied"
-                    }`}
+                    className={`font-bold rounded-full w-[3rem] h-[3rem] ${isMic ? " btn_action" : " btn_action-denied"
+                        }`}
                 >
                     <i
-                        className={`fa-solid ${
-                            isMic ? "fa-microphone" : "fa-microphone-slash"
-                        }`}
+                        className={`fa-solid ${isMic ? "fa-microphone" : "fa-microphone-slash"
+                            }`}
                     ></i>
                 </button>
 
