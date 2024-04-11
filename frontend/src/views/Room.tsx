@@ -63,7 +63,7 @@ const Room = ({ meetingID }: { meetingID: string | null }) => {
                     <span className="font-bold mr-1">ID ROOM:</span>
                     {meetingID}
                 </div>
-                <button className={`bg-white px-2 ${isCopy && "bg-green-500 text-white"}`} onClick={() => handleCopyIdRoom(meetingID)}>
+                <button className={`px-2 ${isCopy ? "bg-green-500 text-white" : "bg-white"}`} onClick={() => handleCopyIdRoom(meetingID)}>
                     {
                         isCopy ?
                             <div className="flex items-center gap-2">
