@@ -1,5 +1,5 @@
 import React from "react";
-import { useParticipant } from "@videosdk.live/react-sdk";
+import { useMeeting, useParticipant } from "@videosdk.live/react-sdk";
 
 import { IVideoComponent } from "../../utils/interfaces";
 import RoomVideoPlayer from "./RoomVideoPlayer";
@@ -18,6 +18,8 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
         screenShareOn,
         screenShareStream,
     } = useParticipant(participantID);
+    const { participants } = useMeeting();
+    const isYou = [...participants.keys()][0] === participantID;
 
     // Webcam
     const videoStream = React.useMemo(() => {
@@ -61,47 +63,51 @@ const RoomParticipantView = ({ participantID }: IVideoComponent) => {
     }, [screenShareStream, screenShareOn]);
 
     return (
-        <div key={participantID}>
-            <div className="w-full flex justify-center">
-                {screenShareOn ? (
+        <div>
+            {screenShareOn ? (
+                <div className="w-full flex justify-center flex-col items-center mb-2">
                     <RoomVideoPlayer
                         width="auto"
                         height="auto"
                         videoStream={mediaStream}
                     />
-                ) : null}
-            </div>
-            <div className="flex justify-center">
-                {webcamOn ? (
-                    <RoomVideoPlayer
-                        height="auto"
-                        transform="scaleX(-1)"
-                        videoStream={videoStream}
-                    />
-                ) : null}
-            </div>
+
+                    {displayName} ( Screen )
+                </div>
+            ) : null}
+
             {micOn && micRef && <audio ref={micRef} autoPlay muted={isLocal} />}
 
             {/* USER */}
-            <div className="flex justify-between items-center bg-black/40 my-1 p-3 border-2 rounded-lg border-white w-full">
-                <img
-                    className="rounded-full w-[2.5rem] h-[2.5rem]"
-                    src={avatarUser}
-                />
+            <div className="flex justify-between items-center bg-black/40 my-1 py-3 px-4 border-2 rounded-lg border-white w-full">
+                <div className={`flex ${webcamOn && "w-1/4"}`}>
+                    {webcamOn ? (
+                        <RoomVideoPlayer
+                            height="auto"
+                            transform="scaleX(-1)"
+                            videoStream={videoStream}
+                        />
+                    ) : <img
+                        className="rounded-full w-[2.5rem] h-[2.5rem]"
+                        src={avatarUser}
+                    />}
+                </div>
+
                 <div className="text-white text-sm text-center">
-                    <span className="line-clamp-1">{displayName}</span>
+                    <span className="line-clamp-1">{displayName} {isYou && "( you )"}</span>
                 </div>
                 <div className="flex">
                     <span className="font-bold rounded-full text-sm">
                         {micOn ? (
-                            <i className="fa-solid fa-microphone"></i>
+                            <i className="fa-solid fa-microphone text-green-500"></i>
                         ) : (
                             <i className="fa-solid fa-microphone-slash"></i>
                         )}
                     </span>
+
                     <span className="font-bold rounded-full ml-2 text-sm">
                         {webcamOn ? (
-                            <i className="text-sm fa-solid fa-video"></i>
+                            <i className="text-sm fa-solid fa-video text-green-500"></i>
                         ) : (
                             <i className="fa-solid fa-video-slash"></i>
                         )}
